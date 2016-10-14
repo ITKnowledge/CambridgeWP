@@ -354,13 +354,9 @@ module.exports = function(passport){
         console.log('GET Error: There was a problem retrieving: ' + err);
         //res.redirect('/home');
       }else{
-// <<<<<<< HEAD
 
-        Prog.findOne({progname: req.body.progs1}, function(err, prog){
-// =======
         //console.log(req.body.prog);
         Prog.findOne({progname: req.body.prog}, function(err, prog){
-// >>>>>>> 6e0022c772488e52d086ff0d9f014581663ea222
           var obj = JSON.parse(req.body.obj);
 
           var facturenum = inc ;
@@ -398,7 +394,6 @@ module.exports = function(passport){
             //res.render('visite', { user: req.user, patients: patients});
           });
         });
-});
 }
 
 
