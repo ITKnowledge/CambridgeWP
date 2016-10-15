@@ -1,4 +1,3 @@
-
 var express = require('express');
 var bCrypt = require('bcrypt-nodejs');
 var router = express.Router();
