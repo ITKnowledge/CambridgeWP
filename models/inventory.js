@@ -9,6 +9,7 @@ module.exports = mongoose.model('Inventory',{
               prodcode: String,
               prodname: String,
               qtetheory:Number,
-              qteinventory: Number
+              qteinventory: Number,
+              comment: String
           }]
 });

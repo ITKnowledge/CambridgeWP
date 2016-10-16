@@ -1,0 +1,133 @@
+<% include header.ejs %>
+
+	        <!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+      <div class="row">
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_title">
+              <h2>Détail de l'inventaire <small>Gestion de Stock</small></h2>
+                <div class="pull-right">
+                  <a class="btn btn-success btn-md" href="/listinventory" role="button">Liste des inventaires </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+          <form class="form-horizontal form-label-left" novalidate action="" method="post">
+            <div class="row">
+                <ul class="stats-overview">
+                  <li>
+                    <span class="name"> Libellé inventaire </span>
+                    <span class="value text-success"> <%= inventory.nameinventory %> </span>
+                  </li>
+                  <li>
+                    <span class="name"> Dépôt </span>
+                    <span class="value text-success"> <%= inventory.depotname %> </span>
+                  </li>
+                  <li class="hidden-phone">
+                    <span class="name"> Date inventaire </span>
+                    <span class="value text-success"> <%= inventory.dateinventory %> </span>
+                  </li>
+                </ul>
+            </div>
+
+
+            <div class="row">
+                <div id="jsGrid"></div><br>
+                  <textarea class="hidden" id="obj" name="obj"  ></textarea><br>
+                  <label id="idinventory" class="hidden" for=""><%= inventory._id %></label>
+            </div>
+
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <button id="retour" type="button" class="btn btn-primary" onclick="window.location.href='/listinventory'">Liste des inventaires</button>
+
+
+          </form>
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+          </div>
+	        <!-- /page content -->
+
+
+<% include footer.ejs %>
+
+<script>
+
+var tt = [];
+$(document).ready(function(){
+
+    var url = "/getdata/" + $("#idinventory").text();
+
+    var check = $.ajax({
+                url:url,
+                type: 'GET'
+              });
+
+      check.done(function(msg){
+        tt = msg;
+
+        $("#jsGrid").jsGrid({
+        // height: "450px",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        deleting: false,
+        inserting: false,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 15,
+        pageButtonCount: 5,
+        // deleteConfirm: "Voulez-vous vraiment supprimer cet enregistrement?",
+
+            data: tt,
+
+            fields: [
+
+                { name: "prodcode", type: "text", title: "Code produit" , validate: "required", editing: false },
+                { name: "prodname", type: "text", title: "Nom du produit" , validate: "required", editing: false},
+                { name: "qtetheory", type: "number", title: "Quantité théorique" ,editing: false },
+                { name: "qteinventory", type: "number", title: "Quantité inventoriée" },
+                { name: "comment", type: "text", title: "Commentaire"  },
+                { type: "control"}
+
+            ]
+        });
+
+        $("#obj").val(JSON.stringify(tt));
+
+          $("#jsGrid").jsGrid({
+
+          onItemUpdated: function() {
+          //console.log("row updated");
+          $('#obj').val(JSON.stringify(tt));
+          },
+
+          onItemDeleted: function(arg) {
+          //console.log("row deleted");
+          //tt.splice(arg.itemIndex, 1);
+          $('#obj').val(JSON.stringify(tt));
+          },
+          onItemInserted: function() {
+          //console.log("row deleted");
+          $('#obj').val(JSON.stringify(tt));
+          }
+          });
+      });
+
+  });
+
+
+
+
+
+</script>

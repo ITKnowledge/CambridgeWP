@@ -1464,7 +1464,31 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
     inventory.nameinventory = req.body.nameinventory;
     inventory.depotname = req.body.depotname;
     inventory.dateinventory = req.body.dateinventory;
-    inventory.detail = [];
+    var tab=[];
+     tab.push({ "prodid": "002","prodcode": "p002", "prodname": "produit 002","qtetheory": 20, "qteinventory": 2 });
+
+      Product.find(function (err, prod){
+        //Pourquoi cette boucle ne fonctionne pas??????? pas de push à l'interieur de Product.find!!!
+        for (var i=0; i<10;i++){
+          AAa.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
+        }
+  //     Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
+  //       //  res.render('listprod', {user: req.user, prods: prod, stock: stock});
+  //       for(i=0; i < prod.length; i++){
+  //         for(j=0; j < stock.length; j++){
+  //
+  //           if (stock[j]._id == prod[i]._id){
+  //             console.log("wafik et karim " + i + ' ' + j + ' ' + stock[j]._id + ' ' + stock[j].totalUnits);
+  //             AAa.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
+  //             console.log("push N°" + i + ' ' + j);
+  //             // obj.push({ "prodid": stock[j]._id,"prodcode": prod[i].prodcode, "prodname": prod[i].prodname,"qtetheory": stock[j].totalUnits, "qteinventory": 0 });
+  //           }
+  //         }
+  //       }
+  //     }));
+    });
+ tab.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
+  inventory.detail =  tab;
 
     inventory.save(function(err) {
          if (err)
@@ -1522,6 +1546,28 @@ router.delete('/delinventory/:id', isAuthenticated, function(req, res){
     res.json({ message: 'Inventory successfully deleted!' });
   });
 
+});
+
+/* Detail Inventory */
+
+ router.get('/detailinventory/:id', isAuthenticated, function(req, res){
+   	Inventory.findById(req.params.id, function(err, result){
+
+    if (err) {
+        console.log('GET Error: There was a problem retrieving: ' + err);
+      } else {
+        res.render('detailinventory', {user: req.user, inventory: result });
+      }
+
+});
+ });
+
+
+/* load data jsgrid detail inventory */
+router.get('/getdata/:id', function(req, res){
+  Inventory.findById(req.params.id , function(err, result){
+        res.json(result.detail);
+  });
 });
 	/* Handle Logout */
 	router.get('/signout', function(req, res) {
