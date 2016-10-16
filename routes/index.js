@@ -1469,8 +1469,9 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
 
       Product.find(function (err, prod){
         //Pourquoi cette boucle ne fonctionne pas??????? pas de push à l'interieur de Product.find!!!
-        for (var i=0; i<10;i++){
-          AAa.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
+        for (var i=0; i<5;i++){
+          inventory.detail.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
+
         }
   //     Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
   //       //  res.render('listprod', {user: req.user, prods: prod, stock: stock});
@@ -1487,8 +1488,8 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
   //       }
   //     }));
     });
- tab.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
-  inventory.detail =  tab;
+ // tab.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
+  // inventory.detail =  tab;
 
     inventory.save(function(err) {
          if (err)
