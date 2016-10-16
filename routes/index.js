@@ -1523,7 +1523,6 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
 
                  res.redirect('/listinventory');
                 });
-                console.log(inventory.detail);
             }));
 
         });
