@@ -98,7 +98,7 @@
               <a onclick="" id="addline" type="" class="btn btn-primary"><i class="fa fa-check"></i></a>
             </div>
 
-            <textarea id="message" type="" name="obj" required="required" class="form-control " name="message" placeholder="Obj">
+            <textarea id="message" type="" name="obj" required="required" class="form-control hidden" name="message" placeholder="Obj">
             </textarea>
 
             <div id="progname" name="">
@@ -113,25 +113,19 @@
 
 
             <div id="jsGrid"></div>
-
-
-
+            <div class="form-group">
+              <div class="col-md-12 col-md-offset-0" align="right">
+                <!--
+                <button type="submit" class="btn btn-primary">Cancel</button>
+              -->
+                <input type="hidden" name="_method" value="PUT">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+              </div>
+            </div>
               <div class="clearfix"></div>
               <div class="ln_solid"></div>
 
 
-
-
-
-              <div class="form-group">
-                <div class="col-md-9 col-md-offset-0">
-                  <!--
-                  <button type="submit" class="btn btn-primary">Cancel</button>
-                -->
-                  <input type="hidden" name="_method" value="PUT">
-                  <button type="submit" class="btn btn-success">Enregistrer</button>
-                </div>
-              </div>
 
             </form>
           </div>

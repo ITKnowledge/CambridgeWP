@@ -52,7 +52,6 @@
                       <td class="last"  align='right' width='120px;'>
                         <a class="btn btn-info btn-xs" href="/editdepot/<%= depot[i]._id %>" role="button"><i class="fa fa-pencil"></i> Edit </a>
                         <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listdepots/<%= depot[i]._id%>');" href="/listdepots"><i class="fa fa-trash-o"></i> Delete </a>
-
                       </td>
                     </tr>
                     <% } %>

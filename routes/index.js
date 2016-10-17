@@ -1319,11 +1319,12 @@ var datesys = new Date();
 var qte=req.body.qteout;
 var prodid=req.body.prodid2;
 var factnum=req.body.factureclt;
+var motifout=req.body.motifout;
 
  var stockout = {
   qteout: qte,
   dateout: (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
-  motifout: "VENTE NORMALE",
+  motifout: motifout,
   factnum: factnum
 };
 Depotinout.findById(req.params.id, function (err, stockin) {

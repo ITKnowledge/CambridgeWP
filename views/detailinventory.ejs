@@ -21,16 +21,24 @@
                 <ul class="stats-overview">
                   <li>
                     <span class="name"> Libellé inventaire </span>
-                    <span class="value text-success"> <%= inventory.nameinventory %> </span>
+                    <span class="value text-success"> <%= inventory.nameinventory %>  
+                      <% if (inventory.cloture == true) { %>
+                          <i class="fa fa-lock" aria-hidden="true" style="font-size:16px;color:Red">&shy;</i>
+                      <%} else {%>
+                        <i class="fa fa-unlock" aria-hidden="true" style="font-size:16px;color:green">&shy;</i>
+                      <%}%>
+                    </span>
+
                   </li>
                   <li>
                     <span class="name"> Dépôt </span>
                     <span class="value text-success"> <%= inventory.depotname %> </span>
                   </li>
-                  <li class="hidden-phone">
+                  <li>
                     <span class="name"> Date inventaire </span>
                     <span class="value text-success"> <%= inventory.dateinventory %> </span>
                   </li>
+
                 </ul>
             </div>
 
