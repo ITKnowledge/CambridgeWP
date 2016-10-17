@@ -10,13 +10,13 @@
 
             <div class="x_title">
               <h2>Détail de l'inventaire <small>Gestion de Stock</small></h2>
-                 
+
                 <div class="clearfix"></div>
             </div>
 
             <div class="x_content">
 
-          <form class="form-horizontal form-label-left" novalidate action="" method="post">
+          <form class="form-horizontal form-label-left" novalidate action="/saveinventorydetail/<%= inventory._id %>" method="post">
             <div class="row">
                 <ul class="stats-overview">
                   <li>
@@ -37,12 +37,17 @@
 
             <div class="row">
                 <div id="jsGrid"></div><br>
-                  <textarea class="hidden" id="obj" name="obj"  ></textarea><br>
+                  <textarea class="hidden" id="obj" name="obj" ></textarea><br>
                   <label id="idinventory" class="hidden" for=""><%= inventory._id %></label>
             </div>
 
             <input type="hidden" name="_method" value="PUT">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <% if (inventory.cloture==false) {%>
+              <button type="submit" class="btn btn-primary" >Enregistrer</button>
+              <%} else {%>
+                <button type="submit" class="btn btn-primary" disabled="disabled">Enregistrer</button>
+            <%}%>
+
             <button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listinventory'">Liste des inventaires</button>
 
 
@@ -59,7 +64,7 @@
 <% include footer.ejs %>
 
 <script>
-
+var etatcloture = <%= !inventory.cloture%>;
 var tt = [];
 $(document).ready(function(){
 
@@ -76,8 +81,9 @@ $(document).ready(function(){
         $("#jsGrid").jsGrid({
         // height: "450px",
         width: "100%",
+
         filtering: false,
-        editing: false,
+        editing: etatcloture,
         deleting: false,
         inserting: false,
         sorting: true,
@@ -96,7 +102,7 @@ $(document).ready(function(){
                 { name: "qtetheory", type: "number", title: "Quantité théorique" ,editing: false },
                 { name: "qteinventory", type: "number", title: "Quantité inventoriée" },
                 { name: "comment", type: "text", title: "Commentaire"  },
-                { type: "control"}
+                { type: "control", deleteButton: false}
 
             ]
         });

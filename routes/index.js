@@ -1451,52 +1451,7 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
       res.render('addinventory', { user: req.user, depots: depots});
    });
  });
-
-// router.post('/addinventory', isAuthenticated, function(req, res){
-//    var inventory = new Inventory();
-//
-//    inventory.nameinventory = req.body.nameinventory;
-//    inventory.depotname = req.body.depotname;
-//    inventory.dateinventory = req.body.dateinventory;
-//    var tab=[];
-//     tab.push({ "prodid": "002","prodcode": "p002", "prodname": "produit 002","qtetheory": 20, "qteinventory": 2 });
-//
-//      Product.find(function (err, prod){
-//        //Pourquoi cette boucle ne fonctionne pas??????? pas de push à l'interieur de Product.find!!!
-//        for (var i=0; i<5;i++){
-//          tab.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
-//
-//        }
-//  //     Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
-//  //       //  res.render('listprod', {user: req.user, prods: prod, stock: stock});
-//  //       for(i=0; i < prod.length; i++){
-//  //         for(j=0; j < stock.length; j++){
-//  //
-//  //           if (stock[j]._id == prod[i]._id){
-//  //             console.log("wafik et karim " + i + ' ' + j + ' ' + stock[j]._id + ' ' + stock[j].totalUnits);
-//  //             AAa.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
-//  //             console.log("push N°" + i + ' ' + j);
-//  //             // obj.push({ "prodid": stock[j]._id,"prodcode": prod[i].prodcode, "prodname": prod[i].prodname,"qtetheory": stock[j].totalUnits, "qteinventory": 0 });
-//  //           }
-//  //         }
-//  //       }
-//  //     }));
-//    });
-// // tab.push({ "prodid": "006","prodcode": "p006", "prodname": "produit 006","qtetheory": 60, "qteinventory": 6 });
-//     console.log(tab);
-//  // inventory.detail =  tab;
-//
-//    inventory.save(function(err) {
-//         if (err)
-//             res.send(err);
-//
-//         res.redirect('/listinventory');
-//     });
-//
-//
-// });
-
-
+/* Add new inventory width détail */
     router.post('/addinventory', function(req, res){
 
         var inventory = new Inventory();
@@ -1506,8 +1461,6 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
 
         Product.find(function(err, prod){
             Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
-
-
 
                 for(i=0; i < prod.length; i++){
                     for(j=0; j < stock.length; j++){
@@ -1528,7 +1481,38 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
         });
 
     });
+/* Save Detail inventory */
+router.post('/saveinventorydetail/:id', function(req, res){
+  	Inventory.findById(req.params.id, function(err, inventory){
+      inventory.detail = JSON.parse(req.body.obj);
+      inventory.update({
+        detail: inventory.detail
+                },function (err, inventory){
+                  if(err){
+                    console.log('GET Error: There was a problem retrieving: ' + err);
+                    res.redirect('/listinventory');
+                  }else{
+                    res.redirect('/listinventory');
+                  }
+                })
+           });
 
+//    inventory.findById(req.params.id, function(err, inventorydetail){
+//
+//       inventorydetail.detail = JSON.parse(req.body.obj);
+//
+//       inventorydetail.update({
+//           detail: inventorydetail.detail
+//         },function (err, inventory){
+//           if(err){
+//             console.log('GET Error: There was a problem retrieving: ' + err);
+//             res.redirect('/listinventory');
+//           }else{
+//             res.redirect('/listinventory');
+//           }
+//         })
+//    });
+});
  /* Get edit inventory*/
    router.get('/editinventory/:id', isAuthenticated, function(req, res){
  	 Depot.find(function (err, depots){
@@ -1551,7 +1535,8 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
           inventory.update({
           nameinventory: req.body.nameinventory,
           dateinventory: req.body.dateinventory,
-          depotname: req.body.depotname
+          depotname: req.body.depotname,
+          cloture: req.body.cloture
         },function (err, prodID){
           if(err){
             console.log('GET Error: There was a problem retrieving: ' + err);
