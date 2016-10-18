@@ -62,9 +62,11 @@
                         <%}%>
                          </td>
                       <td class="last"  align='right' width='220px;'>
-                        <a class="btn btn-info btn-xs" href="/editinventory/<%= inventory[i]._id %>" role="button"><i class="fa fa-pencil"></i> Edit </a>
-                        <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/delinventory/<%= inventory[i]._id%>');" href="/listinventory"><i class="fa fa-trash-o"></i> Delete </a>
-                        <a class="btn btn-primary btn-xs" href="/detailinventory/<%= inventory[i]._id %>" role="button"><i class="fa fa-bars"></i> Détail </a>
+                        <a class="btn btn-info btn-xs" href="/editinventory/<%= inventory[i]._id %>" role="button"><i class="fa fa-pencil"></i></a>
+
+                        <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/delinventory/<%= inventory[i]._id%>');" href="/listinventory"><i class="fa fa-trash-o"></i></a>
+
+                        <a class="btn btn-primary btn-xs" href="/detailinventory/<%= inventory[i]._id %>" role="button"><i class="fa fa-bars"></i></a>
 
                       </td>
                     </tr>

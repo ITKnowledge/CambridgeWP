@@ -1806,15 +1806,29 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
    /*POST edit prod*/
    router.post('/editprod/:id', isAuthenticated, function(req, res){
        Product.findById(req.params.id, function (err, prod) {
+         var old_prodcode=prod.prodcode;
+         var old_prodname=prod.prodname;
          prod.update({
-         prodcode: req.body.prodcode,
-          prodname: req.body.prodname,
+           prodcode: req.body.prodcode,
+           prodname: req.body.prodname,
            extra: req.body.extra,
-            qtemin: req.body.qtemin
+           qtemin: req.body.qtemin
        },function (err, prodID){
          if(err){
            console.log('GET Error: There was a problem retrieving: ' + err);
          }else{
+           Depotinout.find({prodcode: old_prodcode}, function (err, depotinouts) {
+
+                      depotinouts.forEach(function(depotinout) {
+                       depotinout.prodcode = req.body.prodcode;
+                       depotinout.prodname = req.body.prodname;
+                       depotinout.save();
+                      });
+
+
+                      })
+
+                      
            res.redirect("/listprod");
          }
        })
