@@ -1,0 +1,6 @@
+{ "_id" : { "$oid" : "5804b608fc00a08d4cdfaaf2" }, "progdesc" : "Programme 1", "progprice" : 3490, "progname" : "PROG1", "products" : [], "__v" : 0 }
+{ "_id" : { "$oid" : "5804b622fc00a08d4cdfaaf3" }, "progdesc" : "Programme 2", "progprice" : 2790, "progname" : "PROG2", "products" : [], "__v" : 0 }
+{ "_id" : { "$oid" : "5804b637fc00a08d4cdfaaf4" }, "progdesc" : "Programme \"", "progprice" : 1990, "progname" : "PROG3", "products" : [], "__v" : 0 }
+{ "_id" : { "$oid" : "5804b649fc00a08d4cdfaaf5" }, "progdesc" : "Programme 4", "progprice" : 1090, "progname" : "PROG4", "products" : [], "__v" : 0 }
+{ "_id" : { "$oid" : "5804b665fc00a08d4cdfaaf6" }, "progdesc" : "Programme de la semaine", "progprice" : 790, "progname" : "PROG/SEMAINE", "products" : [], "__v" : 0 }
+{ "_id" : { "$oid" : "5804b678fc00a08d4cdfaaf7" }, "progdesc" : "Consultation", "progprice" : 300, "progname" : "CONSULTATION", "products" : [], "__v" : 0 }

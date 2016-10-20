@@ -1,0 +1,18 @@
+{ "_id" : { "$oid" : "5803f83bb5effd3e32b89c7c" }, "qtemin" : 10, "extra" : false, "prodcode" : "P001", "prodname" : "SHAKES - Vanilla Lactose", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f855b5effd3e32b89c7d" }, "qtemin" : 4, "extra" : false, "prodcode" : "P002", "prodname" : "SHAKES - Cappuccino \\lactose Free", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f869b5effd3e32b89c7e" }, "qtemin" : 20, "extra" : false, "prodcode" : "P003", "prodname" : "SHAKES - Chocolate Lactose Free", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f87eb5effd3e32b89c7f" }, "qtemin" : 6, "extra" : true, "prodcode" : "P004", "prodname" : "SHAKES - Strawberry", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f897b5effd3e32b89c80" }, "qtemin" : 10, "extra" : false, "prodcode" : "P005", "prodname" : "SHAKES - Leek & Potato Lactose Free", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f8aab5effd3e32b89c81" }, "qtemin" : 8, "extra" : true, "prodcode" : "P006", "prodname" : "SOUPS - Spicy Tomato Soup", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f8d3b5effd3e32b89c82" }, "qtemin" : 20, "extra" : false, "prodcode" : "P007", "prodname" : "SOUPS - Oriental Chilli", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f8e9b5effd3e32b89c83" }, "qtemin" : 6, "extra" : false, "prodcode" : "P008", "prodname" : "SOUPS - Vegetable", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f8fcb5effd3e32b89c84" }, "qtemin" : 12, "extra" : true, "prodcode" : "P009", "prodname" : "SOUPS - Chicken & Mashroom Soup", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f920b5effd3e32b89c85" }, "qtemin" : 20, "extra" : true, "prodcode" : "P010", "prodname" : "SOUPS - Porridege Original", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f93ab5effd3e32b89c86" }, "qtemin" : 25, "extra" : false, "prodcode" : "P011", "prodname" : "SOUPS - Porridege Apple & Cinnarmon", "__v" : 0 }
+{ "_id" : { "$oid" : "5803f98bb5effd3e32b89c87" }, "qtemin" : 5, "extra" : true, "prodcode" : "P012", "prodname" : "BARS - Chocolate Bars", "__v" : 0 }
+{ "_id" : { "$oid" : "5804ed15547a4ce566772ada" }, "qtemin" : 10, "extra" : false, "prodcode" : "P013", "prodname" : "BARS - Malt & Coffee Bars", "__v" : 0 }
+{ "_id" : { "$oid" : "5804ed27547a4ce566772adb" }, "qtemin" : 10, "extra" : false, "prodcode" : "P014", "prodname" : "BARS - Carnberry Crunch Bars", "__v" : 0 }
+{ "_id" : { "$oid" : "5804ed39547a4ce566772adc" }, "qtemin" : 10, "extra" : false, "prodcode" : "P015", "prodname" : "BARS - Peanut Crunch Bars", "__v" : 0 }
+{ "_id" : { "$oid" : "5804ed4c547a4ce566772add" }, "qtemin" : 10, "extra" : false, "prodcode" : "P016", "prodname" : "BARS - Strawberry & Apple Bars", "__v" : 0 }
+{ "_id" : { "$oid" : "5804ed7b547a4ce566772ade" }, "qtemin" : 10, "extra" : false, "prodcode" : "P017", "prodname" : "SHAKER & BAG - Shaker", "__v" : 0 }
+{ "_id" : { "$oid" : "5804ed89547a4ce566772adf" }, "qtemin" : 10, "extra" : false, "prodcode" : "P019", "prodname" : "SHAKER & BAG - Bag", "__v" : 0 }

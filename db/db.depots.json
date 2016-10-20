@@ -1,0 +1,2 @@
+{ "_id" : { "$oid" : "5803f9a9b5effd3e32b89c88" }, "depotname" : "Dépôt Casablanca", "inout" : [], "__v" : 0 }
+{ "_id" : { "$oid" : "5803f9b3b5effd3e32b89c89" }, "depotname" : "Dépôt Meknes", "inout" : [], "__v" : 0 }
