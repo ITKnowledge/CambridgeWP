@@ -34,6 +34,9 @@
                     <th class="column-title">Date inventaire </th>
                     <th class="column-title">Designation </th>
                     <th class="column-title">Nom du dépôt </th>
+                    <th class="column-title">Qté théorique totale </th>
+                    <th class="column-title">Qté inventoriée totale </th>
+                    <th class="column-title">Ecart </th>
                     <th class="column-title">Etat </th>
 
                     <th class="column-title no-link last"><span class="nobr">Action</span>
@@ -46,7 +49,14 @@
 
                 <tbody>
 
-                    <% for(var i=0; i < inventory.length; i++) { %>
+                    <% for(var i=0; i < inventory.length; i++) {
+                      var qtetheorytotale=0;
+                      var qteinventorytotale=0;
+                      for (j=0; j < inventory[i].detail.length; j++) {
+                        qtetheorytotale = qtetheorytotale + inventory[i].detail[j].qtetheory;
+                        qteinventorytotale = qteinventorytotale + inventory[i].detail[j].qteinventory;
+                      }
+                      %>
                     <tr class="even pointer">
                       <td class="a-center ">
                         <input type="checkbox" class="flat" name="table_records">
@@ -54,6 +64,9 @@
                       <td class=" "><%= inventory[i].dateinventory %></td>
                       <td class=" "><%= inventory[i].nameinventory %></td>
                       <td class=" "><%= inventory[i].depotname %></td>
+                      <td class=" " align="right"><%= qtetheorytotale %></td>
+                      <td class=" " align="right"><%= qteinventorytotale %></td>
+                      <td class=" " align="right"><%= qteinventorytotale - qtetheorytotale %></td>
                       <td class=" " align="center">
                         <% if (inventory[i].cloture == true) { %>
                             <i class="fa fa-lock" aria-hidden="true" style="font-size:16px;color:Red">&shy;</i>
