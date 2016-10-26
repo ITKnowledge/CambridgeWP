@@ -2138,3 +2138,14 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
         res.render('listinventory', { user: req.user, text: 'Liste des inventaires', inventory: inventorys});
         });
       });
+
+
+router.get('/invoicereport', isAuthenticated, function(req, res){
+
+
+    Patient.find(function(err, result){
+        res.render('invoicereport', {user : req.user, patient: result});
+    });
+
+//
+});
