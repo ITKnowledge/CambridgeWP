@@ -1,0 +1,7 @@
+{"_id":{"$oid":"579fc9ea059f7c810a3cf822"},"lastName":"Bellioum","firstName":"Karim","email":"kbellioum@gmail.com","password":"$2a$10$aCFbWl/Ts3PRJyZCNu4f5uPeMdVKfJlwH8RmhEs3Q28IDbfGN9puy","username":"kbellioum","__v":0}
+{"_id":{"$oid":"57ac1acd584c54ef1f120f62"},"lastName":"Wafik","firstName":"Mustapha","email":"wafik@gmail.com","password":"$2a$10$7wkSJSw0P5kVkDZwCIqAfOpYNxW9qWYlIKCF6oEh5G4aEl9dd2Lcq","username":"mwafik","__v":0}
+{"_id":{"$oid":"57ac233f584c54ef1f120f63"},"lastName":"Zaidi","firstName":"Rachid","email":"rzaidi@gmail.com","password":"$2a$10$tDOTX8A4iUl0K0LTJ2eV3OPIARgI7EVWvia5p4Yo7n99HnNzA/Phq","username":"rzaidi","__v":0}
+{"_id":{"$oid":"57b1f37b83dbb7a0a0f39dac"},"lastName":"cherboub","firstName":"ali","email":"ali@gmail.com","password":"$2a$10$KebtdY0vARVfntPYS0Zld.YmASvlyHcinNJgAjP1w4okSBa5G4xB.","username":"Ali","__v":0}
+{"_id":{"$oid":"57b203c2277f82da7d129240"},"lastName":"reception","firstName":"Reception","email":"reception@gmail.com","password":"$2a$10$wTKKYQxCaljDNYGTd.ejfOVJ/ZOuR/g135RG5L3O/Sp3ulZX7MUHG","username":"reception","__v":0}
+{"_id":{"$oid":"57b203f3277f82da7d129241"},"lastName":"consultant1","firstName":"consultant1","email":"consultant1@gmail.com","password":"$2a$10$BTqF.eim8rzlY/QiXc5vSe9P4oFHUPvVbMzTMEiYPTKCXjutCpDsW","username":"consultant1","__v":0}
+{"_id":{"$oid":"57b2042c277f82da7d129242"},"lastName":"consultant2","firstName":"consultant2","email":"consultant2@gmail.com","password":"$2a$10$2OqtUuWlYj9LWv91HJjlmONZyr3e8UiPI1uVfqtVvkVknXTSY8UcO","username":"consultant2","__v":0}

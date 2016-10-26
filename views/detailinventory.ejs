@@ -23,9 +23,9 @@
                     <span class="name"> Libellé inventaire </span>
                     <span class="value text-success"> <%= inventory.nameinventory %>
                       <% if (inventory.cloture == true) { %>
-                          <i class="fa fa-lock" aria-hidden="true" style="font-size:16px;color:Red">&shy;</i>
+                          <i class="fa fa-lock" aria-hidden="true" style="font-size:16px;color:Red"></i>
                       <%} else {%>
-                        <i class="fa fa-unlock" aria-hidden="true" style="font-size:16px;color:green">&shy;</i>
+                        <i class="fa fa-unlock" aria-hidden="true" style="font-size:16px;color:green"></i>
                       <%}%>
                     </span>
 
@@ -66,7 +66,7 @@
 
             <div class="row">
                 <div id="jsGrid"></div><br>
-                  <textarea class="" id="obj" name="obj" ></textarea><br>
+                  <textarea class="hidden" id="obj" name="obj" ></textarea><br>
                   <label id="idinventory" class="hidden" for=""><%= inventory._id %></label>
             </div>
 
