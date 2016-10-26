@@ -1603,8 +1603,14 @@ router.get('/getdata/:id', function(req, res){
 		req.logout();
 		res.redirect('/');
 	});
-	return router;
+	
+    
+    
+    return router;
 }
+
+
+
 /*******PROVIDERS************/
 /* show listproviders */
 router.get('/listproviders', isAuthenticated, function(req, res){
