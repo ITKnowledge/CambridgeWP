@@ -66,7 +66,7 @@
 
             <div class="row">
                 <div id="jsGrid"></div><br>
-                  <textarea class="hidden" id="obj" name="obj" ></textarea><br>
+                  <textarea class="" id="obj" name="obj" ></textarea><br>
                   <label id="idinventory" class="hidden" for=""><%= inventory._id %></label>
             </div>
 
@@ -160,9 +160,12 @@ $(document).ready(function(){
 
           onItemUpdated: function() {
           //console.log("row updated");
-          for (var i=0;i<tt.length;i++){tt[i].ecart=tt[i].qteinventory-tt[i].qtetheory;}
+          var qtetotaleinv=0;
+          for (var i=0;i<tt.length;i++){tt[i].ecart=tt[i].qteinventory-tt[i].qtetheory;qtetotaleinv = qtetotaleinv+tt[i].qteinventory;}
           $('#obj').val(JSON.stringify(tt));
-
+          $("#qtinvtot").text(qtetotaleinv);
+          $("#ecarttot").text(qtetotaleinv-qtetotaletheory);
+          $("#jsGrid").jsGrid("refresh");
           },
 
           onItemDeleted: function(arg) {
