@@ -237,9 +237,10 @@ module.exports = function(passport){
              index: factnum,
              vid: vid,
              discount: discount,
+             modepaiement: req.query.vmp,
              date: d.substring(0,10).split("-").reverse().join("/")
           });
-          }
+        }
 
           });
   });
@@ -541,7 +542,7 @@ router.delete('/listprog/:prog_id', isAuthenticated, function(req, res){
   router.post('/addremise/:id', isAuthenticated, function(req, res){
 
     var vid = req.query.vid;
-    var pid = req.query.pid;
+    // var pid = req.query.pid;
     var discount = req.body.discount.match(/\d+/)[0];
 
 
@@ -573,7 +574,38 @@ router.delete('/listprog/:prog_id', isAuthenticated, function(req, res){
 
   });
 
+/* add mode de paiement */
+router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
+   console.log(req.params.id);
+   var vid = req.query.vid;
+   var mp = req.body.modepaiement;
+   Patient.findById(req.params.id,function(err, patients){
 
+
+       for (var i=0; i < patients.visites.length; i++){
+             if(patients.visites[i]._id.toString() === vid.toString()){
+               var tt = patients.visites[i];
+               tt.modepaiement = mp;
+               patients.visites[i] = tt;
+             }
+       }
+       patients.update({
+         visites: patients.visites
+       },function (err, patientsID){
+         if(err){
+           console.log('GET Error: There was a problem retrieving: ' + err);
+           res.redirect('/home');
+         }else{
+           res.redirect("/tabcons");
+         }
+       })
+
+     });
+
+      // console.log(pid);
+      // res.contentType('json');
+      // res.send({ some: 'json' });
+    });
 
 
 	router.get('/addpat', isAuthenticated, function(req, res){

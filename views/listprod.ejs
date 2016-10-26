@@ -72,7 +72,8 @@
             if (stock[k]._id==prods[i]._id) {qtestock=stock[k].totalUnits;valstock=stock[k].totalValeur;}
           }%>
         <td class="" align="center">
-          <a href="/listinout/<%= prods[i]._id %>"><font size="4" color="green"><%= qtestock %></font></a>
+          <a class="btn btn-default btn-xs" href="/listinout/<%= prods[i]._id %>" role="button"> <%= qtestock %>  </a>
+          <!-- <font size="4" color="green"><%= qtestock %></font> -->
         </td>
         <td align="center">
           <% if(qtestock > Number(prods[i].qtemin)){%>
@@ -87,6 +88,7 @@
 
 
           <td class=" last" align='right' width='120px;'>
+
             <a class="btn btn-info btn-xs" href="/editprod/<%= prods[i]._id %>" role="button"><i class="fa fa-pencil"></i></a>
             <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listprod/<%= prods[i]._id%>');" href="/listprod"><i class="fa fa-trash-o"></i></a>
           </td>
