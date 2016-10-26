@@ -1493,7 +1493,7 @@ router.post('/saveinventorydetail/:id', function(req, res){
                     console.log('GET Error: There was a problem retrieving: ' + err);
                     res.redirect('/listinventory');
                   }else{
-                    res.redirect('/listinventory');
+                    res.redirect('/detailinventory/' + req.params.id);
                   }
                 })
            });
@@ -1834,7 +1834,7 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
                       })
 
-                      
+
            res.redirect("/listprod");
          }
        })

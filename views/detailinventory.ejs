@@ -21,7 +21,7 @@
                 <ul class="stats-overview">
                   <li>
                     <span class="name"> Libellé inventaire </span>
-                    <span class="value text-success"> <%= inventory.nameinventory %>  
+                    <span class="value text-success"> <%= inventory.nameinventory %>
                       <% if (inventory.cloture == true) { %>
                           <i class="fa fa-lock" aria-hidden="true" style="font-size:16px;color:Red">&shy;</i>
                       <%} else {%>
@@ -44,16 +44,37 @@
 
 
             <div class="row">
+                <ul class="stats-overview">
+                  <li>
+                    <span class="name"> Quantité théorique totale </span>
+                    <span class="value text-success" id="span1"><label id="qttheotot" class="" for="qttheotot">0</label></span>
+
+                  </li>
+                  <li>
+                    <span class="name"> Quantité inventoriée totale </span>
+                    <span class="value text-success" id="span1"><label id="qtinvtot" class="" for="qtinvtot">0</label></span>
+                  </li>
+                  <li>
+                    <span class="name"> Ecart total </span>
+                    <span class="value text-success" id="span1"><label id="ecarttot" class="" for="ecarttot">0</label></span>
+                  </li>
+
+                </ul>
+            </div>
+
+
+
+            <div class="row">
                 <div id="jsGrid"></div><br>
                   <textarea class="hidden" id="obj" name="obj" ></textarea><br>
                   <label id="idinventory" class="hidden" for=""><%= inventory._id %></label>
             </div>
 
             <input type="hidden" name="_method" value="PUT">
-            <% if (inventory.cloture==false) {%>
-              <button type="submit" class="btn btn-primary" >Enregistrer</button>
+            <% if (inventory.cloture == true) { %>
+              <button type="submit" class="btn btn-primary"  disabled="disabled">Enregistrer</button>
               <%} else {%>
-                <button type="submit" class="btn btn-primary" disabled="disabled">Enregistrer</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
             <%}%>
 
             <button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listinventory'">Liste des inventaires</button>
@@ -74,6 +95,8 @@
 <script>
 var etatcloture = <%= !inventory.cloture%>;
 var tt = [];
+var qtetotaletheory=0;
+var qtetotaleinventory=0;
 $(document).ready(function(){
 
     var url = "/getdata/" + $("#idinventory").text();
@@ -84,7 +107,22 @@ $(document).ready(function(){
               });
 
       check.done(function(msg){
-        tt = msg;
+        //tt = msg;
+        for (var i=0;i<msg.length;i++){
+          tt.push({prodcode:msg[i].prodcode,
+                   prodname:msg[i].prodname,
+                   qtetheory:msg[i].qtetheory,
+                   qteinventory:msg[i].qteinventory,
+                   ecart:msg[i].qteinventory-msg[i].qtetheory,
+                   comment:msg[i].comment
+                 });
+          qtetotaletheory=qtetotaletheory+msg[i].qtetheory;
+          qtetotaleinventory=qtetotaleinventory+msg[i].qteinventory;
+        }
+        $("#qttheotot").text(qtetotaletheory);
+        $("#qtinvtot").text(qtetotaleinventory);
+        $("#ecarttot").text(qtetotaleinventory-qtetotaletheory);
+
 
         $("#jsGrid").jsGrid({
         // height: "450px",
@@ -109,19 +147,22 @@ $(document).ready(function(){
                 { name: "prodname", type: "text", title: "Nom du produit" , validate: "required", editing: false},
                 { name: "qtetheory", type: "number", title: "Quantité théorique" ,editing: false },
                 { name: "qteinventory", type: "number", title: "Quantité inventoriée" },
+                { name: "ecart", type: "number", title: "Ecart",editing: false },
                 { name: "comment", type: "text", title: "Commentaire"  },
                 { type: "control", deleteButton: false}
 
             ]
         });
 
-        $("#obj").val(JSON.stringify(tt));
-
+          $("#obj").val(JSON.stringify(tt));
           $("#jsGrid").jsGrid({
+
 
           onItemUpdated: function() {
           //console.log("row updated");
+          for (var i=0;i<tt.length;i++){tt[i].ecart=tt[i].qteinventory-tt[i].qtetheory;}
           $('#obj').val(JSON.stringify(tt));
+
           },
 
           onItemDeleted: function(arg) {
