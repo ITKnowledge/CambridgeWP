@@ -3,15 +3,26 @@
 	        <!-- page content -->
 	        <div class="right_col" role="main" style="min-height: 368px;">
 
+            <div class="row">
+                <ul class="stats-overview">
+                  <li>
+                    <span class="name"> Total Cash </span>
+                    <span class="value text-success">
+                      <%= totalcash.toFixed(2); %>
+                    </span>
 
+                  </li>
+                  <li>
+                    <span class="name"> Total TPE </span>
+                    <span class="value text-success"> <%= totaltpe.toFixed(2); %> </span>
+                  </li>
+                  <li>
+                    <span class="name"> Total Cheque </span>
+                    <span class="value text-success"> <%= totalcheque.toFixed(2); %> </span>
+                  </li>
 
-
-
-
-
-                <p>
-
-                </p>
+                </ul>
+            </div>
 
 
 
@@ -39,6 +50,8 @@
                 <tbody>
                    <% for(var i=0; i < patient.length; i++){ %>
                    <% for(var j=0; j < patient[i].visites.length; j++){ %>
+                   <% if( patient[i].visites[j].daterdv.substring(0,15) !== "" ){%>
+
                   <tr class="even pointer">
                     <td class="a-center ">
                       <input type="checkbox" class="flat" name="table_records">
@@ -53,13 +66,25 @@
                     <td class=" last"  align='right' width='200px;'>
                     </td>
                   </tr>
+                   <% } %>
                   <% } %>
                 <% } %>
                 </tbody>
               </table>
 
 
+
+
+
 	        </div>
+
+
+
+
+
+
+
+
 	        <!-- /page content -->
 
 <% include footer.ejs %>

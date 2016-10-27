@@ -1485,7 +1485,7 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
    });
  });
 /* Add new inventory width détail */
-    router.post('/addinventory', function(req, res){
+    router.post('/addinventory', isAuthenticated, function(req, res){
 
         var inventory = new Inventory();
         inventory.nameinventory = req.body.nameinventory;
@@ -1515,7 +1515,7 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
 
     });
 /* Save Detail inventory */
-router.post('/saveinventorydetail/:id', function(req, res){
+router.post('/saveinventorydetail/:id', isAuthenticated, function(req, res){
   	Inventory.findById(req.params.id, function(err, inventory){
       inventory.detail = JSON.parse(req.body.obj);
       inventory.update({
@@ -1625,7 +1625,7 @@ router.get('/detailinventory', isAuthenticated, function(req, res){
 
 
 /* load data jsgrid detail inventory */
-router.get('/getdata/:id', function(req, res){
+router.get('/getdata/:id', isAuthenticated, function(req, res){
   Inventory.findById(req.params.id , function(err, result){
         res.json(result.detail);
   });
@@ -2142,9 +2142,42 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
 router.get('/invoicereport', isAuthenticated, function(req, res){
 
-
+    var tab = [];
+    var tpe = 0;
+    var cheq = 0;
+    var cash = 0;
     Patient.find(function(err, result){
-        res.render('invoicereport', {user : req.user, patient: result});
+
+        for(i=0; i<result.length; i++){
+            for(j=0; j<result[i].visites.length; j++){
+
+
+                if(result[i].visites[j].modepaiement == "TPE"){
+
+                    tpe = tpe + ((result[i].visites[j].prix -  result[i].visites[j].discount)*1.20);
+
+                }else if(result[i].visites[j].modepaiement == "Chéque"){
+
+                    cheq = cheq + ((result[i].visites[j].prix -  result[i].visites[j].discount)*1.20);
+
+                }else if(result[i].visites[j].modepaiement == "Cash"){
+
+                    cash = cash + ((result[i].visites[j].prix -  result[i].visites[j].discount)*1.20);
+
+                }
+
+                tab.push({prix: result[i].visites[j].prix, mp: result[i].visites[j].modepaiement});
+
+
+            }
+        }
+
+        console.log(cash);
+        console.log(tpe);
+        console.log(cheq);
+
+//        res.json(tab);
+        res.render('invoicereport', {user : req.user, patient: result, totalcash: cash, totaltpe: tpe, totalcheque: cheq});
     });
 
 //
