@@ -14,7 +14,7 @@
           <div class="x_title">
     <h2>Liste des programmes <small>Gestion des programmes</small></h2>
       <div class="pull-right">
-        <a class="btn btn-success btn-md" href="/addprog" role="button" style="background-color: #d049bc;"><i class="fa fa-plus"></i>   Nouveau programme</a>
+        <a class="btn btn-success btn-md" href="/addprog" role="button" ><i class="fa fa-plus"></i>   Nouveau programme</a>
       </div>
 
 
@@ -61,7 +61,8 @@
 
         <td class=" last ">
           <div class="pull-right"><a class="btn btn-info btn-xs" href="/editprogone/<%= progs[i]._id %>" role="button"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer ce programme ?')) supprimer('/listprog/<%= progs[i]._id %>');" href="/listprog"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger btn-xs" href="/listprog/<%= progs[i]._id %>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ligne sélectionnée ？')" ><i class="fa fa-trash-o"></i></a>
+            <!-- <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer ce programme ?')) supprimer('/listprog/<%= progs[i]._id %>');" href="/listprog"><i class="fa fa-trash-o"></i></a> -->
         </div>
       </tr>
 

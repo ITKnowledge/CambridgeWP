@@ -458,15 +458,15 @@ router.post('/editprogone/:id', isAuthenticated, function(req, res){
 
 
 
-router.delete('/listprog/:prog_id', isAuthenticated, function(req, res){
+router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
 
   Prog.remove({
     _id: req.params.prog_id
   }, function(err, prog) {
     if (err)
       res.send(err);
-
-    res.json({ message: 'Prog successfully deleted!' });
+      res.redirect("/listprog");
+    // res.json({ message: 'Prog successfully deleted!' });
   });
 });
 
@@ -666,15 +666,15 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 
 
 
-	router.delete('/listpat/:patient_id', isAuthenticated, function(req, res){
+	router.get('/listpat/:patient_id', isAuthenticated, function(req, res){
 
 		Patient.remove({
 			_id: req.params.patient_id
 		}, function(err, patient) {
 			if (err)
 				res.send(err);
-
-		  res.json({ message: 'Parents successfully deleted!' });
+        res.redirect('/listpat');
+		  // res.json({ message: 'Parents successfully deleted!' });
 	  });
   });
 
@@ -1582,15 +1582,15 @@ router.post('/saveinventorydetail/:id', isAuthenticated, function(req, res){
        });
 
 /* Delete inventory */
-router.delete('/delinventory/:id', isAuthenticated, function(req, res){
+router.get('/delinventory/:id', isAuthenticated, function(req, res){
 
   Inventory.remove({
     _id: req.params.id
   }, function(err, result) {
     if (err)
       res.send(err);
-
-    res.json({ message: 'Inventory successfully deleted!' });
+      res.redirect("/listinventory");
+    // res.json({ message: 'Inventory successfully deleted!' });
   });
 
 });
@@ -1635,9 +1635,9 @@ router.get('/getdata/:id', isAuthenticated, function(req, res){
 		req.logout();
 		res.redirect('/');
 	});
-	
-    
-    
+
+
+
     return router;
 }
 
@@ -1730,15 +1730,15 @@ var old_providername=providers.raisonsociale;
    });
 
 /*Delete proviprovidersprovidersder*/
-router.delete('/listproviders/:provider_id', isAuthenticated, function(req, res){
-
+router.get('/listproviders/:provider_id', isAuthenticated, function(req, res){
   Provider.remove({
     _id: req.params.provider_id
   }, function(err, provider) {
     if (err)
       res.send(err);
 
-    res.json({ message: 'Provider successfully deleted!' });
+    // res.json({ message: 'Provider successfully deleted!' });
+      res.redirect("/listproviders");
   });
 });
 /*******DEPOTS************/
@@ -1798,15 +1798,15 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
 
    /*Delete depot*/
-   router.delete('/listdepots/:depot_id', isAuthenticated, function(req, res){
+   router.get('/listdepots/:depot_id', isAuthenticated, function(req, res){
 
      Depot.remove({
        _id: req.params.depot_id
      }, function(err, depot) {
        if (err)
          res.send(err);
-
-       res.json({ message: 'Depot successfully deleted!' });
+         res.redirect("/listdepots");
+      //  res.json({ message: 'Depot successfully deleted!' });
      });
    });
 /* end DEPOT***************************************/
@@ -2035,15 +2035,15 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
       });
 
       /*Delete prod*/
-      router.delete('/listprod/:prod_id', isAuthenticated, function(req, res){
+      router.get('/listprod/:prod_id', isAuthenticated, function(req, res){
 
         Product.remove({
           _id: req.params.prod_id
         }, function(err, prod) {
           if (err)
             res.send(err);
-
-          res.json({ message: 'Product successfully deleted!' });
+            res.redirect('/listprod');
+          // res.json({ message: 'Product successfully deleted!' });
         });
       });
 

@@ -90,7 +90,8 @@
           <td class=" last" align='right' width='120px;'>
 
             <a class="btn btn-info btn-xs" href="/editprod/<%= prods[i]._id %>" role="button"><i class="fa fa-pencil"></i></a>
-            <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listprod/<%= prods[i]._id%>');" href="/listprod"><i class="fa fa-trash-o"></i></a>
+            <a class="btn btn-danger btn-xs" href="/listprod/<%= prods[i]._id%>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ligne sélectionnée ？')" ><i class="fa fa-trash-o"></i></a>
+            <!-- <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listprod/<%= prods[i]._id%>');" href="/listprod"><i class="fa fa-trash-o"></i></a> -->
           </td>
 
 

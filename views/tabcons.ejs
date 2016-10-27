@@ -78,7 +78,7 @@
               <!-- test submit deco -->
                     <div class="input-group">
                       <select class="form-control" id="modepaiement" name="modepaiement">
-                                      <option>Mode de paiement</option>
+                                      <option></option>
                                       <option <%= (patient[i].visites[j].modepaiement == 'TPE')?'selected':''%>>TPE</option>
                                       <option <%= (patient[i].visites[j].modepaiement == 'Chéque')?'selected':''%>>Chéque</option>
                                       <option <%= (patient[i].visites[j].modepaiement == 'Cash')?'selected':''%>>Cash</option>
@@ -97,7 +97,8 @@
         </td>
         <td class=" last">
           <div class="pull-right">
-          <a class="btn btn-info btn-xs" href="/invoice/?id=<%= patient[i]._id %>&vid=<%= patient[i].visites[j]._id %>&vmp=<%= patient[i].visites[j].modepaiement%>" role="button"><i class="fa fa-print"></i> Impression </a><a href="/cloture/<%= patient[i]._id %>/?vid=<%= patient[i].visites[j]._id %>" id="cloture" class="btn btn-danger btn-xs" role="button"><i class="fa fa-close"></i> Cloture </a>
+          <a class="btn btn-primary btn-xs" href="/invoice/?id=<%= patient[i]._id %>&vid=<%= patient[i].visites[j]._id %>&vmp=<%= patient[i].visites[j].modepaiement%>" role="button"><i class="fa fa-print"></i></a>
+          <a href="/cloture/<%= patient[i]._id %>/?vid=<%= patient[i].visites[j]._id %>" id="cloture" class="btn btn-danger btn-xs" role="button" onclick="return confirm('Êtes-vous sûr de vouloir clôturer la facture sélectionnée ？')"><i class="fa fa-unlock"></i></a>
           </div>
           <input type="hidden" id="buffer-discount" value="/addremise/<%= patient[i]._id %>/?vid=<%= patient[i].visites[j]._id %>">
           <!--

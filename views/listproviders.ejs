@@ -62,8 +62,8 @@
                     <td class=" "><%= prov[i].adresse %></td>
                     <td class=" "><%= prov[i].site %></td>
                     <td class=" "><%= prov[i].autre %></td>
-                 <td class=" last"  align='right' width='120px;'><a class="btn btn-info btn-xs" href="/editprovider/<%= prov[i]._id %>" role="button"><i class="fa fa-pencil"></i></a>
-                   <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listproviders/<%= prov[i]._id%>');" href="/listproviders"><i class="fa fa-trash-o"></i></a>
+                    <td class=" last"  align='right' width='120px;'><a class="btn btn-info btn-xs" href="/editprovider/<%= prov[i]._id %>" role="button"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-danger btn-xs" href="/listproviders/<%= prov[i]._id%>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ligne sélectionnée ？')" ><i class="fa fa-trash-o"></i></a>
                     <!--      <a onclick=supprimer('/listpat/<%= prov[i]._id%>') href="/listpat"> Delete </a> -->
                     </td>
                   </tr>
