@@ -1486,14 +1486,14 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
  });
 /* Add new inventory width détail */
     router.post('/addinventory', isAuthenticated, function(req, res){
-
+      var depot=req.body.depotname;
         var inventory = new Inventory();
         inventory.nameinventory = req.body.nameinventory;
         inventory.depotname = req.body.depotname;
         inventory.dateinventory = req.body.dateinventory;
 
         Product.find(function(err, prod){
-            Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
+            Depotinout.aggregate([{ "$match": { "depotname": depot } },{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
 
                 for(i=0; i < prod.length; i++){
                     for(j=0; j < stock.length; j++){
