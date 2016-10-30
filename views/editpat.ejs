@@ -38,7 +38,7 @@
 
 
               <div class="col-md-6 col-sm-6 col-xs-12 item form-group">
-                  <input id="ville" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" name="ville" placeholder="Ville" required="required" type="text" value="<%= patients.ville %>">
+                  <input id="ville" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" name="ville" placeholder="Ville"   type="text" value="<%= patients.ville %>">
               </div>
 
               <div class="col-md-6 col-sm-6 col-xs-12 item form-group">
@@ -86,7 +86,7 @@
               </div>
               <div class="item form-group">
                 <div class="col-md-6 col-sm-6 colproduits-xs-12">
-                  <textarea id="textarea" required="required" name="textarea" class="form-control col-md-7 col-xs-12" placeholder="Commentaire" value=""><%= patients.textarea %></textarea>
+                  <textarea id="textarea"  name="textarea" class="form-control col-md-7 col-xs-12" placeholder="Commentaire" value=""><%= patients.textarea %></textarea>
                 </div>
               </div>
 
@@ -164,7 +164,7 @@
                   <button type="submit" class="btn btn-primary">Cancel</button>
                 -->
                   <input type="hidden" name="_method" value="PUT">
-                  <button id="send" type="submit" class="btn btn-success">Mise à jour</button>
+                  <button id="send" type="submit" class="btn btn-primary">Mise à jour</button>
                   <button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listpat'">Liste des patients</button>
                 </div>
               </div>
