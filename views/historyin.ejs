@@ -1,7 +1,7 @@
 <% include header.ejs %>
 
 <!-- page content -->
-<script>
+<!-- <script>
 function ConvertToUnit(qte, unittype){
 
     if (unittype == "Boîte"){
@@ -12,7 +12,7 @@ function ConvertToUnit(qte, unittype){
       return Number(qte);
     }
 }
-</script>
+</script> -->
 
 <div class="right_col" role="main">
   <div class="">
@@ -37,9 +37,9 @@ function ConvertToUnit(qte, unittype){
           <div class="x_content">
 
 <div class="table-responsive">
-<!--    <table class="table table-striped jambo_table bulk_action"> -->
+<!--    <table class="table table-striped jambo_table bulk_action"> datatable-buttons-->
   <!-- <table id="datatable-checkbox" class="table table-striped table-bordered dataTable no-footer" border="1" cellpadding="1"> -->
-  <table id="datatable-checkbox" class="table table-striped table-bordered" border="1" cellpadding="1">
+  <table id="datatable-buttons" class="table table-striped table-bordered" border="1" cellpadding="1">
 
     <thead>
       <tr class="headings">
@@ -58,7 +58,20 @@ function ConvertToUnit(qte, unittype){
     </thead>
     <tbody>
 
-      <% for (var i = 0; i < stockin.length; i++) {%>
+      <% var str="";for (var i = 0; i < stockin.length; i++) {
+
+          switch (stockin[i].produnite)
+                  {
+                     case "Boîte": str=stockin[i].produnite + " (" + stockin[i].prodqteinit  * 21  + " Unités)";
+                     break;
+
+                     case "Caisse": str=stockin[i].produnite + " (" +  stockin[i].prodqteinit  * 6 * 21  + " Unités)";
+                     break;
+
+                     default: str="Unités";
+                  }
+
+        %>
 
 <tr class="even pointer">
 
@@ -66,12 +79,12 @@ function ConvertToUnit(qte, unittype){
   <td class=" "><%= stockin[i].prodcode %></td>
   <td class=" "><%= stockin[i].prodname %></td>
   <td class=" "><%= stockin[i].dateachat %></td>
-
+  <!-- <script> if ("<%= stockin[i].produnite %>"!=="Unité") {
+  // document.write("(" + ConvertToUnit(<%= stockin[i].prodqteinit %>, "<%= stockin[i].produnite %>")+ " Unités)" );  }
+  var str = "(" + ConvertToUnit(<%= stockin[i].prodqteinit %>, "<%= stockin[i].produnite %>")+ " Unités)" ;  }
+  </script> -->
   <td class=" " style="color:#0000FF">
-    <%= stockin[i].prodqteinit %> <%= stockin[i].produnite %>
-    <script> if ("<%= stockin[i].produnite %>"!=="Unité") {
-    document.write("(" + ConvertToUnit(<%= stockin[i].prodqteinit %>, "<%= stockin[i].produnite %>")+ " Unités)" );  }
-    </script>
+    <%= stockin[i].prodqteinit %>  <%= str %>
   </td>
   <td class=" " ><%= stockin[i].motifin %></td>
   <td class=" "  align="right"><b><%= stockin[i].prixachat.toFixed(2) %></td><!--quantité restante en stock-->
