@@ -1,0 +1,74 @@
+<% include header.ejs %>
+  <div class="right_col" role="main">
+    <div class="page-title">
+    <div class="title_left">
+      <h3></h3>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <span class="section">Saisie entree caisse</span>
+
+      <form class="form-horizontal form-label-left input_mask" novalidate action="/caisse" method="post">
+
+
+         <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">datein : <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input class="form-control col-md-7 col-xs-12"   name="datein" placeholder="Date in" required="required" type="text" >
+             </div>
+         </div>
+
+         <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">motif : <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input class="form-control col-md-7 col-xs-12"   name="motif" placeholder="Motif" required="required" type="text" >
+             </div>
+         </div>
+
+         <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">modepaiment : <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input class="form-control col-md-7 col-xs-12"   name="modepaiement" placeholder="Mode de Paiement" required="required" type="text" >
+             </div>
+         </div>
+
+         <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">montant : <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input class="form-control col-md-7 col-xs-12"   name="montant" placeholder="Montant" required="required" type="text" >
+             </div>
+         </div>
+
+
+
+
+
+        <div class="clearfix"></div>
+        <div class="ln_solid"></div>
+        <div class="form-group" align="right">
+          <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+            <!--
+            <button type="submit" class="btn btn-primary">Cancel</button>
+          -->
+            <button id="send" type="submit" class="btn btn-primary">Enregistrer</button>
+            <button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/caisse'">Caisse</button>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<% include footer.ejs %>
