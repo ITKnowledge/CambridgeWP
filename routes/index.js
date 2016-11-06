@@ -2230,11 +2230,58 @@ router.get('/invoicereport', isAuthenticated, function(req, res){
 // Caisse
 router.get('/caisse', isAuthenticated, function(req, res){
 
-  Caisse.find(function(err, result){
 
-    res.render('caisse', {user: req.user, caisse: result});
+  if(req.query.startdate == undefined || req.query.enddate == undefined){
+
+    var startdate = new Date();
+    var enddate = new Date();
+
+  }else{
+    var startdate = req.query.startdate; //"2016-08-01T00:00:00.000Z";
+    var enddate = req.query.enddate;   //"2016-11-31T23:59:59.999Z";
+  }
+
+  var tab = [];
+  var tpe = 0;
+  var cheq = 0;
+  var cash = 0;
+
+
+
+
+  Caisse.find({"datein" : { $gte : new Date(startdate).toISOString() , $lte : new Date(enddate).toISOString() }}, function(err, result){
+
+    for(i=0; i<result.length; i++){
+
+
+            if(result[i].modepaiement == "TPE"){
+
+                tpe = tpe + result[i].montant;
+
+            }else if(result[i].modepaiement == "Chéque"){
+
+                cheq = cheq + result[i].montant;
+
+            }else if(result[i].modepaiement == "Cash"){
+
+                cash = cash + result[i].montant;
+
+            }
+
+            tab.push({prix: result[i].prix, mp: result[i].modepaiement});
+
+
+
+
+    }
+
+
+    console.log(result);
+
+    res.render('caisse', {user: req.user, caisse: result, totalcash: cash, totaltpe: tpe, totalcheque: cheq});
 
   });
+
 
 });
 
@@ -2260,6 +2307,27 @@ router.post('/caisse', isAuthenticated, function(req, res){
       res.redirect('/caisse');
 
   })
+
+});
+
+
+router.get('/caisses', isAuthenticated, function(req, res){
+
+
+  var startdate = req.query.startdate; //"2016-08-01T00:00:00.000Z";
+  var enddate = req.query.enddate;   //"2016-11-31T23:59:59.999Z";
+
+
+  Caisse.find({"datein" : { $gte : new Date(startdate).toISOString() , $lte : new Date(enddate).toISOString() }}, function(err, result){
+
+    res.json(result);
+
+  });
+
+  // new ISODate("2016-10-10T00:15:31Z")
+  // new ISODate("2016-11-10T23:59:59Z")
+
+  // res.send("OK OK");
 
 });
 

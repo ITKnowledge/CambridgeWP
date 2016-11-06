@@ -363,7 +363,7 @@
         $('#reservation').daterangepicker(null, function(start, end, label) {
           console.log(start.toISOString(), end.toISOString(), label);
 					console.log("OK OK");
-					window.location.href = '/invoicereport/?daterdv=' + "Fri Sep 16 2016";
+					window.location.href = '/invoicereport/?startdate=' + start.toISOString() + "&enddate=" + end.toISOString();
         });
       });
     </script>
