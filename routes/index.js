@@ -2233,8 +2233,12 @@ router.get('/caisse', isAuthenticated, function(req, res){
 
   if(req.query.startdate == undefined || req.query.enddate == undefined){
 
-    var startdate = new Date();
-    var enddate = new Date();
+
+    var startdate = new Date(Date().substring(0,15) + " 00:00:00");
+    var enddate = new Date(Date().substring(0,15) + " 23:59:59");
+
+    console.log(startdate);
+    console.log(enddate);
 
   }else{
     var startdate = req.query.startdate; //"2016-08-01T00:00:00.000Z";
@@ -2275,8 +2279,6 @@ router.get('/caisse', isAuthenticated, function(req, res){
 
     }
 
-
-    console.log(result);
 
     res.render('caisse', {user: req.user, caisse: result, totalcash: cash, totaltpe: tpe, totalcheque: cheq});
 
