@@ -500,7 +500,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
             console.log('GET Error: There was a problem retrieving: ' + err);
             res.redirect('/home');
           }else{
-            // console.log(patients.visites);
+            console.log(facture);
             console.log(facture.prix);
             console.log(facture.discount);
             console.log(facture.modepaiement);
