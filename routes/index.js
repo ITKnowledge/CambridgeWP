@@ -2,7 +2,7 @@ var express = require('express');
 var bCrypt = require('bcrypt-nodejs');
 var router = express.Router();
 
-
+var Caisse = require('../models/caisse');
 var Patient = require('../models/patient');
 var Provider = require('../models/provider');
 var Events = require('../models/events');
@@ -13,6 +13,7 @@ var Depot = require('../models/depot');
 var Users = require('../models/user');
 var Depotinout = require('../models/depotinout');
 var Inventory = require('../models/inventory');
+
 
 var Getdate = function(d){
    var out = d.substring(0, 10).split("-",3);
@@ -225,7 +226,7 @@ module.exports = function(passport){
               var discount = patient.visites[i].discount;
               }
             }
-          var totalr = (total - ((total * discount)/100));
+          var  totalr = (total - ((total * discount)/100));
 
           if (err) {
               console.log('GET Error: There was a problem retrieving: ' + err);
@@ -476,6 +477,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
 
     var vid = req.query.vid;
     var pid = req.query.pid;
+    var facture = {};
 
     Patient.findById(req.params.id,function(err, patients){
 
@@ -485,8 +487,12 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
                 var tt = patients.visites[i];
                 tt.clotured = true;
                 patients.visites[i] = tt;
+                facture = tt;
               }
         }
+
+
+
         patients.update({
           visites: patients.visites
         },function (err, patientsID){
@@ -494,6 +500,25 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
             console.log('GET Error: There was a problem retrieving: ' + err);
             res.redirect('/home');
           }else{
+            console.log(facture);
+            console.log(facture.prix);
+            console.log(facture.discount);
+            console.log(facture.modepaiement);
+            console.log(facture.daterdv);
+            console.log(facture.factnum);
+
+            var caisse = new Caisse();
+
+            caisse.datein = new Date().toISOString();
+            caisse.motif = facture.factnum;
+            caisse.modepaiement = facture.modepaiement;
+            caisse.montant = (facture.prix - ((facture.prix * facture.discount)/100)) * 1.20;
+
+            caisse.save(function(err) {
+                if (err)
+                    res.send(err);
+            })
+
             res.redirect("/tabcons");
           }
         })
@@ -2066,6 +2091,8 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
       });
 
+
+
       router.post('/stockinbk', isAuthenticated, function(req, res){
         var datesys = new Date();
          var tt = JSON.parse(req.body.obj);
@@ -2161,23 +2188,26 @@ router.get('/invoicereport', isAuthenticated, function(req, res){
     var tpe = 0;
     var cheq = 0;
     var cash = 0;
+    var daterdv = req.query.daterdv;
     Patient.find(function(err, result){
 
         for(i=0; i<result.length; i++){
             for(j=0; j<result[i].visites.length; j++){
 
+                if(result[i].visites[j].daterdv.substring(0,15) == daterdv){
+                  console.log(daterdv);
 
                 if(result[i].visites[j].modepaiement == "TPE"){
 
-                    tpe = tpe + ((result[i].visites[j].prix -  result[i].visites[j].discount)*1.20);
+                    tpe = tpe + ((result[i].visites[j].prix -  ((result[i].visites[j].prix * result[i].visites[j].discount)/100))*1.20);
 
                 }else if(result[i].visites[j].modepaiement == "Chéque"){
 
-                    cheq = cheq + ((result[i].visites[j].prix -  result[i].visites[j].discount)*1.20);
+                    cheq = cheq + ((result[i].visites[j].prix -  ((result[i].visites[j].prix * result[i].visites[j].discount)/100))*1.20);
 
                 }else if(result[i].visites[j].modepaiement == "Cash"){
 
-                    cash = cash + ((result[i].visites[j].prix -  result[i].visites[j].discount)*1.20);
+                    cash = cash + ((result[i].visites[j].prix -  ((result[i].visites[j].prix * result[i].visites[j].discount)/100))*1.20);
 
                 }
 
@@ -2186,14 +2216,148 @@ router.get('/invoicereport', isAuthenticated, function(req, res){
 
             }
         }
+        }
+        // console.log(cash);
+        // console.log(tpe);
+        // console.log(cheq);
 
-        console.log(cash);
-        console.log(tpe);
-        console.log(cheq);
 
 //        res.json(tab);
-        res.render('invoicereport', {user : req.user, patient: result, totalcash: cash, totaltpe: tpe, totalcheque: cheq});
+        res.render('invoicereport', {user : req.user, patient: result, totalcash: cash, totaltpe: tpe, totalcheque: cheq, daterdv: daterdv});
     });
 
 //
+});
+
+
+// db.getCollection('caisses').aggregate([
+//                      { $match: { datein: "Wed Aug 17 2016 04:18:53 GMT-0400 (EDT)" } },
+//                      { $group: { _id: "$modepaiement", total: { $sum: "$montant" } } },
+//                      { $sort: { total: -1 } }
+//                    ])
+
+
+
+
+
+
+
+// Caisse
+router.get('/caisse', isAuthenticated, function(req, res){
+
+
+  if(req.query.startdate == undefined || req.query.enddate == undefined){
+
+
+    var startdate = new Date(Date().substring(0,15) + " 00:00:00");
+    var enddate = new Date(Date().substring(0,15) + " 23:59:59");
+
+    console.log(startdate);
+    console.log(enddate);
+
+  }else{
+    var startdate = req.query.startdate; //"2016-08-01T00:00:00.000Z";
+    var enddate = req.query.enddate;   //"2016-11-31T23:59:59.999Z";
+  }
+
+  var tab = [];
+  var tpe = 0;
+  var cheq = 0;
+  var cash = 0;
+
+
+
+
+  Caisse.find({"datein" : { $gte : new Date(startdate).toISOString() , $lte : new Date(enddate).toISOString() }}, function(err, result){
+
+    for(i=0; i<result.length; i++){
+
+
+            if(result[i].modepaiement == "TPE"){
+
+                tpe = tpe + result[i].montant;
+
+            }else if(result[i].modepaiement == "Chéque"){
+
+                cheq = cheq + result[i].montant;
+
+            }else if(result[i].modepaiement == "Cash"){
+
+                cash = cash + result[i].montant;
+
+            }
+
+            tab.push({prix: result[i].prix, mp: result[i].modepaiement});
+
+
+
+
+    }
+
+
+    res.render('caisse', {user: req.user, caisse: result, totalcash: cash, totaltpe: tpe, totalcheque: cheq});
+
+  });
+
+
+});
+
+router.get('/caissein', isAuthenticated, function(req, res){
+
+    res.render('caissein', {user: req.user});
+
+});
+
+router.post('/caisse', isAuthenticated, function(req, res){
+
+  var caisse = new Caisse();
+
+  caisse.datein = new date().toISOString();
+  caisse.motif = req.body.motif;
+  caisse.modepaiement = req.body.modepaiement;
+  caisse.montant = Number(req.body.montant);
+
+  caisse.save(function(err) {
+      if (err)
+          res.send(err);
+
+      res.redirect('/caisse');
+
+  })
+
+});
+
+
+router.get('/caisses', isAuthenticated, function(req, res){
+
+
+  var startdate = req.query.startdate; //"2016-08-01T00:00:00.000Z";
+  var enddate = req.query.enddate;   //"2016-11-31T23:59:59.999Z";
+
+
+  Caisse.find({"datein" : { $gte : new Date(startdate).toISOString() , $lte : new Date(enddate).toISOString() }}, function(err, result){
+
+    res.json(result);
+
+  });
+
+  // new ISODate("2016-10-10T00:15:31Z")
+  // new ISODate("2016-11-10T23:59:59Z")
+
+  // res.send("OK OK");
+
+});
+
+
+router.get('/caisse/:id', isAuthenticated, function(req, res){
+
+  Caisse.remove({
+    _id: req.params.id
+  }, function(err, caisse) {
+    if (err)
+      res.send(err);
+
+    res.redirect('/caisse');
+  });
+
 });
