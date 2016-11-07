@@ -98,7 +98,7 @@
                     <th>
                       <input type="checkbox" id="check-all" class="flat">
                     </th>
-                    <th class="column-title">id </th>
+                    <!-- <th class="column-title">id </th> -->
                     <th class="column-title">date</th>
                     <th class="column-title">Motif </th>
                     <th class="column-title">Mode de Paiement</th>
@@ -117,8 +117,8 @@
                     <td class="a-center ">
                       <input type="checkbox" class="flat" name="table_records">
                     </td>
-                    <td class=" "><%= caisse[i]._id %></td>
-                    <td class=" "><%= caisse[i].datein %></td>
+                    <!-- <td class=" "><%= caisse[i]._id %></td> -->
+                    <td class=" "><%= caisse[i].datein.toISOString().substring(0,10).split("-").reverse().join("/") %> <%= caisse[i].datein.getHours() + "H:" + caisse[i].datein.getMinutes()  %></td>
                     <td class=" "><%= caisse[i].motif %></td>
                     <td class=" "><%= caisse[i].modepaiement %></td>
                     <td class=" "><%= caisse[i].montant.toFixed(2) %></td>

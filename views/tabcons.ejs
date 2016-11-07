@@ -98,7 +98,13 @@
         <td class=" last">
           <div class="pull-right">
           <a class="btn btn-primary btn-xs" href="/invoice/?id=<%= patient[i]._id %>&vid=<%= patient[i].visites[j]._id %>&vmp=<%= patient[i].visites[j].modepaiement%>" role="button"><i class="fa fa-print"></i></a>
-          <a href="/cloture/<%= patient[i]._id %>/?vid=<%= patient[i].visites[j]._id %>" id="cloture" class="btn btn-danger btn-xs" role="button" onclick="return confirm('Êtes-vous sûr de vouloir clôturer la facture sélectionnée ？')"><i class="fa fa-unlock"></i></a>
+
+          <% if(patient[i].visites[j].modepaiement == '') {%>
+            <a id="cloture" class="btn btn-danger btn-xs" role="button" onclick="alert('Veuillez saisir le Mode de Paiement')"><i class="fa fa-unlock"></i></a>
+          <%}else{%>
+            <a href="/cloture/<%= patient[i]._id %>/?vid=<%= patient[i].visites[j]._id %>" id="cloture" class="btn btn-danger btn-xs" role="button" onclick="return confirm('Êtes-vous sûr de vouloir clôturer la facture sélectionnée ？')"><i class="fa fa-unlock"></i></a>
+          <%}%>
+
           </div>
           <input type="hidden" id="buffer-discount" value="/addremise/<%= patient[i]._id %>/?vid=<%= patient[i].visites[j]._id %>">
           <!--
@@ -135,7 +141,29 @@
 <!-- jquery.inputmask -->
 <script>
   $(document).ready(function() {
+
+
+
     $(":input").inputmask();
+
+
+    // $("#cloture").click(function(){
+    //
+    //
+    //   if($("#modepaiement").val() == ''){
+    //
+    //
+    //     alert("Priere de saisir le Mode de paiement");
+    //     $("#cloture").attr("href", "/tabcons");
+    //
+    //   }else{
+    //
+    //     return confirm('Êtes-vous sûr de vouloir clôturer la facture sélectionnée ？');
+    //   }
+    //
+    //
+    //
+    // });
 
      $('#modepaiement').change(function() {
 
