@@ -2111,8 +2111,13 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
 
       router.get('/historyin', isAuthenticated, function(req, res){
+        var now = new Date();
+        var str = now.getUTCDate()  + "/" +
+          (now.getUTCMonth() + 1).toString() +
+          "/" + now.getUTCFullYear().toString() + " " + now.getUTCHours() +
+          ":" + now.getUTCMinutes();
            Depotinout.find(function(err, result){
-            res.render('historyin', {user: req.user, stockin: result});
+            res.render('historyin', {user: req.user, stockin: result,date:str});
             //res.json(result);
           });
       });
@@ -2126,16 +2131,26 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
       // motifout: String,
       // factnum:String
       router.get('/historyout', isAuthenticated, function(req, res){
+        var now = new Date();
+        var str = now.getUTCDate()  + "/" +
+          (now.getUTCMonth() + 1).toString() +
+          "/" + now.getUTCFullYear().toString() + " " + now.getUTCHours() +
+          ":" + now.getUTCMinutes();
            Depotinout.find(function(err, result){
-            res.render('historyout', {user: req.user, stockout: result});
+            res.render('historyout', {user: req.user, stockout: result,date:str});
             //res.json(result);
           });
       });
 
       router.get('/listinventory', isAuthenticated, function(req, res){
-
+        // var dt = new Date().toISOString();
+        var now = new Date();
+        var str = now.getUTCDate()  + "/" +
+          (now.getUTCMonth() + 1).toString() +
+          "/" + now.getUTCFullYear().toString() + " " + now.getUTCHours() +
+          ":" + now.getUTCMinutes();
         Inventory.find(function (err, inventorys){
-        res.render('listinventory', { user: req.user, text: 'Liste des inventaires', inventory: inventorys});
+        res.render('listinventory', { user: req.user, text: 'Liste des inventaires', inventory: inventorys, date: str});
         });
       });
 

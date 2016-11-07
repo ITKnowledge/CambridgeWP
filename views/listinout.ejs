@@ -51,6 +51,7 @@ function ConvertToUnit(qte, unittype){
         <th class="column-title">Total Sortie(U)</th>
         <th class="column-title">Stock actuel(U)</th>
         <th class="column-title">Date expiration</th>
+        <th class="column-title">Prix d'achat</th>
         <th class="column-title">Date Saisie</th>
 
 
@@ -89,6 +90,7 @@ function ConvertToUnit(qte, unittype){
   </td>--><!--quantité totale sortie-->
   <td class=" " style="color:#04B431" align="center"><b><%= inout[i].prodqtemv %></td><!--quantité restante en stock-->
   <td class=" "><%= inout[i].dateexp  %></td>
+  <td class=" " align="right"><%= inout[i].prixachat.toFixed(2) %></td>
   <td class=" "><%= inout[i].datein %></td>
 
 <td class=" last"  align='right' width='200px;'>
