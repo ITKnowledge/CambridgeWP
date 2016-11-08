@@ -253,6 +253,7 @@ module.exports = function(passport){
              modepaiement: req.query.vmp,
              date: d.substring(0,10).split("-").reverse().join("/")
           });
+          logCambridge(req.user.username,"Affichage de la facture N°:" + factnum,"Show");
         }
 
           });
@@ -298,6 +299,7 @@ module.exports = function(passport){
     var datenow =  new Date();
     var dtnow = datenow.toISOString();
     res.render('todayevents', { user: req.user, text: 'Tableau des RDVs', events: events, datenow: dtnow});
+
     });
 
   });
@@ -310,6 +312,7 @@ module.exports = function(passport){
 
 		Patient.find(function (err, patient){
 		res.render('tabcons', { user: req.user, text: 'Tableau des consultations', patient: patient});
+    logCambridge(req.user.username,"Consultation de la liste des factures","Show");
 		});
   });
 
@@ -335,6 +338,7 @@ module.exports = function(passport){
           products: product,
           progs: prog
   		 });
+       logCambridge(req.user.username,"Consultation de la page visite","Consultation");
   		}
 
      });
@@ -402,6 +406,7 @@ module.exports = function(passport){
                 res.redirect('/home');
               }else{
                 res.redirect("/viewpat/" + patients._id);
+               
               }
             });
             //res.render('visite', { user: req.user, patients: patients});
@@ -422,6 +427,7 @@ router.get('/listprog', isAuthenticated, function(req, res){
   Prog.find(function(err, prog){
 
     res.render('listprog', {user: req.user, progs: prog});
+     logCambridge(req.user.username,"Consultation de la page liste des programmes.","Consultation");
 
   });
 
@@ -546,9 +552,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
     var vid = req.query.vid;
     var pid = req.query.pid;
     var discount = req.query.discount;
-
-
-    console.log(discount);
+  // console.log(discount);
 
     Patient.findById(req.params.id,function(err, patients){
 
@@ -568,6 +572,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
             res.redirect('/home');
           }else{
             res.redirect("/tabcons");
+
           }
         })
 
@@ -583,7 +588,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
     var discount = req.body.discount.match(/\d+/)[0];
 
 
-    console.log(discount);
+    // console.log(discount);
 
     Patient.findById(req.params.id,function(err, patients){
 
@@ -603,6 +608,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
             res.redirect('/home');
           }else{
             res.redirect("/tabcons");
+              logCambridge(req.user.username,"Mise à jour de la remise. PatientID:" + req.params.id + " VisiteID: " + vid + " Valeur de la remise: " + discount,"Update");
           }
         })
 
@@ -634,6 +640,7 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
            res.redirect('/home');
          }else{
            res.redirect("/tabcons");
+           logCambridge(req.user.username,"Mise à jour de la remise. PatientID:" + req.params.id + " VisiteID: " + vid + " Mode de paiement: " + mp,"Update");
          }
        })
 
@@ -655,6 +662,7 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 	 }
 
  	 res.render('addpat', { user: req.user, nom: req.query.nom, prenom: req.query.prenom, phone: req.query.phone});
+   logCambridge(req.user.username,"Consultation de la page nouveau patient.","Consultation");
   });
 
 	router.post('/addpat', isAuthenticated, function(req, res){
@@ -688,9 +696,12 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 
 		    patient.save(function(err) {
 		        if (err)
-		            res.send(err);
+		            {res.send(err);}
+else {
+  logCambridge(req.user.username,"Enregistrer un nouveau patient.","insert");
+  res.redirect('/listpat');
+}
 
-						res.redirect('/listpat');
 		    });
   });
 /*show lispat*/
@@ -698,6 +709,7 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 
 		    Patient.find(function (err, patient){
 		    res.render('listpat', { user: req.user, patient: patient});
+        logCambridge(req.user.username,"Consultation de la liste des patients.","Show");
 		  });
   });
 
@@ -869,6 +881,7 @@ logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient
 
 	router.get('/listrdv', isAuthenticated, function(req, res){
    res.render('listrdv', { user: req.user, text: 'Listes des RDVs'});
+   logCambridge(req.user.username,"Consultation de la liste des RDVs.","Show");
   });
 
   router.get('/events', isAuthenticated, function(req, res){
@@ -1113,6 +1126,7 @@ logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient
   router.get('/listsessions', isAuthenticated, function(req, res){
       console.log(req.session);
       res.render('listsessions', {user: req.user, session: req.session.passport});
+      logCambridge(req.user.username,"Consultation de la liste des sessions.","Show");
   });
 
 
@@ -1221,6 +1235,7 @@ logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient
    Product.find(function (err, prod){
      Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
         res.render('listprod', {user: req.user, prods: prod, stock: stock});
+        logCambridge(req.user.username,"Consultation de la liste des produits.","Show");
      }));
 
  });
@@ -1581,7 +1596,8 @@ router.post('/saveinventorydetail/:id', isAuthenticated, function(req, res){
                       logCambridge(req.user.username,"Mise à jour du détail inventaire ID:" + req.params.id + "   avec succès","Update");
                     res.redirect('/detailinventory/' + req.params.id);
                   }
-                })
+                });
+
            });
 
 //    inventory.findById(req.params.id, function(err, inventorydetail){
@@ -1704,6 +1720,7 @@ router.get('/listproviders', isAuthenticated, function(req, res){
 
   Provider.find(function (err, provider){
   res.render('listproviders', { user: req.user, text: 'Tableau des consultations', prov: provider});
+  logCambridge(req.user.username,"Consultation de la liste des fournisseurs","Show");
   });
 });
 /*show new provider*/
@@ -1728,7 +1745,7 @@ router.post('/addprov', isAuthenticated, function(req, res){
           if (err)
               {res.send(err);}
           else {
-            logCambridge(req.user.username,"Ajout fournisseur :" + req.body.raisonsociale + "   avec succès","Insert");
+            logCambridge(req.user.username,"Ajout du nouveau fournisseur :" + req.body.raisonsociale + "   avec succès","Insert");
             res.redirect('/listproviders');
           }
 
@@ -1806,6 +1823,7 @@ router.get('/listdepots', isAuthenticated, function(req, res){
 
   Depot.find(function (err, depots){
   res.render('listdepots', { user: req.user, text: 'Tableau des dépôts', depot: depots});
+  logCambridge(req.user.username,"Consultation de la liste des dépôts","Show");
   });
 });
 
@@ -1937,6 +1955,7 @@ logCambridge(req.user.username,"Supression dépôt ID: " + req.params.depot_id +
 
         Users.find(function(err,users){
           res.render('userlist', {user: req.user, users: users});
+          logCambridge(req.user.username,"Consultation de la liste des utilisateurs","Show");
         });
 
 
@@ -1979,6 +1998,7 @@ logCambridge(req.user.username,"Supression dépôt ID: " + req.params.depot_id +
               console.log('GET Error: There was a problem retrieving: ' + err);
             }else{
               res.redirect("/userlist");
+
             }
           })
         }else{
@@ -2002,7 +2022,7 @@ logCambridge(req.user.username,"Supression dépôt ID: " + req.params.depot_id +
 
 
         });
-
+logCambridge(req.user.username,"Mise à jour des données de l'utilisateur:" + req.body.username  ,"Update");
       });
 
       router.get('/adduser', isAuthenticated, function(req, res){
@@ -2184,6 +2204,7 @@ logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + 
           ":" + now.getUTCMinutes();
            Depotinout.find(function(err, result){
             res.render('historyin', {user: req.user, stockin: result,date:str});
+            logCambridge(req.user.username,"Consultation de l'historique des entrées en stock","Show");
             //res.json(result);
           });
       });
@@ -2204,6 +2225,7 @@ logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + 
           ":" + now.getUTCMinutes();
            Depotinout.find(function(err, result){
             res.render('historyout', {user: req.user, stockout: result,date:str});
+            logCambridge(req.user.username,"Consultation de l'historique des sorties du stock'","Show");
             //res.json(result);
           });
       });
@@ -2217,6 +2239,7 @@ logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + 
           ":" + now.getUTCMinutes();
         Inventory.find(function (err, inventorys){
         res.render('listinventory', { user: req.user, text: 'Liste des inventaires', inventory: inventorys, date: str});
+        logCambridge(req.user.username,"Consultation de la liste des inventaires","Show");
         });
       });
 
