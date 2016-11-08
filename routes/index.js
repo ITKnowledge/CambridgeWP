@@ -13,7 +13,19 @@ var Depot = require('../models/depot');
 var Users = require('../models/user');
 var Depotinout = require('../models/depotinout');
 var Inventory = require('../models/inventory');
+var Log = require('../models/log');
 
+
+var logCambridge = function(usr, trace, nature){
+  var log = new Log();
+  log.user= usr;
+  log.trace=trace;
+  log.nature=nature;
+  log.save(function(err) {
+      if (err)
+          res.send(err);
+  });
+}
 
 var Getdate = function(d){
    var out = d.substring(0, 10).split("-",3);
@@ -460,7 +472,7 @@ router.post('/editprogone/:id', isAuthenticated, function(req, res){
 
 
 router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
-
+  logCambridge(req.user.username,"Supression du programme ID: " + req.params.prog_id + " avec succès","Delete");
   Prog.remove({
     _id: req.params.prog_id
   }, function(err, prog) {
@@ -692,7 +704,7 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 
 
 	router.get('/listpat/:patient_id', isAuthenticated, function(req, res){
-
+logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient_id + " avec succès","Delete");
 		Patient.remove({
 			_id: req.params.patient_id
 		}, function(err, patient) {
@@ -740,9 +752,9 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
     var question3 = req.body.question3;
 
 		Patient.findById(req.params.id, function (err, patients) {
-      console.log(question1);
-      console.log(question2);
-      console.log(question3);
+      // console.log(question1);
+      // console.log(question2);
+      // console.log(question3);
 			patients.update({
 				patientnom: name,
 				patientprenom: prenom,
@@ -766,6 +778,7 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 					console.log('GET Error: There was a problem retrieving: ' + err);
 					res.redirect('/listpat');
 				}else{
+          logCambridge(req.user.username,"Modification du patient : " + req.body.name + " " + req.body.prenom + " avec succès","Update");
 					res.redirect("/viewpat/" + patients._id);
 				}
 			})
@@ -1168,10 +1181,12 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
        console.log(prog);
 
        prog.save(function(err) {
-           if (err)
+           if (err){
                res.send(err);
-
-           res.redirect('/listprog');
+          }else {
+              logCambridge(req.user.username,"Ajout du programme : " + req.body.progname +  " avec succès","Insert");
+              res.redirect('/listprog');
+         }
        });
  });
 
@@ -1192,9 +1207,12 @@ router.post('/addmodepaiement/:id', isAuthenticated, function(req, res){
 
       product.save(function(err) {
            if (err)
-               res.send(err);
-
-           res.redirect('/listprod');
+               {res.send(err);}
+          else
+           {
+             logCambridge(req.user.username,"Ajout du produit : " + req.body.prodname +  " avec succès","Insert");
+             res.redirect('/listprod');
+           }
        });
 
  });
@@ -1255,7 +1273,7 @@ router.get('/productstock', isAuthenticated, function(req, res){
 
  router.post('/stockin', isAuthenticated, function(req, res){
 
-   console.log("debut post stockin");
+
    var datesys = new Date();
 
    var depotinout = new Depotinout();
@@ -1281,14 +1299,18 @@ router.get('/productstock', isAuthenticated, function(req, res){
 
     depotinout.save(function(err){
        if (err)
-           res.send(err);
+           {res.send(err);}
+      else {
 
-       res.redirect('/listinout');
+        res.redirect('/listinout');
+      }
+
        //res.json("OK success");
    });
 
  });
  router.delete('/listinout/:stockin_id', isAuthenticated, function(req, res){
+   logCambridge(req.user.username,"Supression entrée en stock ID: " + req.params.stockin_id + " avec succès","Delete");
     Depotinout.remove({
       _id: req.params.stockin_id
     }, function(err, stockin) {
@@ -1496,9 +1518,12 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
 
     depot.save(function(err) {
          if (err)
-             res.send(err);
+             {res.send(err);}
+        else {
+          logCambridge(req.user.username,"Ajout dépôt :" + req.body.depotname + "   avec succès","Insert");
+          res.redirect('/listdepots');
+        }
 
-         res.redirect('/listdepots');
      });
 
 
@@ -1530,9 +1555,12 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
                 }
                 inventory.save(function(err) {
                  if (err)
-                     res.send(err);
+                     {res.send(err);}
+                else {
+                  logCambridge(req.user.username,"Ajout inventaire :" + req.body.nameinventory + "   avec succès","Insert");
+                  res.redirect('/listinventory');
+                }
 
-                 res.redirect('/listinventory');
                 });
             }));
 
@@ -1550,6 +1578,7 @@ router.post('/saveinventorydetail/:id', isAuthenticated, function(req, res){
                     console.log('GET Error: There was a problem retrieving: ' + err);
                     res.redirect('/listinventory');
                   }else{
+                      logCambridge(req.user.username,"Mise à jour du détail inventaire ID:" + req.params.id + "   avec succès","Update");
                     res.redirect('/detailinventory/' + req.params.id);
                   }
                 })
@@ -1599,6 +1628,7 @@ router.post('/saveinventorydetail/:id', isAuthenticated, function(req, res){
           if(err){
             console.log('GET Error: There was a problem retrieving: ' + err);
           }else{
+            logCambridge(req.user.username,"Mise à jour inventaire:" + req.body.nameinventory + "   avec succès","Update");
             res.redirect("/listinventory");
           }
         })
@@ -1608,7 +1638,7 @@ router.post('/saveinventorydetail/:id', isAuthenticated, function(req, res){
 
 /* Delete inventory */
 router.get('/delinventory/:id', isAuthenticated, function(req, res){
-
+   logCambridge(req.user.username,"Supression inventaire ID: " + req.params.id + " avec succès","Delete");
   Inventory.remove({
     _id: req.params.id
   }, function(err, result) {
@@ -1696,9 +1726,12 @@ router.post('/addprov', isAuthenticated, function(req, res){
 
       provider.save(function(err) {
           if (err)
-              res.send(err);
+              {res.send(err);}
+          else {
+            logCambridge(req.user.username,"Ajout fournisseur :" + req.body.raisonsociale + "   avec succès","Insert");
+            res.redirect('/listproviders');
+          }
 
-          res.redirect('/listproviders');
       });
 });
 
@@ -1746,7 +1779,7 @@ var old_providername=providers.raisonsociale;
 
 
           })
-
+        logCambridge(req.user.username,"Mise à jour fournisseur :" + req.body.raisonsociale + "   avec succès","Update");
         res.redirect("/listproviders");
       }
     })
@@ -1756,6 +1789,7 @@ var old_providername=providers.raisonsociale;
 
 /*Delete proviprovidersprovidersder*/
 router.get('/listproviders/:provider_id', isAuthenticated, function(req, res){
+  logCambridge(req.user.username,"Supression fournisseur ID: " + req.params.provider_id + " avec succès","Delete");
   Provider.remove({
     _id: req.params.provider_id
   }, function(err, provider) {
@@ -1812,7 +1846,7 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
 
                   })
-
+                  logCambridge(req.user.username,"Mise à jour dépôt :" + req.body.depotname + "   avec succès","Update");
                     res.redirect("/listdepots");
 
               }
@@ -1824,7 +1858,7 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
    /*Delete depot*/
    router.get('/listdepots/:depot_id', isAuthenticated, function(req, res){
-
+logCambridge(req.user.username,"Supression dépôt ID: " + req.params.depot_id + " avec succès","Delete");
      Depot.remove({
        _id: req.params.depot_id
      }, function(err, depot) {
@@ -1891,7 +1925,7 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
                       })
 
-
+          logCambridge(req.user.username,"Mise à jour produit: " + req.body.prodname + " avec succès","Update");
            res.redirect("/listprod");
          }
        })
@@ -2032,8 +2066,10 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
             users.save(function(err) {
                 if (err)
-                    res.send(err);
-
+                    {res.send(err);}
+                else {
+                  logCambridge(req.user.username,"Ajout utilisateur: " + req.body.username + " avec succès","Insert");
+                }
                 res.redirect('/userlist');
             });
 
@@ -2047,7 +2083,7 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
       })
 
       router.delete('/deluser/:id', isAuthenticated, function(req, res){
-
+logCambridge(req.user.username,"Supression utilisateur ID: " + req.params.id + " avec succès","Delete");
         Users.remove({
           _id: req.params.id
         }, function(err, users) {
@@ -2061,7 +2097,7 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
       /*Delete prod*/
       router.get('/listprod/:prod_id', isAuthenticated, function(req, res){
-
+logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + " avec succès","Delete");
         Product.remove({
           _id: req.params.prod_id
         }, function(err, prod) {
@@ -2120,7 +2156,10 @@ router.post('/editdepot/:id', isAuthenticated, function(req, res){
 
            depotinout.save(function(err){
               if (err)
-                  res.send(err);
+                  {res.send(err);}
+                  else {
+                    logCambridge(req.user.username,"Nouvelle entrée en stock. Dépôt: " + req.body.depot  + " avec succès","Insert");
+                  }
           });
           }
 
@@ -2350,7 +2389,7 @@ router.get('/caisses', isAuthenticated, function(req, res){
 
 
 router.get('/caisse/:id', isAuthenticated, function(req, res){
-
+logCambridge(req.user.username,"Supression caisse ID: " + req.params.id + " avec succès","Delete");
   Caisse.remove({
     _id: req.params.id
   }, function(err, caisse) {
