@@ -6,7 +6,7 @@
 
         <div class="x_panel">
           <div class="x_title">
-            <h2>Nouvelle sortie du stock <small>Gestion du Stock</small></h2>
+            <h2>Nouveau retour client au stock <small>Gestion de Stock</small></h2>
 
             <div class="clearfix"></div>
 
@@ -17,7 +17,7 @@
 
 
 
-            <form name="myForm" class="form-horizontal form-label-left input_mask" validate action="/stockout/<%= stockin._id %>" method="post"  onsubmit="return(validate());">
+            <form name="myForm" class="form-horizontal form-label-left input_mask" validate action="/stockretourclient/<%= stockin._id %>" method="post"  onsubmit="return(validate());">
              <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Nom du Dépôt : <span class="required">*</span>
                 </label>
@@ -50,6 +50,14 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Total sortie ( en unité) : <span class="required">*</span>
+                </label>
+                <div disabled="disabled" class="col-md-6 col-sm-6 col-xs-12">
+                  <input disabled="disabled" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" id="prodqteout" name="prodqteout" placeholder="Total sortie" required="required" type="text" value="<%= stockin.prodqteinit-stockin.prodqtemv %>">
+                </div>
+              </div>
+
 
              <div class="clearfix"></div>
              <div class="ln_solid"></div>
@@ -60,7 +68,7 @@
           		 <div class="col-md-6 col-sm-6 col-xs-12">
           			 <select type="text" id="factureclt" name="factureclt"  data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="Facture client" required="required" >
                    <option></option>
-                   <option>Sortie exceptionnelle</option>
+                   <option>Facture client inconnue</option>
 
                    <% for(var i=0; i < patient.length; i++) { %>
                      <% for(j=0; j < patient[i].visites.length; j++){%>
@@ -77,12 +85,7 @@
           		 </label>
           		 <div class="col-md-6 col-sm-6 col-xs-12">
           			 <select type="text" id="motifout" name="motifout"  data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="Motif de sortie" required="required" >
-                   <option>Vente au client</option>
-                   <option>Retour au fournisseur</option>
-                   <option>Consommation</option>
-                   <option>Régularisation du stock</option>
-                   <option>Perte</option>
-                   <option>Vol</option>
+                   <option>Retour du client</option>
                    <option>Autre motif</option>
                  </select>
           		 </div>
@@ -92,10 +95,10 @@
 
 
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantité à sortir : <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantité à retourner: <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input class="form-control col-md-7 col-xs-12"  data-validate-words="1" id="qteout" name="qteout" placeholder="Quantité à sortir" autofocus required="required" type="Number" min="1" max="<%= stockin.prodqtemv %>">
+                  <input class="form-control col-md-7 col-xs-12"  data-validate-words="1" id="qteout" name="qteout" placeholder="Quantité à retourner" autofocus required="required" type="Number" min="1" max="<%= stockin.prodqteinit - stockin.prodqtemv %>">
                   <input class="form-control col-md-7 col-xs-12 hidden"  data-validate-words="1" id="prodid2" name="prodid2" placeholder="idprod" autofocus required="required" type="text" value="<%= stockin.prodid %>">
                 </div>
               </div>

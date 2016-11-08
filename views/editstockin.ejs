@@ -103,6 +103,7 @@
 		 <div class="col-md-6 col-sm-6 col-xs-12">
 			 <input value='<%= stockin.prodqteinit %>' class="form-control  col-md-7 col-xs-12"  data-validate-length-range="6" id="prodqte" name="prodqte" placeholder="Quantité" required="required" type="text" >
        <input value='<%= totalqteout %>' class="form-control  col-md-7 col-xs-12 hidden"  data-validate-length-range="6" id="prodqteout" name="prodqteout" placeholder="Quantité MV" required="required" type="text" >
+       <input value='<%= stockin.out.length %>' class="form-control  col-md-7 col-xs-12 hidden"  data-validate-length-range="6" id="nbrout" name="nbrout" placeholder="totalqteout" required="required" type="hidden" >
 		 </div>
 	 </div>
 
@@ -149,8 +150,9 @@
 
 	 <div class="form-group" align="right">
 		 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-			 <button type="button" class="btn btn-success" onclick="window.location.href='/listinout/<%= stockin.prodid %>'">Retour à la liste</button>
-			 <button id="send" type="submit" class="btn btn-primary">Enregistrer</button>
+       <button id="send" type="submit" class="btn btn-primary">Enregistrer</button>
+       <button type="button" class="btn btn-success" onclick="window.location.href='/listinout/<%= stockin.prodid %>'">Retour à la liste</button>
+
 		 </div>
 	 </div>
 
@@ -192,7 +194,7 @@
 </script>
 <script>
  $(document).ready(function(){
-   if(document.getElementById("prodqteout").value>0){
+   if(document.getElementById("nbrout").value>0){
      $('#prodinfo option:not(:selected)').prop('disabled', true);
      $("#prodqte").attr('readOnly', 'true');
      $('#unitegroupe option:not(:selected)').prop('disabled', true);

@@ -185,6 +185,7 @@ var isAuthenticated = function (req, res, next) {
 	// request and response objects
 	if (req.isAuthenticated())
 		return next();
+
 	// if the user is not authenticated then redirect him to the login page
 	res.redirect('/');
 }
@@ -200,6 +201,7 @@ module.exports = function(passport){
 
 	/* Handle Login POST */
 	router.post('/login', passport.authenticate('login', {
+
 		successRedirect: '/home',
 		failureRedirect: '/',
 		failureFlash : true
@@ -212,6 +214,7 @@ module.exports = function(passport){
 
 	/* Handle Registration POST */
 	router.post('/signup', passport.authenticate('signup', {
+
 		successRedirect: '/home',
 		failureRedirect: '/signup',
 		failureFlash : true
@@ -406,7 +409,7 @@ module.exports = function(passport){
                 res.redirect('/home');
               }else{
                 res.redirect("/viewpat/" + patients._id);
-               
+
               }
             });
             //res.render('visite', { user: req.user, patients: patients});
@@ -1438,7 +1441,37 @@ Depotinout.findById(req.params.id, function (err, stockin) {
 
    });
    });
+/* Retour client au stock */
+router.post('/stockretourclient/:id', isAuthenticated, function(req, res){
+var datesys = new Date();
+var qte=req.body.qteout;
+var prodid=req.body.prodid2;
+var factnum=req.body.factureclt;
+var motifout=req.body.motifout;
 
+ var stockout = {
+  qteout: qte * (-1),
+  dateout: (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
+  motifout: motifout,
+  factnum: factnum
+};
+Depotinout.findById(req.params.id, function (err, stockin) {
+  stockin.out.push(stockout);
+
+  stockin.update({
+    out: stockin.out,
+    prodqtemv: Number(stockin.prodqtemv) + Number(qte),
+    },function (err, stockinID){
+      if(err){
+        console.log('GET Error: There was a problem retrieving: ' + err);
+
+      }else{
+        res.redirect("/listinout/" + prodid);
+      }
+    })
+
+   });
+   });
    /* Autre nature de sortie  */
    router.post('/stockoutexception/:id', isAuthenticated, function(req, res){
    var datesys = new Date();
@@ -1469,7 +1502,19 @@ Depotinout.findById(req.params.id, function (err, stockin) {
       });
       });
 
-
+/* Retour Client au stock */
+router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
+ // var dt = new Date().toISOString();
+  Depotinout.findById(req.params.id, function(err, stockin){
+    Patient.find({}, {patientnom: 1, patientprenom: 1, visites: 1},function (err, patient){
+     if (err) {
+       console.log('GET Error: There was a problem retrieving: ' + err);
+     } else {
+       res.render('stockretourclt', {user: req.user, stockin:stockin, patient:patient});
+     }
+   });
+  });
+});
 
    router.get('/liststockout/:id', isAuthenticated, function(req, res){
     // var dt = new Date().toISOString();
@@ -1481,7 +1526,7 @@ Depotinout.findById(req.params.id, function (err, stockin) {
         }
      });
    });
-
+/* Suppression ligne sortie du stock */
 router.delete('/deletestockout', isAuthenticated, function(req, res){
     var stockinoutid = req.query.id;
     var outid = req.query.outid;
@@ -1507,18 +1552,35 @@ router.delete('/deletestockout', isAuthenticated, function(req, res){
     })
 
    });
-
-
-
-
-
-
-
-
-
-
 });
 
+/* Suppression ligne retour client au stock */
+router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
+    var stockinoutid = req.query.id;
+    var outid = req.query.outid;
+    var qteoutdel=req.query.outqte;
+
+    Depotinout.findById(stockinoutid, function (err, stockin) {
+    stockin.update({
+      prodqtemv: Number(stockin.prodqtemv) + Number(qteoutdel),
+    },function (err, providersID){
+      if(err){
+        console.log('GET Error: There was a problem retrieving: ' + err);
+
+      }else{
+
+            Depotinout.update({_id: stockinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockin){
+            if (err) {
+              console.log('GET Error: There was a problem retrieving: ' + err);
+            } else {
+              res.redirect("/listinout");
+            }
+        });
+      }
+    })
+
+   });
+});
 
  router.get('/adddepot', isAuthenticated, function(req, res){
    res.render('adddepot', {user: req.user});
