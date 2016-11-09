@@ -44,11 +44,12 @@ function ConvertToUnit(qte, unittype){
       <tr class="headings">
 
         <th class="column-title">Dépôt</th>
-        <th class="column-title">Code produit</th>
+        <!-- <th class="column-title">Code produit</th> -->
         <th class="column-title">Désignation produit</th>
         <th class="column-title">Date Achat</th>
         <th class="column-title">Stock initial</th>
         <th class="column-title">Total Sortie(U)</th>
+          <th class="column-title">Total Retour(U)</th>
         <th class="column-title">Stock actuel(U)</th>
         <th class="column-title">Date expiration</th>
         <th class="column-title">Prix d'achat</th>
@@ -69,18 +70,23 @@ function ConvertToUnit(qte, unittype){
 <tr class="even pointer">
 
   <td class=" "><%= inout[i].depotname %></td>
-  <td class=" "><%= inout[i].prodcode %></td>
-  <td class=" "><%= inout[i].prodname %></td>
+  <td class=" "><%= inout[i].prodcode %>  | <%= inout[i].prodname %></td>
+  <!-- <td class=" "><%= inout[i].prodname %></td> -->
   <td class=" "><%= inout[i].dateachat %></td>
   <td class=" " style="color:#0000FF"><%= inout[i].prodqteinit %> <%= inout[i].produnite %> <script> if ("<%= inout[i].produnite %>"!=="Unité") {
     document.write("(" + ConvertToUnit(<%= inout[i].prodqteinit %>, "<%= inout[i].produnite %>")+ " Unités)" );  }
     </script>
   </td>
-  <% var totalqteout=0;  for(j=0; j < inout[i].out.length; j++){
-    totalqteout=totalqteout + Number(inout[i].out[j].qteout);
+  <% var totalqteout=0;var totalqteretour=0;  for(j=0; j < inout[i].out.length; j++){
+    if(Number(inout[i].out[j].qteout)>0){totalqteout=totalqteout + Number(inout[i].out[j].qteout);}
+    else {totalqteretour=totalqteretour + (Number(inout[i].out[j].qteout)*(-1));}
   }%>
   <td class=" " align="center">
-    <a class="btn btn-default btn-xs" style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>" role="button"> <%= totalqteout %>  </a>
+    <a class="btn btn-success btn-xs" style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>" role="button"> <%= totalqteout %>  </a>
+    <!-- <a style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>"><%= totalqteout %></a> -->
+  </td>
+  <td class=" " align="center">
+    <a class="btn btn-warning btn-xs" style="color:#DF3A01" href="/liststockout/<%= inout[i]._id %>" role="button"> <%= totalqteretour %>  </a>
     <!-- <a style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>"><%= totalqteout %></a> -->
   </td>
 <!--
@@ -102,10 +108,11 @@ function ConvertToUnit(qte, unittype){
     <%} else {%>
       <a class="btn btn-default btn-xs" href="/stockout/<%= inout[i]._id %>" role="button" title="Nouvelle sortie du stock"><i class="fa fa-sign-out"></i></a>
     <%}%>
-    <% if (totalqteout ===0){%>
-    <a class="btn btn-default btn-xs" disabled="disabled" role="button" title="Nouveau retour client au stock"><i class="fa fa-reply"></i></a>
-    <%} else {%>
+    <% if ((totalqteout - totalqteretour) > 0){%>
       <a class="btn btn-default btn-xs" href="/stockretourclt/<%= inout[i]._id %>" role="button" title="Nouveau retour client au stock"><i class="fa fa-reply"></i></a>
+
+    <%} else {%>
+      <a class="btn btn-default btn-xs" disabled="disabled" role="button" title="Nouveau retour client au stock"><i class="fa fa-reply"></i></a>
     <%}%>
 </td>
   <% } %>

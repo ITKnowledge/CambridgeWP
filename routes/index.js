@@ -1399,6 +1399,7 @@ router.get('/productstock', isAuthenticated, function(req, res){
      });
 
  router.get('/stockout/:id', isAuthenticated, function(req, res){
+
   // var dt = new Date().toISOString();
    Depotinout.findById(req.params.id, function(err, stockin){
      Patient.find({}, {patientnom: 1, patientprenom: 1, visites: 1},function (err, patient){
@@ -1517,6 +1518,9 @@ router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
 });
 
    router.get('/liststockout/:id', isAuthenticated, function(req, res){
+
+     var vid = req.query.vid;
+     console.log("VID is: " + vid);
     // var dt = new Date().toISOString();
      Depotinout.findById(req.params.id, function(err, stockin){
         if (err) {
