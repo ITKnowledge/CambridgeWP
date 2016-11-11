@@ -1,0 +1,135 @@
+<% include header.ejs %>
+
+	        <!-- page content -->
+	        <div class="right_col" role="main" style="min-height: 368px;">
+						<div class="clearfix"></div>
+
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Liste des sorties du stock <small>Gestion de Stock</small></h2>
+
+                    <div class="clearfix"></div>
+                  </div>
+
+                      <div class="x_content">
+
+                        <div class="item form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12 has-feedback-left" for="prog">Programme <span class="required">*</span>
+                          </label>
+                          <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="dropdown1" type="text" name="factnum" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
+                              <option></option>
+                                  <% for(i=0; i< visites.length; i++){%>
+                                    <% for(j=0; j< visites[i].visites.length; j++){%>
+
+                                        <option><%= visites[i].visites[j].factnum %></option>
+
+                                    <%}%>
+                                  <%}%>
+
+
+                              </select>
+                          </div>
+                        </div>
+
+
+
+                        <!-- <div class="col-md-5 col-sm-5 col-xs-12 item form-group">
+                               <label>Code produit : </label>
+                               <div class="">
+                                 <select id="dropdown1" class="select2_single form-control" name="prodinfo" type="text">
+                                   <option value=""></option>
+                                    <option value="Dépôt Casablanca">Dépôt Casablanca</option>
+                                    <option value="Dépôt Meknes">Dépôt Meknes</option>
+                                 </select>
+                               </div>
+                             </div> -->
+
+
+
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+              <div class="table-responsive">
+              <!--    <table class="table table-striped jambo_table bulk_action"> -->
+                <table  id="fact" class="table table-striped table-bordered bulk_action">
+                  <thead>
+                    <tr class="headings">
+
+                      <th class="column-title">Facture Number</th>
+                      <th class="column-title">Consultant</th>
+                      <th class="column-title">product Name</th>
+                      <th class="column-title">Quantity</th>
+
+
+
+
+
+
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <% for(var i=0; i < visites.length; i++) { %>
+                      <% for(j=0; j< visites[i].visites.length; j++){%>
+                          <% for(k=0; k< visites[i].visites[j].products.length; k++){%>
+
+                      <tr id="<%= visites[i].visites[j].factnum %>"  class="">
+                      <td class=""><%= visites[i].visites[j].factnum %></td>
+                      <td class=""><%= visites[i].visites[j].consultant %></td>
+                      <td class=""><%= visites[i].visites[j].products[k].prodname %></td>
+                      <td class=""><%= visites[i].visites[j].products[k].prodqte %></td>
+                     </tr>
+                    <% } %>
+                    <% } %>
+                    <% } %>
+                  </tbody>
+                </table>
+
+
+              </div>
+              </div>
+
+
+            <!-- <div class="item form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12 has-feedback-left" for="statu">Status <span class="required">*</span>
+              </label>
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <select id="statu" type="text" name="statu"  data-validate-length-range="5,20" class="form-control col-md-7 col-xs-12" placeholder="Statu familliale">
+                  <option></option>
+                  <option>Marié</option>
+                  <option>Célibataire</option>
+                </select>
+              </div>
+            </div> -->
+
+
+
+
+</div>
+	        <!-- /page content -->
+
+<% include footer.ejs %>
+
+
+
+<script>
+$(document).ready(function() {
+   var table =  $('#fact').DataTable();
+
+     $('#dropdown1').on('change', function () {
+                    table.columns(0).search( this.value ).draw();
+                } );
+});
+
+</script>

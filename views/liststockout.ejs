@@ -27,8 +27,8 @@
                       <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Liste des sorties du stock</a>
                         </li>
-                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Liste des retours clients au stock</a>
-                        </li>
+                        <!-- <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Liste des retours clients au stock</a>
+                        </li> -->
 
                       </ul>
                       <div id="myTabContent" class="tab-content">
@@ -54,7 +54,9 @@
 
                               <tbody>
 
-                                <% for(var i=0; i < stockin.out.length; i++) { if (stockin.out[i].qteout>0){%>
+                                <% for(var i=0; i < stockin.out.length; i++) {
+                                  <!-- if (stockin.out[i].qteout>0){ -->
+                                    %>
                                   <tr class="even pointer">
                                     <td class="a-center ">
                                       <input type="checkbox" class="flat" name="table_records">
@@ -67,14 +69,16 @@
                                       <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/deletestockout/?id=<%= stockin._id %>&outid=<%= stockin.out[i]._id %>&outqte=<%= stockin.out[i].qteout %>');" href="/liststockout/<%= stockin._id %>"><i class="fa fa-trash-o"></i>  </a>
                                     </td>
                                   </tr>
-                                <% }} %>
+                                <%
+                              <!-- } -->
+                              } %>
                                 </tbody>
                               </table>
                         <!--    <table class="table table-striped jambo_table bulk_action"> -->
 
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                        <!-- <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                           <div class="table-responsive">
                             <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
                               <thead>
@@ -112,10 +116,10 @@
                                 <% } }%>
                                 </tbody>
                               </table>
-                        <!--    <table class="table table-striped jambo_table bulk_action"> -->
+
 
                             </div>
-                        </div>
+                        </div> -->
 
                       </div>
                     </div>

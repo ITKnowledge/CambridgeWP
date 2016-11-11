@@ -78,8 +78,12 @@ function ConvertToUnit(qte, unittype){
     </script>
   </td>
   <% var totalqteout=0;var totalqteretour=0;  for(j=0; j < inout[i].out.length; j++){
-    if(Number(inout[i].out[j].qteout)>0){totalqteout=totalqteout + Number(inout[i].out[j].qteout);}
-    else {totalqteretour=totalqteretour + (Number(inout[i].out[j].qteout)*(-1));}
+
+      totalqteout=totalqteout + Number(inout[i].out[j].qteout);
+        if(Number(inout[i].out[j].qteout)< 0){
+          totalqteretour=totalqteretour + (Number(inout[i].out[j].qteout)*(-1));
+    }
+    <!-- else {} -->
   }%>
   <td class=" " align="center">
     <a class="btn btn-success btn-xs" style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>" role="button"> <%= totalqteout %>  </a>

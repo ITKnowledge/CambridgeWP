@@ -27,6 +27,21 @@ var logCambridge = function(usr, trace, nature){
   });
 }
 
+var ff = function(req, res, next){
+
+  console.log(req.user.username);
+  console.log(req.params.id);
+
+  return next();
+}
+
+
+var stockinout = function(prodid){
+
+
+
+}
+
 var Getdate = function(d){
    var out = d.substring(0, 10).split("-",3);
    var dd = out[1] + "/" + out[2] + "/" + out[0]
@@ -183,6 +198,7 @@ var isAuthenticated = function (req, res, next) {
 	// if user is authenticated in the session, call the next() to call the next request handler
 	// Passport adds this method to request object. A middleware is allowed to add properties to
 	// request and response objects
+
 	if (req.isAuthenticated())
 		return next();
 
@@ -224,6 +240,61 @@ module.exports = function(passport){
 	router.get('/home', isAuthenticated, function(req, res){
 		res.render('home', { user: req.user });
 	});
+
+
+// -------------------------  Function Stockinout ---------------------------
+  router.get('/stockinout/:id', isAuthenticated, function(req, res){
+
+    var tempqte = 30;
+    var tab = [];
+
+    Depotinout.find({prodid: req.params.id}, {}, {sort: {'dateexp': -1}} , function(err, result){
+
+      for(i=0; i<result.length; i++){
+        if(tempqte > 0){
+          if(result[i].prodqtemv >= tempqte ){
+
+            tab.push({dinoutid: result[i]._id, qte: tempqte});
+            tempqte = tempqte - result[i].prodqtemv;
+
+          }else{
+
+            tab.push({dinoutid: result[i]._id, qte: result[i].prodqtemv});
+            tempqte = tempqte - result[i].prodqtemv;
+
+          }
+        }
+
+
+      }
+
+
+      res.json(tab);
+    });
+});
+
+// -------------------------  Function Stockinout ---------------------------
+
+
+// -------------------------  Function livraison ---------------------------
+
+router.get('/livraison', isAuthenticated, function(req, res){
+// find({visites: {$elemMatch: {clotured: false}}}, {'visites.$': 1})
+  Patient.find({visites: {$elemMatch: {clotured: false}}}, {'visites.$': 1},function(err, result){
+
+    res.render('livraison', {user: req.user, visites: result});
+
+    // res.json(result);
+
+
+  })
+
+});
+
+// -------------------------  Function livraison ---------------------------
+
+
+
 
 	router.get('/invoice', isAuthenticated, function(req, res){
 
@@ -2456,25 +2527,29 @@ router.post('/caisse', isAuthenticated, function(req, res){
 });
 
 
-router.get('/caisses', isAuthenticated, function(req, res){
+
+router.get('/caisses/:id', isAuthenticated, ff, function(req, res){
 
 
-  var startdate = req.query.startdate; //"2016-08-01T00:00:00.000Z";
-  var enddate = req.query.enddate;   //"2016-11-31T23:59:59.999Z";
-
-
-  Caisse.find({"datein" : { $gte : new Date(startdate).toISOString() , $lte : new Date(enddate).toISOString() }}, function(err, result){
-
-    res.json(result);
-
-  });
+  // var startdate = "2016-08-01T00:00:00.000Z"; //req.query.startdate; //
+  // var enddate = "2016-11-31T23:59:59.999Z";  //req.query.enddate;   //
+  //
+  //
+  // Caisse.find({"datein" : { $gte : new Date(startdate).toISOString() , $lte : new Date(enddate).toISOString() }}, function(err, result){
+  //
+  //   res.json(result);
+  //
+  // });
 
   // new ISODate("2016-10-10T00:15:31Z")
   // new ISODate("2016-11-10T23:59:59Z")
 
-  // res.send("OK OK");
+
+  res.send("OK OK");
 
 });
+
+
 
 
 router.get('/caisse/:id', isAuthenticated, function(req, res){
