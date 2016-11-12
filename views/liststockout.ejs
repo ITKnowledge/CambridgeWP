@@ -34,12 +34,12 @@
                       <div id="myTabContent" class="tab-content">
                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
                           <div class="table-responsive">
-                            <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+                            <table id="datatable" class="table table-striped table-bordered bulk_action table-hover">
                               <thead>
                                 <tr class="headings">
-                                  <th>
+                                  <!-- <th>
                                     <input type="checkbox" id="check-all" class="flat">
-                                  </th>
+                                  </th> -->
                                   <th class="column-title">Date opération </th>
                                   <th class="column-title">Quantité </th>
                                   <th class="column-title">Motif </th>
@@ -58,9 +58,9 @@
                                   <!-- if (stockin.out[i].qteout>0){ -->
                                     %>
                                   <tr class="even pointer">
-                                    <td class="a-center ">
+                                    <!-- <td class="a-center ">
                                       <input type="checkbox" class="flat" name="table_records">
-                                    </td>
+                                    </td> -->
                                     <td class=" "><%= stockin.out[i].dateout %></td>
                                     <td class=" "><%= stockin.out[i].qteout %></td>
                                     <td class=" "><%= stockin.out[i].motifout %></td>

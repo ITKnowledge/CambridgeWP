@@ -17,12 +17,12 @@
 
 <div class="table-responsive">
 <!--    <table class="table table-striped jambo_table bulk_action"> -->
-  <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+  <table id="datatable" class="table table-striped table-bordered bulk_action table-hover">
     <thead>
       <tr class="headings">
-        <th>
+        <!-- <th>
           <input type="checkbox" id="check-all" class="flat">
-        </th>
+        </th> -->
         <th class="column-title">Facture Num</th>
         <th class="column-title">Nom </th>
         <th class="column-title">Prénom</th>
@@ -44,9 +44,9 @@
         <% for(j=0; j < patient[i].visites.length; j++){%>
         <% if (patient[i].visites[j].clotured === false ||  patient[i].visites[j].clotured === undefined) { %>
       <tr class="even pointer">
-        <td class="a-center ">
+        <!-- <td class="a-center ">
           <input type="checkbox" class="flat" name="table_records">
-        </td>
+        </td> -->
         <td class=" "><%= patient[i].visites[j].factnum %></td>
         <td class=" "><%= patient[i].patientnom %></td>
         <td class=" "><%= patient[i].patientprenom %></td>

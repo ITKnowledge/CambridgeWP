@@ -27,12 +27,12 @@
 
             <div class="table-responsive">
           <!--    <table class="table table-striped jambo_table bulk_action"> -->
-              <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
+              <table id="datatable" class="table table-striped table-bordered bulk_action table-hover">
                 <thead>
                   <tr class="headings">
-                    <th>
+                    <!-- <th>
                       <input type="checkbox" id="check-all" class="flat">
-                    </th>
+                    </th> -->
                     <th class="column-title">Raison sociale </th>
                     <th class="column-title">Téléphone</th>
                     <th class="column-title">Fax </th>
@@ -51,9 +51,9 @@
                 <tbody>
                   <% for(var i=0; i < prov.length; i++) { %>
                   <tr class="even pointer">
-                    <td class="a-center ">
+                    <!-- <td class="a-center ">
                       <input type="checkbox" class="flat" name="table_records">
-                    </td>
+                    </td> -->
 
                     <td class=" "><%= prov[i].raisonsociale %></td>
                     <td class=" "><%= prov[i].telephone %></td>
