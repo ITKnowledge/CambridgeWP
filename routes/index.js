@@ -307,26 +307,6 @@ module.exports = function(passport){
 
 // -------------------------  Function Stockinout ---------------------------
 
-router.post('/stockinout/:id', function(req, res){
-
-
-
-  Depotinout.findById(req.params.id,function(err, out){
-    out.update({
-
-       prodqtemv:264
-
-    },function (err, stockinID){
-      if(err){
-        console.log('GET Error: There was a problem retrieving: ' + err);
-
-      }else{
-        res.json(out);
-      }
-    })
-});
-
-});
 
 
 // -------------------------  Function livraison ---------------------------
