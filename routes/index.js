@@ -250,28 +250,17 @@ module.exports = function(passport){
     var prodidinvisite = req.query.prodidinvisite;
     var tab = [];
 
-    Depotinout.find({prodid: req.params.id, depotname: depotname}, {}, {sort: {'dateexp': -1}} , function(err, result){
+    Depotinout.find({prodid: req.params.id, depotname: depotname}, {}, {sort: {'dateexp': 1}} , function(err, result){
+
+
 
       for(i=0; i<result.length; i++){
+
         if(tempqte > 0){
           if(result[i].prodqtemv >= tempqte ){
 
             tab.push({dinoutid: result[i]._id, qte: tempqte});
             tempqte = tempqte - result[i].prodqtemv;
-
-            // result.update({
-            //   prodqtemv: result[i].prodqtemv - result[i].prodqtemv
-            //
-            // },function (err, resultID){
-            //   if(err){
-            //     console.log('GET Error: There was a problem retrieving: ' + err);
-            //     res.redirect('/livraison');
-            //   }else{
-            //     res.redirect("/livraison");
-            //
-            //   }
-            // });
-
 
           }else{
 
@@ -279,20 +268,65 @@ module.exports = function(passport){
             tempqte = tempqte - result[i].prodqtemv;
 
           }
+
+
         }
 
 
       }
 
+      for(j=0; j<tab.length; j++){
 
-      res.json(tab);
+
+          var qte = tab[j].qte;
+          var dinoutid = tab[j].dinoutid;
+
+
+
+          Depotinout.findById(dinoutid,function(err, out){
+            out.update({
+
+               prodqtemv: out.prodqtemv - qte
+
+            },function (err, outID){
+              if(err){
+                console.log('GET Error: There was a problem retrieving: ' + err);
+
+              }else{
+
+              }
+            })
+        });
+
+      }
+
+      res.send(tab);
+
     });
 });
 
 // -------------------------  Function Stockinout ---------------------------
 
+router.post('/stockinout/:id', function(req, res){
 
 
+
+  Depotinout.findById(req.params.id,function(err, out){
+    out.update({
+
+       prodqtemv:264
+
+    },function (err, stockinID){
+      if(err){
+        console.log('GET Error: There was a problem retrieving: ' + err);
+
+      }else{
+        res.json(out);
+      }
+    })
+});
+
+});
 
 
 // -------------------------  Function livraison ---------------------------
