@@ -82,7 +82,7 @@
                 <select id="prodinfo" class="select2_single form-control" name="prodinfo" type="text">
                   <option></option>
                   <% for (var i = 0; i < products.length; i++) {%>
-                    <option><%= products[i].prodcode + ' | ' + products[i].prodname %> <span style="color:blue"><%= products[i].extra? " | Extra Product" : ""%></span> </option>
+                    <option value="<%= products[i].prodcode + ' | ' + products[i].prodname + ' | ' + products[i]._id %>"><%= products[i].prodcode + ' | ' + products[i].prodname %> <span style="color:blue"><%= products[i].extra? " | Extra Product" : ""%></span> </option>
                   <%}%>
                 </select>
               </div>
@@ -98,7 +98,7 @@
               <a onclick="" id="addline" type="" class="btn btn-primary"><i class="fa fa-check"></i></a>
             </div>
 
-            <textarea id="message" type="" name="obj" required="required" class="form-control hidden" name="message" placeholder="Obj">
+            <textarea id="message" type="" name="obj" required="required" class="form-control " name="message" placeholder="Obj">
             </textarea>
 
             <div id="progname" name="">
@@ -237,6 +237,7 @@ $(document).ready(function() {
          tab.push({
            prodcode: $("#prodinfo").val().split("|")[0],
            prodname: $("#prodinfo").val().split("|")[1],
+           prodid: $("#prodinfo").val().split("|")[2],
            prodqte: $('#prodqte').val(),
            prodexpdate: $('#prodexpdate').val()
           });

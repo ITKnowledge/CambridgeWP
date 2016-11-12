@@ -39,7 +39,9 @@ module.exports = mongoose.model('Patient',{
 							products:[{
 								prodcode: String,
 								prodname: String,
-								prodqte: Number
+								prodqte: Number,
+								delivred: {type: Boolean, default: false},
+								prodid: String
 								}]
 						}
 	]

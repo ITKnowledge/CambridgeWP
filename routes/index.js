@@ -245,10 +245,12 @@ module.exports = function(passport){
 // -------------------------  Function Stockinout ---------------------------
   router.get('/stockinout/:id', isAuthenticated, function(req, res){
 
-    var tempqte = 30;
+    var tempqte = req.query.qte;
+    var depotname = "Dépôt Casablanca";            //req.query.depotname;
+    var prodidinvisite = req.query.prodidinvisite;
     var tab = [];
 
-    Depotinout.find({prodid: req.params.id}, {}, {sort: {'dateexp': -1}} , function(err, result){
+    Depotinout.find({prodid: req.params.id, depotname: depotname}, {}, {sort: {'dateexp': -1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
         if(tempqte > 0){
@@ -256,6 +258,20 @@ module.exports = function(passport){
 
             tab.push({dinoutid: result[i]._id, qte: tempqte});
             tempqte = tempqte - result[i].prodqtemv;
+
+            // result.update({
+            //   prodqtemv: result[i].prodqtemv - result[i].prodqtemv
+            //
+            // },function (err, resultID){
+            //   if(err){
+            //     console.log('GET Error: There was a problem retrieving: ' + err);
+            //     res.redirect('/livraison');
+            //   }else{
+            //     res.redirect("/livraison");
+            //
+            //   }
+            // });
+
 
           }else{
 
@@ -276,15 +292,22 @@ module.exports = function(passport){
 // -------------------------  Function Stockinout ---------------------------
 
 
+
+
+
 // -------------------------  Function livraison ---------------------------
 
 router.get('/livraison', isAuthenticated, function(req, res){
-// find({visites: {$elemMatch: {clotured: false}}}, {'visites.$': 1})
-  Patient.find({visites: {$elemMatch: {clotured: false}}}, {'visites.$': 1},function(err, result){
 
-    res.render('livraison', {user: req.user, visites: result});
+  Patient.find({visites: {$elemMatch: {clotured: true}}}, {'visites.$': 1, 'patientnom': 1},function(err, result){
+
+
+
+    res.render('livraison', {user: req.user, patient: result});
 
     // res.json(result);
+
+
 
 
   })
@@ -592,12 +615,7 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
             console.log('GET Error: There was a problem retrieving: ' + err);
             res.redirect('/home');
           }else{
-            console.log(facture);
-            console.log(facture.prix);
-            console.log(facture.discount);
-            console.log(facture.modepaiement);
-            console.log(facture.daterdv);
-            console.log(facture.factnum);
+
 
             var caisse = new Caisse();
 

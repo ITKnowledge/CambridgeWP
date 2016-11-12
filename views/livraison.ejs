@@ -20,10 +20,10 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<select id="dropdown1" type="text" name="factnum" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
 											<option></option>
-													<% for(i=0; i< visites.length; i++){%>
-														<% for(j=0; j< visites[i].visites.length; j++){%>
+													<% for(i=0; i< patient.length; i++){%>
+														<% for(j=0; j< patient[i].visites.length; j++){%>
 
-																<option><%= visites[i].visites[j].factnum %></option>
+																<option><%= patient[i].visites[j].factnum %> | <%= patient[i].patientnom %></option>
 
 														<%}%>
 													<%}%>
@@ -32,6 +32,22 @@
 											</select>
 									</div>
 								</div>
+								<br>
+								<br>
+								<div class="item form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12 has-feedback-left" for="prog">Choix de Depot : <span class="required">*</span>
+								</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<select id="dropdown2" type="text" name="factnum" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
+
+										<option></option>
+										<option>Dépôt Casablanca</option>
+										<option>Dépôt Meknes</option>
+
+
+										</select>
+								</div>
+							</div>
                       <div class="x_content">
 												<div class="table-responsive">
 												<!--    <table class="table table-striped jambo_table bulk_action"> -->
@@ -44,8 +60,8 @@
 																<th class="column-title">product Name</th>
 																<th class="column-title">Quantity</th>
 
-
-
+																<th class="column-title">Prodid</th>
+																<th class="column-title">Action</th>
 
 
 
@@ -55,55 +71,34 @@
 
 														<tbody>
 
-															<% for(var i=0; i < visites.length; i++) { %>
-																<% for(j=0; j< visites[i].visites.length; j++){%>
-																		<% for(k=0; k< visites[i].visites[j].products.length; k++){%>
+															<% for(var i=0; i < patient.length; i++) { %>
+																<% for(j=0; j< patient[i].visites.length; j++){%>
+																		<% for(k=0; k< patient[i].visites[j].products.length; k++){%>
 
-																<tr id="<%= visites[i].visites[j].factnum %>"  class="">
-																<td class=""><%= visites[i].visites[j].factnum %></td>
-																<td class=""><%= visites[i].visites[j].consultant %></td>
-																<td class=""><%= visites[i].visites[j].products[k].prodname %></td>
-																<td class=""><%= visites[i].visites[j].products[k].prodqte %></td>
+																<tr id="<%= patient[i].visites[j].factnum %>"  class="">
+																<td class=""><%= patient[i].visites[j].factnum %></td>
+																<td class=""><%= patient[i].visites[j].consultant %></td>
+																<td class=""><%= patient[i].visites[j].products[k].prodname %></td>
+																<td class=""><%= patient[i].visites[j].products[k].prodqte %></td>
+																<td class=""><%= patient[i].visites[j].products[k].prodid %></td>
+																<td class="last" align='right' width='120px;'>
+
+																	<a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" href="/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>" role="button" title="Livraison"><i class="fa fa-truck"></i></a>
+																	<a class="btn btn-danger btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'':'hidden' %>" href="#" role="button" title="Annulation de la livraison"><i class="fa fa-truck"></i></a>
+																	<a class="btn btn-primary btn-xs" href="#" onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ligne sélectionnée ？')" title="Voir le Stock" ><i class="fa fa-eye"></i></a>
+																</td>
+
 															 </tr>
 															<% } %>
 															<% } %>
 															<% } %>
+
 														</tbody>
 													</table>
 
 
 												</div>
-                        <!-- <div class="item form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12 has-feedback-left" for="prog">Choix de Facture : <span class="required">*</span>
-                          </label>
-                          <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select id="dropdown1" type="text" name="factnum" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
-                              <option></option>
-                                  <% for(i=0; i< visites.length; i++){%>
-                                    <% for(j=0; j< visites[i].visites.length; j++){%>
 
-                                        <option><%= visites[i].visites[j].factnum %></option>
-
-                                    <%}%>
-                                  <%}%>
-
-
-                              </select>
-                          </div>
-                        </div> -->
-
-
-
-                        <!-- <div class="col-md-5 col-sm-5 col-xs-12 item form-group">
-                               <label>Code produit : </label>
-                               <div class="">
-                                 <select id="dropdown1" class="select2_single form-control" name="prodinfo" type="text">
-                                   <option value=""></option>
-                                    <option value="Dépôt Casablanca">Dépôt Casablanca</option>
-                                    <option value="Dépôt Meknes">Dépôt Meknes</option>
-                                 </select>
-                               </div>
-                             </div> -->
 
 
 
@@ -119,17 +114,7 @@
               </div>
 
 
-            <!-- <div class="item form-group">
-              <label class="control-label col-md-3 col-sm-3 col-xs-12 has-feedback-left" for="statu">Status <span class="required">*</span>
-              </label>
-              <div class="col-md-3 col-sm-3 col-xs-12">
-                <select id="statu" type="text" name="statu"  data-validate-length-range="5,20" class="form-control col-md-7 col-xs-12" placeholder="Statu familliale">
-                  <option></option>
-                  <option>Marié</option>
-                  <option>Célibataire</option>
-                </select>
-              </div>
-            </div> -->
+
 
 
 
@@ -146,8 +131,10 @@ $(document).ready(function() {
    var table =  $('#fact').DataTable();
 
      $('#dropdown1').on('change', function () {
-                    table.columns(0).search( this.value ).draw();
-                } );
+                    table.columns(0).search( this.value.split('|')[0] ).draw();
+                });
+
+
 });
 
 </script>

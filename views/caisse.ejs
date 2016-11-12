@@ -10,22 +10,22 @@
       <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-money"></i> Total Cash</span>
         <div class="count"><%= totalcash.toFixed(2); %></div>
-        <span class="count_bottom"><i class="green"><%= ((totalcash * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2) %></i> % du chiffre globale</span>
+        <span class="count_bottom"><i class="green"><%= ((((totalcash * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2))=='NaN') ?0:((totalcash * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2)%></i> % du chiffre globale</span>
       </div>
       <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-credit-card"></i> Total TPE</span>
         <div class="count"><%= totaltpe.toFixed(2); %></div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i><%= ((totaltpe * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2) %> </i> % du chiffre globale</span>
+        <span class="count_bottom"><i class="green"><%= ((((totaltpe * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2))== 'NaN')?0:((totaltpe * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2) %> </i> % du chiffre globale</span>
       </div>
       <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-bank"></i> Total Cheque</span>
-        <div class="count green"><%= totalcheque.toFixed(2); %></div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i><%= ((totalcheque * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2) %> </i> % du chiffre globale</span>
+        <div class="count"><%= totalcheque.toFixed(2); %></div>
+        <span class="count_bottom"><i class="green"><%= ((((totalcheque * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2))=='NaN')?0:((totalcheque * 100)/(totalcheque + totaltpe + totalcash)).toFixed(2)%> </i> % du chiffre globale</span>
       </div>
       <div class="col-md-3 col-sm-4 col-xs-6 tile_stats_count">
         <span class="count_top"><i class="fa fa-dollar"></i> Total Global</span>
         <div class="count green"><%= (totalcheque + totaltpe + totalcash).toFixed(2);  %></div>
-        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>100% </i>du chiffre globale</span>
+        <span class="count_bottom"><i class="green">100% </i>du chiffre globale</span>
       </div>
 
 
