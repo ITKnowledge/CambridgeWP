@@ -34,10 +34,20 @@ var ff = function(req, res, next){
 
   return next();
 }
+/* Function DEBITER Stock livraison */
+var stockinout_function = function(dinoutid,qteout){
+  Depotinout.findById(dinoutid,function(err, out){
+      out.update({
+       prodqtemv: out.prodqtemv - qteout
+    },function (err, outID){
+      if(err){
+        console.log('GET Error: There was a problem retrieving: ' + err);
 
+      }else{
 
-var stockinout = function(prodid){
-
+      }
+    })
+});
 
 
 }
@@ -250,17 +260,14 @@ module.exports = function(passport){
     var prodidinvisite = req.query.prodidinvisite;
     var tab = [];
 
-    Depotinout.find({prodid: req.params.id, depotname: depotname}, {}, {sort: {'dateexp': 1}} , function(err, result){
-
-
-
+    Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
       for(i=0; i<result.length; i++){
 
         if(tempqte > 0){
           if(result[i].prodqtemv >= tempqte ){
 
             tab.push({dinoutid: result[i]._id, qte: tempqte, depot:depotname});
-            tempqte = tempqte - result[i].prodqtemv;
+            tempqte = tempqte - tempqte;// result[i].prodqtemv;
 
           }else{
 
@@ -277,26 +284,25 @@ module.exports = function(passport){
 
       for(j=0; j<tab.length; j++){
 
-
           var qte = tab[j].qte;
           var dinoutid = tab[j].dinoutid;
-
-
-
-          Depotinout.findById(dinoutid,function(err, out){
-            out.update({
-
-               prodqtemv: out.prodqtemv - qte
-
-            },function (err, outID){
-              if(err){
-                console.log('GET Error: There was a problem retrieving: ' + err);
-
-              }else{
-
-              }
-            })
-        });
+          stockinout_function(dinoutid,qte);
+        //   Depotinout.findById(dinoutid,function(err, out){
+        //     console.log(dinoutid + ' AVANT :' + out.prodqtemv + ' qte a debiter: ' + qte);
+        //     console.log(dinoutid + ' APRES :' + (Number(out.prodqtemv) - Number(qte))  + ' qte a debiter: ' + qte);
+        //     out.update({
+        //
+        //        prodqtemv: out.prodqtemv - qte
+        //
+        //     },function (err, outID){
+        //       if(err){
+        //         console.log('GET Error: There was a problem retrieving: ' + err);
+        //
+        //       }else{
+        //
+        //       }
+        //     })
+        // });
 
       }
 
@@ -322,9 +328,6 @@ router.get('/livraison', isAuthenticated, function(req, res){
 });
 
 // -------------------------  Function livraison ---------------------------
-
-
-
 
 	router.get('/invoice', isAuthenticated, function(req, res){
 
