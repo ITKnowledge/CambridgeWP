@@ -288,8 +288,8 @@ module.exports = function(passport){
 
           var qte = tab[j].qte;
           var dinoutid = tab[j].dinoutid;
-<<<<<<< Updated upstream
-          stockinout_function(dinoutid,qte);
+
+          // stockinout_function(dinoutid,qte);
         //   Depotinout.findById(dinoutid,function(err, out){
         //     console.log(dinoutid + ' AVANT :' + out.prodqtemv + ' qte a debiter: ' + qte);
         //     console.log(dinoutid + ' APRES :' + (Number(out.prodqtemv) - Number(qte))  + ' qte a debiter: ' + qte);
@@ -306,7 +306,7 @@ module.exports = function(passport){
         //       }
         //     })
         // });
-=======
+
 
 
 
@@ -329,7 +329,6 @@ module.exports = function(passport){
               }
             })
         });
->>>>>>> Stashed changes
 
       }
 
