@@ -101,9 +101,9 @@ function ConvertToUnit(qte, unittype){
   <td class=" " style="color:#04B431" align="center"><b><%= inout[i].prodqtemv %></td><!--quantité restante en stock-->
   <td class=" "><%= inout[i].dateexp  %></td>
   <td class=" " align="right"><%= inout[i].prixachat.toFixed(2) %></td>
-  <td class=" "><%= inout[i].datein %></td>
+  <td class=" "><%= inout[i].datein.substring(0,10) %></td>
 
-<td class=" last"  align='right' width='200px;'>
+<td class=" last"  align='right'>
 
     <a class="btn btn-primary btn-xs" href="/editstockin/<%= inout[i]._id %>" role="button" title="Modifier la ligne sélectionnée"><i class="fa fa-pencil"></i> </a>
     <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listinout/<%= inout[i]._id%>');" href="/listinout/<%= inout[i].prodid%>" title="Supprimer la ligne sélectionnée"><i class="fa fa-trash-o"></i>  </a>

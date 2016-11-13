@@ -16,7 +16,7 @@
         <div class="form-group">
             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Date inventaire</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-right" id="dateinventory" name="dateinventory" placeholder="Date inventaire" aria-describedby="inputSuccess2Status4" required="required" data-inputmask="'mask': '99/99/9999'" value="<%= inventory.dateinventory %> " >
+                  <input type="text" class="form-control col-md-7 col-xs-12 has-feedback-right" id="dateinventory" name="dateinventory" placeholder="Date inventaire" aria-describedby="inputSuccess2Status4" required="required"  value="<%= inventory.dateinventory %> " >
                   <span class="fa fa-calendar-o form-control-feedback right" aria-hidden="true"></span>
                   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
             </div>
@@ -93,7 +93,7 @@
  //	var date_input=$('input[name="date"]'); //our date input has the name "date"
    var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
      $('#dateinventory').datepicker({
-     format: 'dd/mm/yyyy',
+     format: 'yyyy-mm-dd',
      container: container,
      todayHighlight: true,
      autoclose: true,

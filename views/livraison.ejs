@@ -41,10 +41,9 @@
 									<select id="dropdown2" type="text" name="dropdown2" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
 
 										<option></option>
-										<option>Dépôt Casablanca</option>
-										<option>Dépôt Meknes</option>
-
-
+										<% for(i=0; i<depots.length; i++){%>
+											<option><%= depots[i].depotname%></option>
+										<%}%>
 										</select>
 								</div>
 							</div>

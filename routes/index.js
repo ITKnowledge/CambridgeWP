@@ -312,18 +312,11 @@ module.exports = function(passport){
 // -------------------------  Function livraison ---------------------------
 
 router.get('/livraison', isAuthenticated, function(req, res){
-
-  Patient.find({visites: {$elemMatch: {clotured: true}}}, {'visites.$': 1, 'patientnom': 1},function(err, result){
-
-
-
-    res.render('livraison', {user: req.user, patient: result});
-
+   Depot.find(function(err, depot){
+    Patient.find({visites: {$elemMatch: {clotured: true}}}, {'visites.$': 1, 'patientnom': 1},function(err, result){
+      res.render('livraison', {user: req.user, patient: result,depots: depot});
     // res.json(result);
-
-
-
-
+    })
   })
 
 });
@@ -2319,7 +2312,7 @@ logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + 
 
 
       router.post('/stockinbk', isAuthenticated, function(req, res){
-        var datesys = new Date().toISOString().substring(0,10);
+        var datesys = new Date().toISOString();
          var tt = JSON.parse(req.body.obj);
          var to = [];
 
