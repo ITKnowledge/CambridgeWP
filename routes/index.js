@@ -258,11 +258,13 @@ module.exports = function(passport){
     var tempqte = req.query.qte;
     var depotname = req.query.depotname;//"Dépôt Casablanca";            //req.query.depotname;
     var prodidinvisite = req.query.prodidinvisite;
+    var factnum = req.query.factnum;
     var tab = [];
+    var outtab = [];
 
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
       for(i=0; i<result.length; i++){
-
+        // console.log(result[i].out);
         if(tempqte > 0){
           if(result[i].prodqtemv >= tempqte ){
 
@@ -286,6 +288,7 @@ module.exports = function(passport){
 
           var qte = tab[j].qte;
           var dinoutid = tab[j].dinoutid;
+<<<<<<< Updated upstream
           stockinout_function(dinoutid,qte);
         //   Depotinout.findById(dinoutid,function(err, out){
         //     console.log(dinoutid + ' AVANT :' + out.prodqtemv + ' qte a debiter: ' + qte);
@@ -303,6 +306,30 @@ module.exports = function(passport){
         //       }
         //     })
         // });
+=======
+
+
+
+          Depotinout.findById(dinoutid,function(err, out){
+
+
+            outtab = out.out;
+            console.log(out);
+            out.update({
+
+               prodqtemv: out.prodqtemv - qte
+
+
+            },function (err, outID){
+              if(err){
+                console.log('GET Error: There was a problem retrieving: ' + err);
+
+              }else{
+
+              }
+            })
+        });
+>>>>>>> Stashed changes
 
       }
 
