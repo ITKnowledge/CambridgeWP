@@ -246,7 +246,7 @@ module.exports = function(passport){
   router.get('/stockinout/:id', isAuthenticated, function(req, res){
 
     var tempqte = req.query.qte;
-    var depotname = "Dépôt Casablanca";            //req.query.depotname;
+    var depotname = req.query.depotname;//"Dépôt Casablanca";            //req.query.depotname;
     var prodidinvisite = req.query.prodidinvisite;
     var tab = [];
 
@@ -259,12 +259,12 @@ module.exports = function(passport){
         if(tempqte > 0){
           if(result[i].prodqtemv >= tempqte ){
 
-            tab.push({dinoutid: result[i]._id, qte: tempqte});
+            tab.push({dinoutid: result[i]._id, qte: tempqte, depot:depotname});
             tempqte = tempqte - result[i].prodqtemv;
 
           }else{
 
-            tab.push({dinoutid: result[i]._id, qte: result[i].prodqtemv});
+            tab.push({dinoutid: result[i]._id, qte: result[i].prodqtemv, depot: depotname});
             tempqte = tempqte - result[i].prodqtemv;
 
           }
@@ -2319,7 +2319,7 @@ logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + 
 
 
       router.post('/stockinbk', isAuthenticated, function(req, res){
-        var datesys = new Date();
+        var datesys = new Date().toISOString().substring(0,10);
          var tt = JSON.parse(req.body.obj);
          var to = [];
 
@@ -2333,8 +2333,8 @@ logCambridge(req.user.username,"Supression produit ID: " + req.params.prod_id + 
            depotinout.prodqteinit = Number(tt[i].prodqte);
            depotinout.prodqtemv = ConvertToUnit(Number(tt[i].prodqte), tt[i].produnite);
            depotinout.produnite = tt[i].produnite;
-           depotinout.datein = (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm');
-           depotinout.dateexp = tt[i].prodexpdate;
+           depotinout.datein =datesys;// (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm');
+           depotinout.dateexp =tt[i].prodexpdate;
            depotinout.dateachat = req.body.dateachat;
            depotinout.prixachat = tt[i].prixachat;
            depotinout.prixvente = tt[i].prixvente;

@@ -38,7 +38,7 @@
 								<label class="control-label col-md-3 col-sm-3 col-xs-12 has-feedback-left" for="prog">Choix de Depot : <span class="required">*</span>
 								</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<select id="dropdown2" type="text" name="factnum" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
+									<select id="dropdown2" type="text" name="dropdown2" required="required" data-validate-length-range="5,20" class="select2_single form-control col-md-7 col-xs-12" placeholder="">
 
 										<option></option>
 										<option>Dépôt Casablanca</option>
@@ -82,8 +82,8 @@
 																<td class=""><%= patient[i].visites[j].products[k].prodqte %></td>
 																<td class=""><%= patient[i].visites[j].products[k].prodid %></td>
 																<td class="last" align='right' width='120px;'>
-
-																	<a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" href="/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>" role="button" title="Livraison"><i class="fa fa-truck"></i></a>
+																	<a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" onclick="window.location.href = '/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&depotname=' + document.getElementById('dropdown2').value;"  role="button" title="Livraison1"><i class="fa fa-truck"></i></a>
+																	<!-- <a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" href="/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&depotname="+ document.getElementById('dropdown2').value;    role="button" title="Livraison"><i class="fa fa-truck"></i></a> -->
 																	<a class="btn btn-danger btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'':'hidden' %>" href="#" role="button" title="Annulation de la livraison"><i class="fa fa-truck"></i></a>
 																	<a class="btn btn-primary btn-xs" href="#" onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ligne sélectionnée ？')" title="Voir le Stock" ><i class="fa fa-eye"></i></a>
 																</td>
@@ -133,6 +133,7 @@ $(document).ready(function() {
      $('#dropdown1').on('change', function () {
                     table.columns(0).search( this.value.split('|')[0] ).draw();
                 });
+
 
 
 });
