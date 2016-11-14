@@ -273,7 +273,7 @@ module.exports = function(passport){
     var tab = [];
     var outtab = [];
 
-     
+
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
@@ -361,7 +361,7 @@ module.exports = function(passport){
 
 router.get('/livraison', isAuthenticated, function(req, res){
    Depot.find(function(err, depot){
-    Patient.find({visites: {$elemMatch: {clotured: true}}}, {'visites.$': 1, 'patientnom': 1},function(err, result){
+    Patient.find({visites: {$elemMatch: {clotured: true}}}, {'visites.$': 1, 'patientnom': 1, 'patientprenom': 1},function(err, result){
       res.render('livraison', {user: req.user, patient: result,depots: depot});
     // res.json(result);
     })

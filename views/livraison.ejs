@@ -53,13 +53,13 @@
 													<table  id="fact" class="table table-striped table-bordered bulk_action table-hover">
 														<thead>
 															<tr class="headings">
-
+																<th class="column-title">Patient</th>
 																<th class="column-title">Facture Number</th>
 																<th class="column-title">Consultant</th>
 																<th class="column-title">product Name</th>
 																<th class="column-title">Quantity</th>
 
-																<th class="column-title">Prodid</th>
+																<th class="column-title hidden">Prodid</th>
 																<th class="column-title">Action</th>
 
 
@@ -75,11 +75,12 @@
 																		<% for(k=0; k< patient[i].visites[j].products.length; k++){%>
 
 																<tr id="<%= patient[i].visites[j].factnum %>"  class="">
+																<td class=""><%= patient[i].patientnom %> <%= patient[i].patientprenom %></td>
 																<td class=""><%= patient[i].visites[j].factnum %></td>
 																<td class=""><%= patient[i].visites[j].consultant %></td>
-																<td class=""><%= patient[i].visites[j].products[k].prodname %></td>
+																<td class=""><%= patient[i].visites[j].products[k].prodcode %> | <%= patient[i].visites[j].products[k].prodname %></td>
 																<td class=""><%= patient[i].visites[j].products[k].prodqte %></td>
-																<td class=""><%= patient[i].visites[j].products[k].prodid %></td>
+																<td class="hidden"><%= patient[i].visites[j].products[k].prodid %></td>
 																<td class="last" align='right' width='120px;'>
 
 																	<!-- <a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" onclick="window.location.href = '/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&factnum=<%= patient[i].visites[j].products[k].factnum %>&depotname=' + document.getElementById('dropdown2').value;"  role="button" title="Livraison1"><i class="fa fa-truck"></i></a> -->
@@ -135,7 +136,7 @@ $(document).ready(function() {
    var table =  $('#fact').DataTable();
 
      $('#dropdown1').on('change', function () {
-                    table.columns(0).search( this.value.split('|')[0] ).draw();
+                    table.columns(1).search( this.value.split('|')[0] ).draw();
                 });
 
 
