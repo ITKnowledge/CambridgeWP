@@ -273,7 +273,7 @@ module.exports = function(passport){
     var tab = [];
     var outtab = [];
 
-    console.log("le N° de la facture est :" + factnum);
+     
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
