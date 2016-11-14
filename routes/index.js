@@ -66,7 +66,7 @@ console.log("stockout is: " + stockout);
 
 //----------------------------- SetDelivred --------------------------------
 
-var SetDelivred = function(patientid, visitesid, prodid){
+var SetDelivred = function(patientid,visitesid,prodid){
 
 
   Patient.findById(patientid,function(err, patients){
@@ -74,11 +74,15 @@ var SetDelivred = function(patientid, visitesid, prodid){
 
       for (var i=0; i < patients.visites.length; i++){
             if(patients.visites[i]._id.toString() === visitesid.toString()){
+
                for(var j=0;  j<patients.visites[i].products.length; j++){
-                 if(patients.visites[i].products[j].prodid.toString() === prodid.toString()){
+                 console.log(patients.visites[i].products[j].prodid + "|" + prodid);
+                 if(patients.visites[i].products[j].prodid.trim() == prodid.trim()){
+
                    var tt = patients.visites[i].products[j];
                    tt.delivred = true;
                    patients.visites[i].products[j] = tt;
+                   console.log(patients.visites[i].products[j]);
                  }
 
                }
@@ -90,18 +94,17 @@ var SetDelivred = function(patientid, visitesid, prodid){
 
       patients.update({
         visites: patients.visites
-      },function (err, patientsID){
-        if(err){
-          console.log('GET Error: There was a problem retrieving: ' + err);
-          res.redirect('/home');
-        }else{
+      },function (err, eventsID){
+  			if(err){
+  				console.log('GET Error: There was a problem retrieving: ' + err );
 
-          res.redirect("/livraison");
-        }
-      })
+  			}else{
 
-    });
+  				console.log('Success');
+  			}
+  		});
 
+});
 }
 
 var Getdate = function(d){
@@ -349,7 +352,10 @@ module.exports = function(passport){
 
 
       }
-      SetDelivred()
+      var patientid = "58272b714a314af0317a75d3";
+      var visitesid = "58272b9d4a314af0317a75db";
+      var prodid = "5803f855b5effd3e32b89c7d";
+      SetDelivred(patientid, visitesid, prodid);
       res.send(tab);
 
     });
