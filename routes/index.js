@@ -35,10 +35,21 @@ var ff = function(req, res, next){
   return next();
 }
 /* Function DEBITER Stock livraison */
-var stockinout_function = function(dinoutid,qteout){
-  Depotinout.findById(dinoutid,function(err, out){
-      out.update({
-       prodqtemv: out.prodqtemv - qteout
+var stockinout_function = function(dinoutid,qteout,factnum){
+  var datesys = new Date().toISOString();
+  var motifout="Vente normale de la facture: " + factnum;
+  var stockout = {
+  qteout: qteout,
+  dateout: datesys,
+  motifout: motifout,
+  factnum: factnum
+};
+console.log("stockout is: " + stockout);
+  Depotinout.findById(dinoutid,function(err, stockin){
+    stockin.out.push(stockout);
+      stockin.update({
+        out: stockin.out,
+        prodqtemv: stockin.prodqtemv - qteout
     },function (err, outID){
       if(err){
         console.log('GET Error: There was a problem retrieving: ' + err);
@@ -261,19 +272,19 @@ module.exports = function(passport){
     var factnum = req.query.factnum;
     var tab = [];
     var outtab = [];
-
+    console.log("le N° de la facture est :" + factnum);
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
       for(i=0; i<result.length; i++){
         // console.log(result[i].out);
         if(tempqte > 0){
           if(result[i].prodqtemv >= tempqte ){
 
-            tab.push({dinoutid: result[i]._id, qte: tempqte, depot:depotname});
+            tab.push({dinoutid: result[i]._id, qte: tempqte, depot:depotname,factnum:factnum});
             tempqte = tempqte - tempqte;// result[i].prodqtemv;
 
           }else{
 
-            tab.push({dinoutid: result[i]._id, qte: result[i].prodqtemv, depot: depotname});
+            tab.push({dinoutid: result[i]._id, qte: result[i].prodqtemv, depot: depotname,factnum:factnum});
             tempqte = tempqte - result[i].prodqtemv;
 
           }
@@ -288,7 +299,8 @@ module.exports = function(passport){
 
           var qte = tab[j].qte;
           var dinoutid = tab[j].dinoutid;
-
+           
+          stockinout_function(dinoutid,qte,factnum);
         // stockinout_function(dinoutid,qte);
         //   Depotinout.findById(dinoutid,function(err, out){
         //     console.log(dinoutid + ' AVANT :' + out.prodqtemv + ' qte a debiter: ' + qte);
@@ -310,25 +322,25 @@ module.exports = function(passport){
 
 
 
-          Depotinout.findById(dinoutid,function(err, out){
-
-
-            outtab = out.out;
-            console.log(out);
-            out.update({
-
-               prodqtemv: out.prodqtemv - qte
-
-
-            },function (err, outID){
-              if(err){
-                console.log('GET Error: There was a problem retrieving: ' + err);
-
-              }else{
-
-              }
-            })
-        });
+        //   Depotinout.findById(dinoutid,function(err, out){
+        //
+        //
+        //     outtab = out.out;
+        //     console.log(out);
+        //     out.update({
+        //
+        //        prodqtemv: out.prodqtemv - qte
+        //
+        //
+        //     },function (err, outID){
+        //       if(err){
+        //         console.log('GET Error: There was a problem retrieving: ' + err);
+        //
+        //       }else{
+        //
+        //       }
+        //     })
+        // });
 
       }
 
