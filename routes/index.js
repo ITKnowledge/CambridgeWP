@@ -44,6 +44,7 @@ var stockinout_function = function(dinoutid,qteout,factnum){
   motifout: motifout,
   factnum: factnum
 };
+
 console.log("stockout is: " + stockout);
   Depotinout.findById(dinoutid,function(err, stockin){
     stockin.out.push(stockout);
@@ -60,6 +61,46 @@ console.log("stockout is: " + stockout);
     })
 });
 
+
+}
+
+//----------------------------- SetDelivred --------------------------------
+
+var SetDelivred = function(patientid, visitesid, prodid){
+
+
+  Patient.findById(patientid,function(err, patients){
+
+
+      for (var i=0; i < patients.visites.length; i++){
+            if(patients.visites[i]._id.toString() === visitesid.toString()){
+               for(var j=0;  j<patients.visites[i].products.length; j++){
+                 if(patients.visites[i].products[j].prodid.toString() === prodid.toString()){
+                   var tt = patients.visites[i].products[j];
+                   tt.delivred = true;
+                   patients.visites[i].products[j] = tt;
+                 }
+
+               }
+
+            }
+      }
+
+
+
+      patients.update({
+        visites: patients.visites
+      },function (err, patientsID){
+        if(err){
+          console.log('GET Error: There was a problem retrieving: ' + err);
+          res.redirect('/home');
+        }else{
+
+          res.redirect("/livraison");
+        }
+      })
+
+    });
 
 }
 
@@ -267,7 +308,7 @@ module.exports = function(passport){
   router.get('/stockinout/:id', isAuthenticated, function(req, res){
 
     var tempqte = req.query.qte;
-    var depotname = "Dépôt Casablanca";            //req.query.depotname;
+    var depotname = req.query.depotname;
     var prodidinvisite = req.query.prodidinvisite;
     var factnum = req.query.factnum;
     var tab = [];
@@ -305,49 +346,10 @@ module.exports = function(passport){
           var dinoutid = tab[j].dinoutid;
 
           stockinout_function(dinoutid,qte,factnum);
-        // stockinout_function(dinoutid,qte);
-        //   Depotinout.findById(dinoutid,function(err, out){
-        //     console.log(dinoutid + ' AVANT :' + out.prodqtemv + ' qte a debiter: ' + qte);
-        //     console.log(dinoutid + ' APRES :' + (Number(out.prodqtemv) - Number(qte))  + ' qte a debiter: ' + qte);
-        //     out.update({
-        //
-        //        prodqtemv: out.prodqtemv - qte
-        //
-        //     },function (err, outID){
-        //       if(err){
-        //         console.log('GET Error: There was a problem retrieving: ' + err);
-        //
-        //       }else{
-        //
-        //       }
-        //     })
-        // });
 
-
-
-
-        //   Depotinout.findById(dinoutid,function(err, out){
-        //
-        //
-        //     outtab = out.out;
-        //     console.log(out);
-        //     out.update({
-        //
-        //        prodqtemv: out.prodqtemv - qte
-        //
-        //
-        //     },function (err, outID){
-        //       if(err){
-        //         console.log('GET Error: There was a problem retrieving: ' + err);
-        //
-        //       }else{
-        //
-        //       }
-        //     })
-        // });
 
       }
-
+      SetDelivred()
       res.send(tab);
 
     });
@@ -368,6 +370,18 @@ router.get('/livraison', isAuthenticated, function(req, res){
   })
 
 });
+
+
+router.get('/delivred/:id', isAuthenticated, function(req, res){
+
+
+
+});
+
+
+
+
+
 
 // -------------------------  Function livraison ---------------------------
 
@@ -637,6 +651,9 @@ router.get('/listprog/:prog_id', isAuthenticated, function(req, res){
     // res.json({ message: 'Prog successfully deleted!' });
   });
 });
+
+
+
 
 
 
