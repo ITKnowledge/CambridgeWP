@@ -85,12 +85,10 @@ function ConvertToUnit(qte, unittype){
     }
     <!-- else {} -->
   }%>
-  <td class=" " align="center">
-    <a class="btn btn-success btn-xs" style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>" role="button"> <%= totalqteout %>  </a>
+  <td class=" " align="center" style="color:red;font-weight:bold"><%= totalqteout %>
     <!-- <a style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>"><%= totalqteout %></a> -->
   </td>
-  <td class=" " align="center">
-    <a class="btn btn-warning btn-xs" style="color:#DF3A01" href="/liststockout/<%= inout[i]._id %>" role="button"> <%= totalqteretour %>  </a>
+  <td class=" " align="center" style="color:blue;font-weight:bold"><%= totalqteretour %>
     <!-- <a style="color:#DF0101" href="/liststockout/<%= inout[i]._id %>"><%= totalqteout %></a> -->
   </td>
 <!--
@@ -104,20 +102,21 @@ function ConvertToUnit(qte, unittype){
   <td class=" "><%= inout[i].datein.substring(0,10) %></td>
 
 <td class=" last"  align='right'>
-
+    <a class="btn btn-warning btn-xs" href="/liststockout/<%= inout[i]._id %>"  title="Détail des sorties et retours" ><i class="fa fa-eye"></i></a>
     <a class="btn btn-primary btn-xs" href="/editstockin/<%= inout[i]._id %>" role="button" title="Modifier la ligne sélectionnée"><i class="fa fa-pencil"></i> </a>
     <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/listinout/<%= inout[i]._id%>');" href="/listinout/<%= inout[i].prodid%>" title="Supprimer la ligne sélectionnée"><i class="fa fa-trash-o"></i>  </a>
+    <!-- <a class="btn btn-default btn-xs" href="/stockretourclt/<%= inout[i]._id %>" role="button" title="Nouveau retour client au stock"><i class="fa fa-reply"></i></a> -->
     <!-- <% if (inout[i].prodqtemv ===0){%>
       <a class="btn btn-default btn-xs" role="button" disabled="disabled" title="Nouvelle sortie du stock"><i class="fa fa-sign-out"></i></a>
     <%} else {%>
       <a class="btn btn-default btn-xs" href="/stockout/<%= inout[i]._id %>" role="button" title="Nouvelle sortie du stock"><i class="fa fa-sign-out"></i></a>
-    <%}%>
-    <% if ((totalqteout - totalqteretour) > 0){%>
+    <%}%> -->
+    <% if (totalqteout > 0){%>
       <a class="btn btn-default btn-xs" href="/stockretourclt/<%= inout[i]._id %>" role="button" title="Nouveau retour client au stock"><i class="fa fa-reply"></i></a>
 
     <%} else {%>
       <a class="btn btn-default btn-xs" disabled="disabled" role="button" title="Nouveau retour client au stock"><i class="fa fa-reply"></i></a>
-    <%}%> -->
+    <%}%>
 </td>
   <% } %>
 
