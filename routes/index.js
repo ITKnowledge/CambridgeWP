@@ -38,6 +38,7 @@ var ff = function(req, res, next){
 
 /* Function DEBITER Stock livraison */
 var stockinout_function = function(dinoutid,qteout,factnum){
+
   var datesys = new Date().toISOString();
   var motifout="Vente normale de la facture: " + factnum;
   var stockout = {
@@ -47,7 +48,7 @@ var stockinout_function = function(dinoutid,qteout,factnum){
   factnum: factnum
 };
 
-console.log("stockout is: " + stockout);
+
   Depotinout.findById(dinoutid,function(err, stockin){
     stockin.out.push(stockout);
       stockin.update({
@@ -62,7 +63,6 @@ console.log("stockout is: " + stockout);
       }
     })
 });
-
 
 }
 
@@ -314,7 +314,7 @@ router.get('/notification', isAuthenticated, function(req, res){
 });
 // -------------------------  Function Stockinout ---------------------------
   router.get('/stockinout/:id', isAuthenticated, function(req, res){
-
+    var retour="";
     var tempqte = req.query.qte;
     var depotname = req.query.depotname;
     var prodidinvisite = req.query.prodidinvisite;
@@ -347,22 +347,27 @@ router.get('/notification', isAuthenticated, function(req, res){
 
 
       }
+if (tempqte>0){
+  retour="ko";
+}else {
+  for(j=0; j<tab.length; j++){
+      var retour="";
+      var qte = tab[j].qte;
+      var dinoutid = tab[j].dinoutid;
 
-      for(j=0; j<tab.length; j++){
+      stockinout_function(dinoutid,qte,factnum);
+  }
+  retour="ok";
+}
 
-          var qte = tab[j].qte;
-          var dinoutid = tab[j].dinoutid;
-
-          stockinout_function(dinoutid,qte,factnum);
-
-
-      }
       // var patientid = "58272b714a314af0317a75d3";
       // var visitesid = "58272b9d4a314af0317a75db";
       // var prodid = "5803f855b5effd3e32b89c7d";
       // SetDelivred(patientid, visitesid, prodid);
-      res.send(tab);
+      // res.send(tab);
+      //res.end("Hello Mitnick, you've just stumbled on the simplest web server ever");
 
+      res.redirect('/livraison/?result=' + retour);
     });
 });
 

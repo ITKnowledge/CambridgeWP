@@ -58,12 +58,8 @@
 																<th class="column-title">Consultant</th>
 																<th class="column-title">product Name</th>
 																<th class="column-title">Quantity</th>
-
 																<th class="column-title hidden">Prodid</th>
 																<th class="column-title">Action</th>
-
-
-
 
 															</tr>
 														</thead>
@@ -104,19 +100,14 @@
 
 												</div>
 
-
-
-
-
-
                     </div>
                   </div>
                 </div>
               </div>
 
               <div class="row">
-<button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listprod'">Liste des produits</button>
-              </div>
+								<button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listprod'">Liste des produits</button>
+					    </div>
 
 
 
@@ -129,10 +120,48 @@
 
 <% include footer.ejs %>
 
-
-
 <script>
+
 $(document).ready(function() {
+	var myParam = location.search.split('result=')[1]
+	//alert(myParam);
+	 if (myParam=="ok"){
+		 new PNotify({
+ 										 title: 'Sortie du stock.',
+ 										 text: 'Cette opération est términée avec succès.',
+ 										 type: 'success',
+ 										 styling: 'bootstrap3',
+										 delay: 1000
+ 								 });
+
+								 setTimeout(function() {
+									 	ChangeUrl('livraison', '/livraison');
+ 							// 		window.location = "/livraison";
+						},2000); // Nb de millisecondes de délai
+	 }else if (myParam=="ko"){
+		 new PNotify({
+											title: 'Sortie du stock.',
+											text: 'Attention, Le stock actuel est insuffisant. Opération annulée.',
+											type: 'error',
+											styling: 'bootstrap3',
+											delay: 1000
+									});
+
+									setTimeout(function() {
+										ChangeUrl('livraison', '/livraison');
+									},2000); // Nb de millisecondes de délai
+	 }
+
+	 /*fin notification */
+	 function ChangeUrl(title, url) {
+	     if (typeof (history.pushState) != "undefined") {
+	         var obj = { Title: title, Url: url };
+	         history.pushState(obj, obj.Title, obj.Url);
+	     } else {
+	         alert("Browser does not support HTML5.");
+	     }
+	 }
+
    var table =  $('#fact').DataTable();
 
      $('#dropdown1').on('change', function () {
