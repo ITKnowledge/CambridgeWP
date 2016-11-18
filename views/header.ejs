@@ -193,6 +193,8 @@
 	              </div>
 
 	              <ul class="nav navbar-nav navbar-right">
+
+
 	                <li class="">
 	                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 	                    <img src="../images/user-img.png" alt=""> <%= user.username %>
@@ -213,7 +215,42 @@
 	                </li>
 
 
+                  <li role="presentation" class="dropdown">
+                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="true" title="Notifications">
+                                      <i class="fa fa-bell-o"></i>
+                                      <span class="badge bg-red">2</span>
+                                    </a>
+                                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                                      <li>
+                                        <a>
+                                          <span class="image"><img src="../images/prod.png" alt="Profile Image"></span>
+
+                                          <span>
+                                            <span><b>  Gestion de stock</b></span>
+                                            <!-- <span class="time">3 mins ago</span> -->
+                                          </span>
+                                          <span class="message">
+                                            33 articles en ruptue de stock.<br>
+                                            02 articles en dépassement du stock minimum.
+                                          </span>
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a>
+                                          <span class="image"><img src="../images/patient_en_consultation.png" alt="Profile Image"></span>
+                                          <span>
+                                            <span><b>  2 patients n'ont pas encore de fiche</b></span>
+                                            <!-- <span class="time">3 mins ago</span> -->
+                                          </span>
+                                          <span class="message">
+                                            Vous avez 2 patient(s) sans fiche.
+                                          </span>
+                                        </a>
+
+
+
 	              </ul>
+
 	            </nav>
 	          </div>
 	        </div>

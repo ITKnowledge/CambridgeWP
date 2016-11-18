@@ -34,6 +34,8 @@ var ff = function(req, res, next){
 
   return next();
 }
+
+
 /* Function DEBITER Stock livraison */
 var stockinout_function = function(dinoutid,qteout,factnum){
   var datesys = new Date().toISOString();
@@ -66,46 +68,45 @@ console.log("stockout is: " + stockout);
 
 //----------------------------- SetDelivred --------------------------------
 
-var SetDelivred = function(patientid,visitesid,prodid){
-
-
-  Patient.findById(patientid,function(err, patients){
-
-
-      for (var i=0; i < patients.visites.length; i++){
-            if(patients.visites[i]._id.toString() === visitesid.toString()){
-
-               for(var j=0;  j<patients.visites[i].products.length; j++){
-                 console.log(patients.visites[i].products[j].prodid + "|" + prodid);
-                 if(patients.visites[i].products[j].prodid.trim() == prodid.trim()){
-
-                   var tt = patients.visites[i].products[j];
-                   tt.delivred = true;
-                   patients.visites[i].products[j] = tt;
-                   console.log(patients.visites[i].products[j]);
-                 }
-
-               }
-
-            }
-      }
-
-
-
-      patients.update({
-        visites: patients.visites
-      },function (err, eventsID){
-  			if(err){
-  				console.log('GET Error: There was a problem retrieving: ' + err );
-
-  			}else{
-
-  				console.log('Success');
-  			}
-  		});
-
-});
-}
+// var SetDelivred = function(patientid,visitesid,prodid){
+//
+//
+//   Patient.findById(patientid,function(err, patients){
+// console.log("the patientid is: " + patientid);
+//       for (var i=0; i < patients.visites.length; i++){
+//             if(patients.visites[i]._id.toString() === visitesid.toString()){
+//
+//                for(var j=0;  j<patients.visites[i].products.length; j++){
+//                  console.log(patients.visites[i].products[j].prodid + "|" + prodid);
+//                  if(patients.visites[i].products[j].prodid.trim() == prodid.trim()){
+//
+//                    var tt = patients.visites[i].products[j];
+//                    tt.delivred = true;
+//                    patients.visites[i].products[j] = tt;
+//                    console.log(patients.visites[i].products[j]);
+//                  }
+//
+//                }
+//
+//             }
+//       }
+//
+//
+//
+//       patients.update({
+//         visites: patients.visites
+//       },function (err, eventsID){
+//   			if(err){
+//   				console.log('GET Error: There was a problem retrieving: ' + err );
+//
+//   			}else{
+//
+//   				console.log('Success');
+//   			}
+//   		});
+//
+// });
+// }
 
 var Getdate = function(d){
    var out = d.substring(0, 10).split("-",3);
@@ -307,6 +308,10 @@ module.exports = function(passport){
 	});
 
 
+/* notification alert */
+router.get('/notification', isAuthenticated, function(req, res){
+  res.json({notification: "33 Articles en rupture de stock."});
+});
 // -------------------------  Function Stockinout ---------------------------
   router.get('/stockinout/:id', isAuthenticated, function(req, res){
 
@@ -352,10 +357,10 @@ module.exports = function(passport){
 
 
       }
-      var patientid = "58272b714a314af0317a75d3";
-      var visitesid = "58272b9d4a314af0317a75db";
-      var prodid = "5803f855b5effd3e32b89c7d";
-      SetDelivred(patientid, visitesid, prodid);
+      // var patientid = "58272b714a314af0317a75d3";
+      // var visitesid = "58272b9d4a314af0317a75db";
+      // var prodid = "5803f855b5effd3e32b89c7d";
+      // SetDelivred(patientid, visitesid, prodid);
       res.send(tab);
 
     });
