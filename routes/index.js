@@ -37,7 +37,7 @@ var ff = function(req, res, next){
 
 
 /* Function DEBITER Stock livraison */
-var stockinout_function = function(dinoutid,qteout,factnum){
+var stockinout_function = function(dinoutid,qteout,factnum,patientid,visiteid,prodidinvisite){
 
   var datesys = new Date().toISOString();
   var motifout="Vente normale de la facture: " + factnum;
@@ -59,7 +59,7 @@ var stockinout_function = function(dinoutid,qteout,factnum){
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
-
+          SetDelivred(patientid,visiteid,prodidinvisite);
       }
     })
 });
@@ -68,45 +68,45 @@ var stockinout_function = function(dinoutid,qteout,factnum){
 
 //----------------------------- SetDelivred --------------------------------
 
-// var SetDelivred = function(patientid,visitesid,prodid){
-//
-//
-//   Patient.findById(patientid,function(err, patients){
-// console.log("the patientid is: " + patientid);
-//       for (var i=0; i < patients.visites.length; i++){
-//             if(patients.visites[i]._id.toString() === visitesid.toString()){
-//
-//                for(var j=0;  j<patients.visites[i].products.length; j++){
-//                  console.log(patients.visites[i].products[j].prodid + "|" + prodid);
-//                  if(patients.visites[i].products[j].prodid.trim() == prodid.trim()){
-//
-//                    var tt = patients.visites[i].products[j];
-//                    tt.delivred = true;
-//                    patients.visites[i].products[j] = tt;
-//                    console.log(patients.visites[i].products[j]);
-//                  }
-//
-//                }
-//
-//             }
-//       }
-//
-//
-//
-//       patients.update({
-//         visites: patients.visites
-//       },function (err, eventsID){
-//   			if(err){
-//   				console.log('GET Error: There was a problem retrieving: ' + err );
-//
-//   			}else{
-//
-//   				console.log('Success');
-//   			}
-//   		});
-//
-// });
-// }
+var SetDelivred = function(patientid,visiteid,prodidinvisite){
+
+  Patient.findById(patientid,function(err, patients){
+
+      for (var j=0; j < patients.visites.length; j++){
+            if(patients.visites[j]._id.toString() === visiteid.toString()){
+
+               for(var k=0;  k<patients.visites[j].products.length; k++){
+
+                 if(patients.visites[j].products[k]._id.toString() == prodidinvisite.toString()){
+
+                   var tt = patients.visites[j].products[k];
+                   tt.delivred = true;
+                   patients.visites[j].products[k] = tt;
+
+                 }
+
+               }
+
+            }
+      }
+
+
+
+      patients.update({
+        visites: patients.visites
+      },function (err, eventsID){
+  			if(err){
+  				console.log('GET Error: There was a problem retrieving: ' + err );
+
+  			}else{
+
+  				console.log('Success');
+  			}
+  		});
+
+});
+}
+
 
 var Getdate = function(d){
    var out = d.substring(0, 10).split("-",3);
@@ -317,12 +317,13 @@ router.get('/notification', isAuthenticated, function(req, res){
     var retour="";
     var tempqte = req.query.qte;
     var depotname = req.query.depotname;
+    var patientid = req.query.patientid;
+    var visiteid = req.query.visiteid;
     var prodidinvisite = req.query.prodidinvisite;
     var factnum = req.query.factnum;
     var tab = [];
     var outtab = [];
-
-
+    
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
@@ -355,7 +356,7 @@ if (tempqte>0){
       var qte = tab[j].qte;
       var dinoutid = tab[j].dinoutid;
 
-      stockinout_function(dinoutid,qte,factnum);
+      stockinout_function(dinoutid,qte,factnum,patientid,visiteid,prodidinvisite);
   }
   retour="ok";
 }
