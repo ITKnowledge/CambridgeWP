@@ -22,7 +22,8 @@ module.exports = mongoose.model('Depotinout',{
     qteout: {type: Number, min:0},
     dateout: String,
     motifout: String,
-    factnum:String
+    factnum:String,
+    prodidinvisite:String
   }]
 
 });

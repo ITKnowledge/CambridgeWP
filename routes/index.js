@@ -45,7 +45,8 @@ var stockinout_function = function(dinoutid,qteout,factnum,patientid,visiteid,pr
   qteout: qteout,
   dateout: datesys,
   motifout: motifout,
-  factnum: factnum
+  factnum: factnum,
+  prodidinvisite: prodidinvisite
 };
 
 
@@ -59,7 +60,7 @@ var stockinout_function = function(dinoutid,qteout,factnum,patientid,visiteid,pr
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
-          SetDelivred(patientid,visiteid,prodidinvisite);
+          SetDelivred(patientid,visiteid,prodidinvisite,true);
       }
     })
 });
@@ -68,8 +69,8 @@ var stockinout_function = function(dinoutid,qteout,factnum,patientid,visiteid,pr
 
 //----------------------------- SetDelivred --------------------------------
 
-var SetDelivred = function(patientid,visiteid,prodidinvisite){
-
+var SetDelivred = function(patientid,visiteid,prodidinvisite,etat){
+ console.log("eeeeeeee" + patientid + '|' + prodidinvisite + '|' + etat);
   Patient.findById(patientid,function(err, patients){
 
       for (var j=0; j < patients.visites.length; j++){
@@ -80,7 +81,7 @@ var SetDelivred = function(patientid,visiteid,prodidinvisite){
                  if(patients.visites[j].products[k]._id.toString() == prodidinvisite.toString()){
 
                    var tt = patients.visites[j].products[k];
-                   tt.delivred = true;
+                   tt.delivred = etat;//true;
                    patients.visites[j].products[k] = tt;
 
                  }
@@ -323,7 +324,7 @@ router.get('/notification', isAuthenticated, function(req, res){
     var factnum = req.query.factnum;
     var tab = [];
     var outtab = [];
-    
+
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
@@ -1695,7 +1696,7 @@ router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
    router.get('/liststockout/:id', isAuthenticated, function(req, res){
 
      var vid = req.query.vid;
-     console.log("VID is: " + vid);
+ 
     // var dt = new Date().toISOString();
      Depotinout.findById(req.params.id, function(err, stockin){
         if (err) {
@@ -1705,33 +1706,57 @@ router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
         }
      });
    });
-/* Suppression ligne sortie du stock */
-router.delete('/deletestockout', isAuthenticated, function(req, res){
-    var stockinoutid = req.query.id;
-    var outid = req.query.outid;
-    var qteoutdel=req.query.outqte;
+/* Annuler une livraison produit */
+router.get('/livraisoncancel/:id', isAuthenticated, function(req, res){
+var patientid=req.query.pid;
+var visiteid = req.query.vid;
 
-    Depotinout.findById(stockinoutid, function (err, stockin) {
-    stockin.update({
-      prodqtemv: Number(stockin.prodqtemv) + Number(qteoutdel),
-    },function (err, providersID){
+Depotinout.find({ out:{
+                      $elemMatch:{
+                         prodidinvisite:req.params.id
+                      }
+            } },{_id:1, out:1}, function (err, stockin) {
+
+for(i=0; i < stockin.length; i++){
+
+
+  for(j=0; j<stockin[i].out.length; j++){
+
+    if (stockin[i].out[j].prodidinvisite==req.params.id){
+        deletestockout_function(stockin[i]._id,stockin[i].out[j].qteout,stockin[i].out[j]._id)
+      }
+    }
+  }
+});
+SetDelivred(patientid,visiteid,req.params.id,false);
+
+res.redirect("/livraison");
+ });
+/* function deleting out stock used by livraisoncancel */
+var deletestockout_function = function(dinoutid,qteoutdel,outid){
+  Depotinout.findById(dinoutid, function (err, stockinbis) {
+
+    stockinbis.update({
+
+      prodqtemv: Number(stockinbis.prodqtemv) + Number(qteoutdel),
+    },function (err, pstockinbisID){
       if(err){
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
 
-            Depotinout.update({_id: stockinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockin){
+            Depotinout.update({_id: dinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockinout){
             if (err) {
               console.log('GET Error: There was a problem retrieving: ' + err);
-            } else {
-              res.redirect("/listinout");
+            }else{
+
             }
         });
       }
     })
+})
+}
 
-   });
-});
 
 /* Suppression ligne retour client au stock */
 router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
