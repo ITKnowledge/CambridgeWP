@@ -324,7 +324,7 @@ router.get('/notification', isAuthenticated, function(req, res){
     var factnum = req.query.factnum;
     var tab = [];
     var outtab = [];
-
+console.log(tempqte + '|' + depotname + '|' + patientid + '|' + visiteid  + '|' + prodidinvisite + '|' + factnum);
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
