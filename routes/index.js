@@ -1589,7 +1589,7 @@ router.get('/productstock', isAuthenticated, function(req, res){
 });
 
 router.post('/stockout/:id', isAuthenticated, function(req, res){
-var datesys = new Date();
+var datesys = new Date().toISOString();;
 var qte=req.body.qteout;
 var prodid=req.body.prodid2;
 var factnum=req.body.factureclt;
@@ -1597,7 +1597,7 @@ var motifout=req.body.motifout;
 
  var stockout = {
   qteout: qte,
-  dateout: (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
+  dateout:datesys,// (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
   motifout: motifout,
   factnum: factnum
 };
@@ -1620,7 +1620,7 @@ Depotinout.findById(req.params.id, function (err, stockin) {
    });
 /* Retour client au stock */
 router.post('/stockretourclient/:id', isAuthenticated, function(req, res){
-var datesys = new Date();
+var datesys = new Date().toISOString();;
 var qte=req.body.qteout;
 var prodid=req.body.prodid2;
 var factnum=req.body.factureclt;
@@ -1628,7 +1628,7 @@ var motifout=req.body.motifout;
 
  var stockout = {
   qteout: qte * (-1),
-  dateout: (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
+  dateout:datesys,// (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
   motifout: motifout,
   factnum: factnum
 };
@@ -1760,7 +1760,7 @@ var deletestockout_function = function(dinoutid,qteoutdel,outid){
 
 /* Suppression ligne retour client au stock */
 router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
-  console.log("delete retour client--------------------");
+
     var stockinoutid = req.query.id;
     var outid = req.query.outid;
     var qteoutdel=req.query.outqte;
@@ -1773,7 +1773,7 @@ router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
-console.log("changement qtemvt ok---------------------");
+ 
             Depotinout.update({_id: stockinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockin){
             if (err) {
               console.log('GET Error: There was a problem retrieving: ' + err);
