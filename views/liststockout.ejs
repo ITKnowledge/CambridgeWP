@@ -34,8 +34,8 @@
                     <th class="column-title">Quantité </th>
                     <th class="column-title">Motif </th>
                     <th class="column-title">Numéro facture | Client </th>
-                    <!-- <th class="column-title no-link last"><span class="nobr">Action</span>
-                    </th> -->
+                    <th class="column-title no-link last"><span class="nobr">Action</span>
+                    </th>
                     <!-- <th class="bulk-actions" colspan="7">
                       <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
                     </th> -->
@@ -55,9 +55,12 @@
                       <td class=" "><%= stockin.out[i].qteout %></td>
                       <td class=" "><%= stockin.out[i].motifout %></td>
                       <td class=" "><%= stockin.out[i].factnum %></td>
-                      <!-- <td class="last"  align='right' width='120px;'>
-                        <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/deletestockout/?id=<%= stockin._id %>&outid=<%= stockin.out[i]._id %>&outqte=<%= stockin.out[i].qteout %>');" href="/liststockout/<%= stockin._id %>"><i class="fa fa-trash-o"></i>  </a>
-                      </td> -->
+                      <td class="last"  align='right' width='120px;'>
+                        <% if (stockin.out[i].qteout<0){ %>
+                        <a class="btn btn-danger btn-xs" onclick="if (confirm('Voulez vous vraiment supprimer la ligne sélectionnée ?')) supprimer('/deletestockretourclt/?id=<%= stockin._id %>&outid=<%= stockin.out[i]._id %>&outqte=<%= stockin.out[i].qteout %>');" href="/liststockout/<%= stockin._id %>"><i class="fa fa-trash-o"></i>  </a>
+                          <%}%>
+                      </td>
+
                     </tr>
                   <%
                 <!-- } -->

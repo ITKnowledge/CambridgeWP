@@ -1696,7 +1696,7 @@ router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
    router.get('/liststockout/:id', isAuthenticated, function(req, res){
 
      var vid = req.query.vid;
- 
+
     // var dt = new Date().toISOString();
      Depotinout.findById(req.params.id, function(err, stockin){
         if (err) {
@@ -1760,6 +1760,7 @@ var deletestockout_function = function(dinoutid,qteoutdel,outid){
 
 /* Suppression ligne retour client au stock */
 router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
+  console.log("delete retour client--------------------");
     var stockinoutid = req.query.id;
     var outid = req.query.outid;
     var qteoutdel=req.query.outqte;
@@ -1772,7 +1773,7 @@ router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
-
+console.log("changement qtemvt ok---------------------");
             Depotinout.update({_id: stockinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockin){
             if (err) {
               console.log('GET Error: There was a problem retrieving: ' + err);
