@@ -72,30 +72,18 @@
 																		<% for(k=0; k< patient[i].visites[j].products.length; k++){%>
 
 																<tr id="<%= patient[i].visites[j].factnum %>"  class="">
-																<td class=""><%= patient[i].patientnom %> <%= patient[i].patientprenom %></td>
-																<td class=""><%= patient[i].visites[j].factnum %></td>
-																<td class=""><%= patient[i].visites[j].consultant %></td>
-																<td class=""><%= patient[i].visites[j].products[k].prodcode %> | <%= patient[i].visites[j].products[k].prodname %></td>
-																<td class=""><%= patient[i].visites[j].products[k].prodqte %></td>
-																<td class="hidden"><%= patient[i].visites[j].products[k].prodid %></td>
-																<td class="last" align='right' width='120px;'>
-
-																	<!-- <a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" onclick="window.location.href = '/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&factnum=<%= patient[i].visites[j].products[k].factnum %>&depotname=' + document.getElementById('dropdown2').value;"  role="button" title="Livraison1"><i class="fa fa-truck"></i></a> -->
-																	<!-- <a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" href="/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&depotname="+ document.getElementById('dropdown2').value;    role="button" title="Livraison"><i class="fa fa-truck"></i></a> -->
-
-																	<a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" onclick="if (confirm('Voulez vous vraiment débiter le stock par la ligne sélectionnée?')) window.location.href = '/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&factnum=<%= patient[i].visites[j].factnum %>&patientid=<%= patient[i]._id %>&visiteid=<%= patient[i].visites[j]._id %>&depotname=' + document.getElementById('dropdown2').value;"  role="button" title="Valider la livraison"><i class="fa fa-truck"></i></a>
-
-
-
-																	<!-- <a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" href="/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&factnum=<%= patient[i].visites[j].products[k].factnum %>" role="button" title="Livraison"><i class="fa fa-truck"></i></a> -->
-<!-- <a href="/livraisoncancel/<%= patient[i].visites[j].products[k]._id %>" id="cloture" class="btn btn-danger btn-xs" role="button" onclick="return confirm('Êtes-vous sûr de vouloir clôturer la facture sélectionnée ？')"><i class="fa fa-unlock"></i></a> -->
-
-
-																	<a id="livraisoncancel-btn" class="btn btn-danger btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'':'hidden' %>" href="/livraisoncancel/<%= patient[i].visites[j].products[k]._id %>?pid=<%= patient[i]._id %>&vid=<%= patient[i].visites[j]._id %>" onclick="return confirm('Êtes-vous sûr de vouloir annuler la livraison sélectionnée ？')" role="button" title="Annulation de la livraison"><i class="fa fa-truck"></i></a>
-																	<a class="btn btn-primary btn-xs" href="#" onclick="return confirm('Êtes-vous sûr de vouloir supprimer la ligne sélectionnée ？')" title="Voir le Stock" ><i class="fa fa-eye"></i></a>
-																</td>
-
-															 </tr>
+																		<td class=""><%= patient[i].patientnom %> <%= patient[i].patientprenom %></td>
+																		<td class=""><%= patient[i].visites[j].factnum %></td>
+																		<td class=""><%= patient[i].visites[j].consultant %></td>
+																		<td class=""><%= patient[i].visites[j].products[k].prodcode %> | <%= patient[i].visites[j].products[k].prodname %></td>
+																		<td class=""><%= patient[i].visites[j].products[k].prodqte %></td>
+																		<td class="hidden"><%= patient[i].visites[j].products[k].prodid %></td>
+																		<td class="last" align='right' width='120px;'>
+																			<a id="livraison-btn" class="btn btn-success btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'hidden':'' %>" onclick="if (confirm('Voulez vous vraiment débiter le stock par la ligne sélectionnée?')) window.location.href = '/stockinout/<%= patient[i].visites[j].products[k].prodid.trim() %>?prodidinvisite=<%= patient[i].visites[j].products[k]._id %>&qte=<%= patient[i].visites[j].products[k].prodqte %>&factnum=<%= patient[i].visites[j].factnum %>&patientid=<%= patient[i]._id %>&visiteid=<%= patient[i].visites[j]._id %>&depotname=' + document.getElementById('dropdown2').value;"  role="button" title="Valider la livraison"><i class="fa fa-truck"></i></a>
+																			<a id="livraisoncancel-btn" class="btn btn-danger btn-xs <%= (patient[i].visites[j].products[k].delivred == true)?'':'hidden' %>" href="/livraisoncancel/<%= patient[i].visites[j].products[k]._id %>?pid=<%= patient[i]._id %>&vid=<%= patient[i].visites[j]._id %>" onclick="return confirm('Êtes-vous sûr de vouloir annuler la livraison sélectionnée ？')" role="button" title="Annulation de la livraison"><i class="fa fa-truck"></i></a>
+																			<a class="btn btn-primary btn-xs" href="#" onclick="javascript: alert('affichage du stock du produit sélectionné. Encours de construction.')" title="Voir le Stock" ><i class="fa fa-eye"></i></a>
+																		</td>
+															 	</tr>
 															<% } %>
 															<% } %>
 															<% } %>
