@@ -44,6 +44,7 @@ function ConvertToUnit(qte, unittype){
     <thead>
       <tr class="headings">
 
+        <th class="column-title">Date entrée</th>
         <th class="column-title">Dépôt</th>
         <th class="column-title">Code produit</th>
         <th class="column-title">Désignation produit</th>
@@ -74,7 +75,7 @@ function ConvertToUnit(qte, unittype){
         %>
 
 <tr class="even pointer">
-
+  <td class=" "><%= stockin[i].datein.substring(0, 19).replace("T", " ") %></td>
   <td class=" "><%= stockin[i].depotname %></td>
   <td class=" "><%= stockin[i].prodcode %></td>
   <td class=" "><%= stockin[i].prodname %></td>

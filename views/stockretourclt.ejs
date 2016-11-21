@@ -49,12 +49,19 @@
                   <input disabled="disabled" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" id="prodqtemvt" name="prodqtemvt" placeholder="Stock actuel" required="required" type="text" value="<%= stockin.prodqtemv %>">
                 </div>
               </div>
+              <% var totalqteout=0; for(j=0; j < stockin.out.length; j++){
+
+
+                      totalqteout=totalqteout + (Number(stockin.out[j].qteout))
+
+
+              }%>
 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Total sortie ( en unité) : <span class="required">*</span>
                 </label>
                 <div disabled="disabled" class="col-md-6 col-sm-6 col-xs-12">
-                  <input disabled="disabled" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" id="prodqteout" name="prodqteout" placeholder="Total sortie" required="required" type="text" value="<%= stockin.prodqteinit-stockin.prodqtemv %>">
+                  <input disabled="disabled" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" id="prodqteout" name="prodqteout" placeholder="Total sortie" required="required" type="text" value=" <%= totalqteout %>">
                 </div>
               </div>
 
@@ -98,7 +105,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantité à retourner: <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input class="form-control col-md-7 col-xs-12"  data-validate-words="1" id="qteout" name="qteout" placeholder="Quantité à retourner" autofocus required="required" type="Number" min="1" max="<%= stockin.prodqteinit - stockin.prodqtemv %>">
+                  <input class="form-control col-md-7 col-xs-12"  data-validate-words="1" id="qteout" name="qteout" placeholder="Quantité à retourner" autofocus required="required" type="Number" min="1" max="<%= totalqteout %>">
                   <input class="form-control col-md-7 col-xs-12 hidden"  data-validate-words="1" id="prodid2" name="prodid2" placeholder="idprod" autofocus required="required" type="text" value="<%= stockin.prodid %>">
                 </div>
               </div>

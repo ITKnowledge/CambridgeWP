@@ -21,13 +21,14 @@
                 <thead>
                   <tr class="headings">
 
-                    <th class="column-title">Dépôt </th>
                     <th class="column-title">Date sortie </th>
+                    <th class="column-title">Dépôt </th>
                     <th class="column-title">Code produit </th>
                     <th class="column-title">Désignation produit </th>
                     <th class="column-title">Quantité </th>
+                    <th class="column-title">date expiration </th>
                     <th class="column-title">Nature de sortie </th>
-                    <th class="column-title">Numéro facture | Client </th>
+
 
                   </tr>
                 </thead>
@@ -36,13 +37,14 @@
                   <% for(var i=0; i < stockout.length; i++) { %>
                     <% for(j=0; j < stockout[i].out.length; j++){%>
                       <tr class="even pointer">
+                      <td class=" "><%= stockout[i].out[j].dateout.substring(0, 19).replace("T", " ") %></td>
                       <td class=" "><%= stockout[i].depotname %></td>
-                      <td class=" "><%= stockout[i].out[j].dateout %></td>
                       <td class=" "><%= stockout[i].prodcode %></td>
                       <td class=" "><%= stockout[i].prodname %></td>
                       <td class=" " style="color:Red" align="center"><%= stockout[i].out[j].qteout %></td>
+                      <td class=" "><%= stockout[i].dateexp %></td>
                       <td class=" "><%= stockout[i].out[j].motifout %></td>
-                      <td class=" "><%= stockout[i].out[j].factnum %></td>
+
                     </tr>
                         <%}}%>
                   </tbody>

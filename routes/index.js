@@ -34,18 +34,22 @@ var ff = function(req, res, next){
 
   return next();
 }
+
+
 /* Function DEBITER Stock livraison */
-var stockinout_function = function(dinoutid,qteout,factnum){
+var stockinout_function = function(dinoutid,qteout,factnum,patientid,visiteid,prodidinvisite){
+
   var datesys = new Date().toISOString();
   var motifout="Vente normale de la facture: " + factnum;
   var stockout = {
   qteout: qteout,
   dateout: datesys,
   motifout: motifout,
-  factnum: factnum
+  factnum: factnum,
+  prodidinvisite: prodidinvisite
 };
 
-console.log("stockout is: " + stockout);
+
   Depotinout.findById(dinoutid,function(err, stockin){
     stockin.out.push(stockout);
       stockin.update({
@@ -56,33 +60,30 @@ console.log("stockout is: " + stockout);
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
-
+          SetDelivred(patientid,visiteid,prodidinvisite,true);
       }
     })
 });
-
 
 }
 
 //----------------------------- SetDelivred --------------------------------
 
-var SetDelivred = function(patientid,visitesid,prodid){
-
-
+var SetDelivred = function(patientid,visiteid,prodidinvisite,etat){
+ console.log("eeeeeeee" + patientid + '|' + prodidinvisite + '|' + etat);
   Patient.findById(patientid,function(err, patients){
 
+      for (var j=0; j < patients.visites.length; j++){
+            if(patients.visites[j]._id.toString() === visiteid.toString()){
 
-      for (var i=0; i < patients.visites.length; i++){
-            if(patients.visites[i]._id.toString() === visitesid.toString()){
+               for(var k=0;  k<patients.visites[j].products.length; k++){
 
-               for(var j=0;  j<patients.visites[i].products.length; j++){
-                 console.log(patients.visites[i].products[j].prodid + "|" + prodid);
-                 if(patients.visites[i].products[j].prodid.trim() == prodid.trim()){
+                 if(patients.visites[j].products[k]._id.toString() == prodidinvisite.toString()){
 
-                   var tt = patients.visites[i].products[j];
-                   tt.delivred = true;
-                   patients.visites[i].products[j] = tt;
-                   console.log(patients.visites[i].products[j]);
+                   var tt = patients.visites[j].products[k];
+                   tt.delivred = etat;//true;
+                   patients.visites[j].products[k] = tt;
+
                  }
 
                }
@@ -106,6 +107,7 @@ var SetDelivred = function(patientid,visitesid,prodid){
 
 });
 }
+
 
 var Getdate = function(d){
    var out = d.substring(0, 10).split("-",3);
@@ -307,17 +309,22 @@ module.exports = function(passport){
 	});
 
 
+/* notification alert */
+router.get('/notification', isAuthenticated, function(req, res){
+  res.json({notification: "33 Articles en rupture de stock."});
+});
 // -------------------------  Function Stockinout ---------------------------
   router.get('/stockinout/:id', isAuthenticated, function(req, res){
-
+    var retour="";
     var tempqte = req.query.qte;
     var depotname = req.query.depotname;
+    var patientid = req.query.patientid;
+    var visiteid = req.query.visiteid;
     var prodidinvisite = req.query.prodidinvisite;
     var factnum = req.query.factnum;
     var tab = [];
     var outtab = [];
-
-
+console.log(tempqte + '|' + depotname + '|' + patientid + '|' + visiteid  + '|' + prodidinvisite + '|' + factnum);
     Depotinout.find({prodid: req.params.id, depotname: depotname, prodqtemv: { $gt: 0 }}, {}, {sort: {'dateexp': 1}} , function(err, result){
 
       for(i=0; i<result.length; i++){
@@ -342,6 +349,18 @@ module.exports = function(passport){
 
 
       }
+if (tempqte>0){
+  retour="ko";
+}else {
+  for(j=0; j<tab.length; j++){
+      var retour="";
+      var qte = tab[j].qte;
+      var dinoutid = tab[j].dinoutid;
+
+      stockinout_function(dinoutid,qte,factnum,patientid,visiteid,prodidinvisite);
+  }
+  retour="ok";
+}
 
       for(j=0; j<tab.length; j++){
 
@@ -359,6 +378,7 @@ module.exports = function(passport){
       SetDelivred(patientid, visitesid, prodid);
       res.send(tab);
 
+      res.redirect('/livraison/?result=' + retour);
     });
 });
 
@@ -1578,7 +1598,7 @@ router.get('/productstock', isAuthenticated, function(req, res){
 });
 
 router.post('/stockout/:id', isAuthenticated, function(req, res){
-var datesys = new Date();
+var datesys = new Date().toISOString();;
 var qte=req.body.qteout;
 var prodid=req.body.prodid2;
 var factnum=req.body.factureclt;
@@ -1586,7 +1606,7 @@ var motifout=req.body.motifout;
 
  var stockout = {
   qteout: qte,
-  dateout: (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
+  dateout:datesys,// (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
   motifout: motifout,
   factnum: factnum
 };
@@ -1609,7 +1629,7 @@ Depotinout.findById(req.params.id, function (err, stockin) {
    });
 /* Retour client au stock */
 router.post('/stockretourclient/:id', isAuthenticated, function(req, res){
-var datesys = new Date();
+var datesys = new Date().toISOString();;
 var qte=req.body.qteout;
 var prodid=req.body.prodid2;
 var factnum=req.body.factureclt;
@@ -1617,7 +1637,7 @@ var motifout=req.body.motifout;
 
  var stockout = {
   qteout: qte * (-1),
-  dateout: (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
+  dateout:datesys,// (datesys.getDate() + '/' + (datesys.getMonth()+1) + '/' +  datesys.getFullYear() + ':' + datesys.getHours()+ 'h' + datesys.getMinutes() + 'mm'),
   motifout: motifout,
   factnum: factnum
 };
@@ -1685,7 +1705,7 @@ router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
    router.get('/liststockout/:id', isAuthenticated, function(req, res){
 
      var vid = req.query.vid;
-     console.log("VID is: " + vid);
+
     // var dt = new Date().toISOString();
      Depotinout.findById(req.params.id, function(err, stockin){
         if (err) {
@@ -1695,36 +1715,61 @@ router.get('/stockretourclt/:id', isAuthenticated, function(req, res){
         }
      });
    });
-/* Suppression ligne sortie du stock */
-router.delete('/deletestockout', isAuthenticated, function(req, res){
-    var stockinoutid = req.query.id;
-    var outid = req.query.outid;
-    var qteoutdel=req.query.outqte;
+/* Annuler une livraison produit */
+router.get('/livraisoncancel/:id', isAuthenticated, function(req, res){
+var patientid=req.query.pid;
+var visiteid = req.query.vid;
 
-    Depotinout.findById(stockinoutid, function (err, stockin) {
-    stockin.update({
-      prodqtemv: Number(stockin.prodqtemv) + Number(qteoutdel),
-    },function (err, providersID){
+Depotinout.find({ out:{
+                      $elemMatch:{
+                         prodidinvisite:req.params.id
+                      }
+            } },{_id:1, out:1}, function (err, stockin) {
+
+for(i=0; i < stockin.length; i++){
+
+
+  for(j=0; j<stockin[i].out.length; j++){
+
+    if (stockin[i].out[j].prodidinvisite==req.params.id){
+        deletestockout_function(stockin[i]._id,stockin[i].out[j].qteout,stockin[i].out[j]._id)
+      }
+    }
+  }
+});
+SetDelivred(patientid,visiteid,req.params.id,false);
+
+res.redirect("/livraison");
+ });
+/* function deleting out stock used by livraisoncancel */
+var deletestockout_function = function(dinoutid,qteoutdel,outid){
+  Depotinout.findById(dinoutid, function (err, stockinbis) {
+
+    stockinbis.update({
+
+      prodqtemv: Number(stockinbis.prodqtemv) + Number(qteoutdel),
+    },function (err, pstockinbisID){
       if(err){
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
 
-            Depotinout.update({_id: stockinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockin){
+            Depotinout.update({_id: dinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockinout){
             if (err) {
               console.log('GET Error: There was a problem retrieving: ' + err);
-            } else {
-              res.redirect("/listinout");
+            }else{
+
             }
         });
       }
     })
+})
+}
 
-   });
-});
 
 /* Suppression ligne retour client au stock */
 router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
+
     var stockinoutid = req.query.id;
     var outid = req.query.outid;
     var qteoutdel=req.query.outqte;
