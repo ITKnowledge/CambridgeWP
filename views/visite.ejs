@@ -66,7 +66,7 @@
                   <select id="progs" type="text" name="program" required="required" data-validate-length-range="5,20" class="form-control col-md-7 col-xs-12" placeholder="">
                     <option>Choisir un Programme</option>
                     <% for(i=0; i < progs.length; i++ ){%>
-                       <option><%= progs[i].progname %></option>
+                       <option value="<%= progs[i].progname + ' | ' + progs[i].uniteqte + ' | ' + progs[i].extraqte %>"><%= progs[i].progname %></option>
                     <%}%>
                   </select>
                 </div>
@@ -98,7 +98,7 @@
               <a onclick="" id="addline" type="" class="btn btn-primary"><i class="fa fa-check"></i></a>
             </div>
 
-            <textarea id="message" type="" name="obj" required="required" class="form-control " name="message" placeholder="Obj">
+            <textarea id="message" type="" name="obj" required="required" class="form-control hidden" name="message" placeholder="Obj">
             </textarea>
 
             <div id="progname" name="">
@@ -174,6 +174,7 @@
 <script>
 var tab = [];
 $(document).ready(function() {
+  var count = 0;
   $("#jsGrid").jsGrid({
       width: "100%",
       height: "400px",
@@ -201,7 +202,6 @@ $(document).ready(function() {
         },
 
         insertItem: function(insertingClient) {
-
         },
 
         updateItem: function(updatingClient) { },
@@ -228,11 +228,11 @@ $(document).ready(function() {
     $("#addline").click(function() {
       //console.log($("#prodinfo").val().split("|")[0]);
       //console.log(tab);
-       if($('#progs').val() !== "Choisir un Programme" && $('#prodinfo').val() !== "" && $('#prodqte').val() !== "" && $('#prodexpdate').val() !== "" ){
+       if($('#progs').val().split("|")[0] !== "Choisir un Programme" && $('#prodinfo').val() !== "" && $('#prodqte').val() !== "" && $('#prodexpdate').val() !== "" ){
          //$('#detail tbody').append('<tr class="odd pointer"><td class=" ">'+$("#prodinfo").val().split("|")[0] +'</td><td class=" ">'+$("#prodinfo").val().split("|")[1] +'</td><td class=" ">'+$('#prodqte').val()+'</td><td class=" ">'+$('#prodexpdate').val()+'</td><td class=" last"> <a onclick="$(this).parent().parent().remove()" class="removelink" ><i class="fa fa-close"></i></a> </td></tr>');
 
         // $('#progname').text($('#progs').val());
-         $('#progname-val').val($('#progs').val());
+         $('#progname-val').val($('#progs').val().split("|")[0]);
 
          tab.push({
            prodcode: $("#prodinfo").val().split("|")[0],
@@ -241,6 +241,8 @@ $(document).ready(function() {
            prodqte: $('#prodqte').val(),
            prodexpdate: $('#prodexpdate').val()
           });
+
+
 
          $('#message').val(JSON.stringify(tab));
 
@@ -257,18 +259,27 @@ $(document).ready(function() {
            onItemUpdated: function() {
            //console.log("row updated");
            $('#message').val(JSON.stringify(tab));
+           count = count + 1;
+           console.log(count);
            },
 
            onItemDeleted: function() {
            //console.log("row deleted");
+           tab.splice(arg.itemIndex, 1);
            $('#message').val(JSON.stringify(tab));
+           count = count + 1;
+           console.log(count);
+
            },
            onItemInserted: function() {
            //console.log("row deleted");
            $('#message').val(JSON.stringify(tab));
+           count = count + 1;
+           console.log(count);
            }
        });
 
+       alert(count);
 
     });
 
