@@ -1411,13 +1411,16 @@ logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient
  });
 
  router.get('/listprod', isAuthenticated, function(req, res){
+   Depot.find(function(err, depots){
    Product.find(function (err, prod){
-     Depotinout.aggregate([{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
-        res.render('listprod', {user: req.user, prods: prod, stock: stock});
+      // Depotinout.aggregate([{ $match : { depotname:"Depot Meknes" } },{ $group: { _id: '$prodid', totalUnits: { $sum: "$prodqtemv" } } }],(function (err, stock){
+     Depotinout.aggregate([ [ { $group : { _id: { "prodid": "$prodid", "depotname": "$depotname" }, totalUnits: { $sum: "$prodqtemv" } } } ] ],(function (err, stock){
+        res.render('listprod', {user: req.user, prods: prod, stock: stock,depots: depots});
         logCambridge(req.user.username,"Consultation de la liste des produits.","Show");
      }));
 
- });
+   });
+  });
 });
 
 
@@ -1434,7 +1437,8 @@ logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient
  //
  // });
  router.get('/listinout/:prodid', isAuthenticated, function(req, res){
-      Depotinout.find({prodid: req.params.prodid},function(err, result){
+   var depotname=req.query.depotname;
+      Depotinout.find({prodid: req.params.prodid,depotname: depotname},function(err, result){
        res.render('listinout', {user: req.user, inout: result});
        //res.json(result);
      });
