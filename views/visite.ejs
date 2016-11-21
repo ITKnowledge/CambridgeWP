@@ -263,7 +263,7 @@ $(document).ready(function() {
            console.log(count);
            },
 
-           onItemDeleted: function() {
+           onItemDeleted: function(arg) {
            //console.log("row deleted");
            tab.splice(arg.itemIndex, 1);
            $('#message').val(JSON.stringify(tab));
