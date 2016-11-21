@@ -67,6 +67,7 @@ var stockinout_function = function(dinoutid,qteout,factnum,patientid,visiteid,pr
 
 }
 
+
 //----------------------------- SetDelivred --------------------------------
 
 var SetDelivred = function(patientid,visiteid,prodidinvisite,etat){
@@ -1773,7 +1774,7 @@ router.delete('/deletestockretourclt', isAuthenticated, function(req, res){
         console.log('GET Error: There was a problem retrieving: ' + err);
 
       }else{
- 
+
             Depotinout.update({_id: stockinoutid}, {$pull: {out: {_id: outid}}} , function(err, stockin){
             if (err) {
               console.log('GET Error: There was a problem retrieving: ' + err);
