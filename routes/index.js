@@ -363,12 +363,21 @@ if (tempqte>0){
   retour="ok";
 }
 
-      // var patientid = "58272b714a314af0317a75d3";
-      // var visitesid = "58272b9d4a314af0317a75db";
-      // var prodid = "5803f855b5effd3e32b89c7d";
-      // SetDelivred(patientid, visitesid, prodid);
-      // res.send(tab);
-      //res.end("Hello Mitnick, you've just stumbled on the simplest web server ever");
+      for(j=0; j<tab.length; j++){
+
+          var qte = tab[j].qte;
+          var dinoutid = tab[j].dinoutid;
+
+          stockinout_function(dinoutid,qte,factnum);
+
+
+      }
+      var patientid = "58272b714a314af0317a75d3";
+      var visitesid = "58272b9d4a314af0317a75db";
+      var prodid = "5803f855b5effd3e32b89c7d";
+
+      SetDelivred(patientid, visitesid, prodid);
+      res.send(tab);
 
       res.redirect('/livraison/?result=' + retour);
     });
