@@ -41,7 +41,13 @@
                       <td class=" "><%= stockout[i].depotname %></td>
                       <td class=" "><%= stockout[i].prodcode %></td>
                       <td class=" "><%= stockout[i].prodname %></td>
-                      <td class=" " style="color:Red" align="center"><%= stockout[i].out[j].qteout %></td>
+                      <% if (stockout[i].out[j].qteout<0){ %>
+                      <td class=" " style="color:green; font-weight: bold;" align="center"> <%= stockout[i].out[j].qteout*(-1) %> </td>
+                      <%}else{%>
+                        <td class=" " style="color:red; font-weight: bold;" align="center"><%= stockout[i].out[j].qteout %></td>
+                      <%}%>
+
+
                       <td class=" "><%= stockout[i].dateexp %></td>
                       <td class=" "><%= stockout[i].out[j].motifout %></td>
 

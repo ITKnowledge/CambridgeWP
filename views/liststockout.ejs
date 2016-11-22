@@ -52,7 +52,11 @@
                         <input type="checkbox" class="flat" name="table_records">
                       </td> -->
                       <td class=" "><%= stockin.out[i].dateout %></td>
-                      <td class=" "><%= stockin.out[i].qteout %></td>
+                      <% if (stockin.out[i].qteout<0){ %>
+                      <td class=" " style="color:green; font-weight: bold;" align="center"> <%= stockin.out[i].qteout*(-1) %> </td>
+                      <%}else{%>
+                        <td class=" " style="color:red; font-weight: bold;" align="center"><%= stockin.out[i].qteout %></td>
+                      <%}%>
                       <td class=" "><%= stockin.out[i].motifout %></td>
                       <td class=" "><%= stockin.out[i].factnum %></td>
                       <td class="last"  align='right' width='120px;'>
@@ -71,7 +75,7 @@
 
               </div>
 
-              <button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listinout/<%= stockin.prodid %>'">Liste Etat stock</button>
+              <button id="retour" type="button" class="btn btn-success" onclick="window.location.href='/listinout/<%= stockin.prodid %>?depotname=<%= stockin.depotname %>'">Liste Etat stock</button>
             </div>
           </div>
         </div>
