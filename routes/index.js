@@ -2206,15 +2206,44 @@ logCambridge(req.user.username,"Supression dépôt ID: " + req.params.depot_id +
            Depotinout.find({prodcode: old_prodcode}, function (err, depotinouts) {
 
                       depotinouts.forEach(function(depotinout) {
-                       depotinout.prodcode = req.body.prodcode;
-                       depotinout.prodname = req.body.prodname;
+                       depotinout.prodcode = req.body.prodcode.trim();
+                       depotinout.prodname = req.body.prodname.trim();
                        depotinout.save();
                       });
 
 
-                      })
+           })
 
-          logCambridge(req.user.username,"Mise à jour produit: " + req.body.prodname + " avec succès","Update");
+/* Mise a jour infos product in visites  */
+Patient.find({"visites.products": {$elemMatch: {"prodid":req.params.id}}},{_id:1},function(err,result){
+
+for (i=0;i<result.length;i++){
+
+  Patient.findById(result[i]._id,function(err, patients){
+       patients.visites.forEach(function(visite){
+       visite.products.forEach(function(product){
+
+                     if (product.prodid == req.params.id) {
+                           product.prodcode = req.body.prodcode.trim();
+                           product.prodname = req.body.prodname.trim();
+
+                           patients.save(function(err, doc){
+                             if (err){
+                               console.log('Erreur mise à jour des informations produits dans visite');
+                             }else{
+                               console.log('Mise à jour des informations produits dans visite');
+                             }
+
+                           });
+
+                     }
+                 });
+
+           });
+     });
+}
+});
+     logCambridge(req.user.username,"Mise à jour produit: " + req.body.prodname + " avec succès","Update");
            res.redirect("/listprod");
          }
        })
