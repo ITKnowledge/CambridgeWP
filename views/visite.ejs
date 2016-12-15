@@ -103,7 +103,7 @@
 
             <div id="progname" name="">
 
-              <input id="progname-val" type="hidden" class="form-control" name="prog" value="" placeholder="Nom prog" >
+              <input id="progname-val" type="" class="form-control" name="prog" value="" placeholder="Nom prog">
             </div>
 
             <div class="clearfix"></div>
@@ -232,7 +232,11 @@ $(document).ready(function() {
          //$('#detail tbody').append('<tr class="odd pointer"><td class=" ">'+$("#prodinfo").val().split("|")[0] +'</td><td class=" ">'+$("#prodinfo").val().split("|")[1] +'</td><td class=" ">'+$('#prodqte').val()+'</td><td class=" ">'+$('#prodexpdate').val()+'</td><td class=" last"> <a onclick="$(this).parent().parent().remove()" class="removelink" ><i class="fa fa-close"></i></a> </td></tr>');
 
         // $('#progname').text($('#progs').val());
-         $('#progname-val').val($('#progs').val().split("|")[0]);
+         $('#progname-val').val($('#progs').val().split("|")[0].trim());
+
+        console.log($('#progs').val().split("|")[0]);
+
+
 
          tab.push({
            prodcode: $("#prodinfo").val().split("|")[0],

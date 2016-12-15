@@ -556,7 +556,7 @@ router.get('/delivred/:id', isAuthenticated, function(req, res){
         //console.log(req.body.prog);
         Prog.findOne({progname: req.body.prog}, function(err, prog){
           var obj = JSON.parse(req.body.obj);
-
+          console.log(prog);
           var facturenum = inc ;
           var visites = {
             poid: req.body.poid,
