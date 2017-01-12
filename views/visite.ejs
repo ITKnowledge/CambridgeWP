@@ -103,7 +103,7 @@
 
             <div id="progname" name="">
 
-              <input id="progname-val" type="" class="form-control" name="prog" value="" placeholder="Nom prog">
+              <input id="progname-val" type="" class="form-control hidden" name="prog" value="" placeholder="Nom prog">
             </div>
 
             <div class="clearfix"></div>
@@ -173,8 +173,10 @@
 
 <script>
 var tab = [];
+var totalqte = 0;
+var flag;
 $(document).ready(function() {
-  var count = 0;
+
   $("#jsGrid").jsGrid({
       width: "100%",
       height: "400px",
@@ -224,6 +226,19 @@ $(document).ready(function() {
       ]
     });
 
+    $("#progs").change(function() {
+      $('#progname-val').val($('#progs').val().split("|")[0].trim());
+      tab.push({
+        prodcode: "",
+        prodname: "",
+        prodid: "",
+        prodqte: 0,
+        prodexpdate: ""
+       });
+       $('#message').val(JSON.stringify(tab));
+    });
+
+
 
     $("#addline").click(function() {
       //console.log($("#prodinfo").val().split("|")[0]);
@@ -234,18 +249,32 @@ $(document).ready(function() {
         // $('#progname').text($('#progs').val());
          $('#progname-val').val($('#progs').val().split("|")[0].trim());
 
-        console.log($('#progs').val().split("|")[0]);
+         for(a = 0; a < tab.length; a++ ){
+          //  if(flag){
+             totalqte = totalqte + Number(tab[a].prodqte);
+          //  }
+         }
+        //  totalqte = totalqte + Number($('#prodqte').val());
+
+         if(totalqte + Number($('#prodqte').val()) <= 100){
+           tab.push({
+             prodcode: $("#prodinfo").val().split("|")[0],
+             prodname: $("#prodinfo").val().split("|")[1],
+             prodid: $("#prodinfo").val().split("|")[2],
+             prodqte: $('#prodqte').val(),
+             prodexpdate: $('#prodexpdate').val()
+            });
+            totalqte = 0;
+            // flag = true;
+         }else{
+          //  flag = false;
+          totalqte = 0;
+          alert("Attention .... !!!!");
+         }
 
 
 
-         tab.push({
-           prodcode: $("#prodinfo").val().split("|")[0],
-           prodname: $("#prodinfo").val().split("|")[1],
-           prodid: $("#prodinfo").val().split("|")[2],
-           prodqte: $('#prodqte').val(),
-           prodexpdate: $('#prodexpdate').val()
-          });
-
+         console.log(totalqte);
 
 
          $('#message').val(JSON.stringify(tab));
@@ -254,41 +283,31 @@ $(document).ready(function() {
          $('#prodqte').val('');
          $('#prodexpdate').val('');
          $('#progs').attr('disabled','disabled');
+
        }else{
          $('#myModal').modal('show');
-
        }
        $("#jsGrid").jsGrid({
 
-           onItemUpdated: function() {
+           onItemUpdated: function(arg) {
            //console.log("row updated");
+          //  console.log(tab[arg.itemIndex].prodqte);
            $('#message').val(JSON.stringify(tab));
-           count = count + 1;
-           console.log(count);
            },
 
            onItemDeleted: function(arg) {
            //console.log("row deleted");
+          //  totalqte = totalqte - tab[arg.itemIndex].prodqte;
            tab.splice(arg.itemIndex, 1);
            $('#message').val(JSON.stringify(tab));
-           count = count + 1;
-           console.log(count);
-
            },
+
            onItemInserted: function() {
            //console.log("row deleted");
            $('#message').val(JSON.stringify(tab));
-           count = count + 1;
-           console.log(count);
            }
        });
-
-       alert(count);
-
     });
-
-
-
 });
 </script>
 

@@ -552,11 +552,11 @@ router.get('/delivred/:id', isAuthenticated, function(req, res){
         console.log('GET Error: There was a problem retrieving: ' + err);
         //res.redirect('/home');
       }else{
-
-        //console.log(req.body.prog);
+        
+        // console.log((req.body.obj == "            ")?{}:req.body.obj);
         Prog.findOne({progname: req.body.prog}, function(err, prog){
           var obj = JSON.parse(req.body.obj);
-          console.log(prog);
+          console.log("|"+obj[0].code+"|");
           var facturenum = inc ;
           var visites = {
             poid: req.body.poid,
@@ -568,7 +568,7 @@ router.get('/delivred/:id', isAuthenticated, function(req, res){
             comment: req.body.comment,
             consultant: req.user.lastName + " " + req.user.firstName,
             clotured: false,
-            products: obj,
+            products: (obj[0].code == undefined)?{}:obj,
             factnum: facturenum
           };
 
@@ -895,7 +895,7 @@ else {
 
 
 	router.get('/listpat/:patient_id', isAuthenticated, function(req, res){
-logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient_id + " avec succès","Delete");
+    logCambridge(req.user.username,"Supression du patient ID: " + req.params.patient_id + " avec succès","Delete");
 		Patient.remove({
 			_id: req.params.patient_id
 		}, function(err, patient) {
@@ -2403,7 +2403,7 @@ logCambridge(req.user.username,"Mise à jour des données de l'utilisateur:" + r
       })
 
       router.delete('/deluser/:id', isAuthenticated, function(req, res){
-logCambridge(req.user.username,"Supression utilisateur ID: " + req.params.id + " avec succès","Delete");
+        logCambridge(req.user.username,"Supression utilisateur ID: " + req.params.id + " avec succès","Delete");
         Users.remove({
           _id: req.params.id
         }, function(err, users) {
