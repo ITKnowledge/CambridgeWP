@@ -550,37 +550,38 @@ router.get('/delivred/:id', isAuthenticated, function(req, res){
     },function (err, counterID){
       if(err){
         console.log('GET Error: There was a problem retrieving: ' + err);
-        //res.redirect('/home');
+
       }else{
-        
-        // console.log((req.body.obj == "            ")?{}:req.body.obj);
+
         Prog.findOne({progname: req.body.prog}, function(err, prog){
-          var obj = JSON.parse(req.body.obj);
-          console.log("|"+obj[0].code+"|");
+          //var ob = JSON.parse({});
+          console.log(("|"+req.body.obj+"|").trim());
+          console.log((req.body.obj == "CONSULTATION")?"OK":JSON.parse(req.body.obj));
+          var obj = {}; //(req.body.obj == undefined)?{}:JSON.parse(req.body.obj);
           var facturenum = inc ;
           var visites = {
             poid: req.body.poid,
             taille: req.body.taille,
             prog: req.body.prog,
             daterdv: new Date(),
-            prix: prog.progprice , //SetPrice(req.body.prog)[0],
+            prix: prog.progprice, //SetPrice(req.body.prog)[0],
             descprod: prog.progdesc, //SetPrice(req.body.prog)[1],
             comment: req.body.comment,
             consultant: req.user.lastName + " " + req.user.firstName,
             clotured: false,
-            products: (obj[0].code == undefined)?{}:obj,
+            products: obj,
             factnum: facturenum
           };
 
 
-          var numdossier = req.body.numdossier;
+          //var numdossier = req.body.numdossier;
 
           Patient.findById(req.params.id, function (err, patients) {
             patients.visites.push(visites);
 
             patients.update({
-              visites: patients.visites,
-              numdossier: numdossier
+              visites: patients.visites
+              //numdossier: numdossier
             },function (err, patientsID){
               if(err){
                 console.log('GET Error: There was a problem retrieving: ' + err);

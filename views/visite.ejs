@@ -17,7 +17,7 @@
           </div>
           <div class="x_content">
             <br />
-            <form class="form-horizontal form-label-left" novalidate action="/addvisite/<%= patients._id %>" method="post">
+            <form id="myform" class="form-horizontal form-label-left" novalidate action="/addvisite/<%= patients._id %>" method="post">
 
               <div class="item form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nom">Nom Patient <span class="required">*</span>
@@ -31,7 +31,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="poid">Numéro Dossier <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input id="numdossier" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" name="numdossier" placeholder="Numéro de dossier" required="required" type="text">
+                  <input id="numdossier" disabled="disabled" class="form-control col-md-7 col-xs-12" data-validate-length-range="6" data-validate-words="1" name="numdossier" placeholder="Numéro de dossier" required="required" type="text" value="<%= patients.numdossier %>">
                 </div>
               </div>
 
@@ -98,7 +98,7 @@
               <a onclick="" id="addline" type="" class="btn btn-primary"><i class="fa fa-check"></i></a>
             </div>
 
-            <textarea id="message" type="" name="obj" required="required" class="form-control hidden" name="message" placeholder="Obj">
+            <textarea id="message" type="" name="obj" required="required" class="form-control hidden" placeholder="Obj">
             </textarea>
 
             <div id="progname" name="">
@@ -118,8 +118,11 @@
                 <!--
                 <button type="submit" class="btn btn-primary">Cancel</button>
               -->
-                <input type="hidden" name="_method" value="PUT">
-                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <!-- <input type="hidden" name="_method" value="PUT"> -->
+                <!-- <button type="submit" class="btn btn-primary">Enregistrer</button> -->
+
+                <input type="button" name="_method" class="btn btn-primary" onclick="mySubmit()" value="Enregistrer">
+
               </div>
             </div>
               <div class="clearfix"></div>
@@ -169,6 +172,23 @@
 
 
 <% include footer.ejs %>
+<script>
+function mySubmit() {
+    console.log("OK Submit");
+    // console.log($('#progs').val().split("|")[0].trim());
+    if($('#progs').val().split("|")[0].trim() == "CONSULTATION"){
+      document.getElementById("myform").submit();
+    // }else if($('#progs').val().split("|")[0].trim() !=== "" && tab !== []){
+    //   document.getElementById("myform").submit();
+    //
+  }else{
+      $('#myModal').modal('show');
+    }
+
+}
+</script>
+
+
 
 
 <script>
@@ -226,19 +246,10 @@ $(document).ready(function() {
       ]
     });
 
-    $("#progs").change(function() {
+    $("#progs").change(function(){
       $('#progname-val').val($('#progs').val().split("|")[0].trim());
-      tab.push({
-        prodcode: "",
-        prodname: "",
-        prodid: "",
-        prodqte: 0,
-        prodexpdate: ""
-       });
-       $('#message').val(JSON.stringify(tab));
+      $("#message").val($('#progs').val().split("|")[0].trim());
     });
-
-
 
     $("#addline").click(function() {
       //console.log($("#prodinfo").val().split("|")[0]);
@@ -255,7 +266,6 @@ $(document).ready(function() {
           //  }
          }
         //  totalqte = totalqte + Number($('#prodqte').val());
-
          if(totalqte + Number($('#prodqte').val()) <= 100){
            tab.push({
              prodcode: $("#prodinfo").val().split("|")[0],
@@ -272,9 +282,6 @@ $(document).ready(function() {
           alert("Attention .... !!!!");
          }
 
-
-
-         console.log(totalqte);
 
 
          $('#message').val(JSON.stringify(tab));
